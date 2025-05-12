@@ -1,0 +1,151 @@
+@import "tailwindcss";
+
+:root {
+--background: 0 0% 100%;
+  --foreground: 20 14.3% 4.1%;
+  --muted: 60 4.8% 95.9%;
+  --muted-foreground: 25 5.3% 44.7%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 20 14.3% 4.1%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14.3% 4.1%;
+  --border: 20 5.9% 90%;
+  --input: 20 5.9% 90%;
+  --primary: #2d607c;
+  --primary-foreground: 211 100% 99%;
+  --secondary: 60 4.8% 95.9%;
+  --secondary-foreground: 24 9.8% 10%;
+  --accent: 60 4.8% 95.9%;
+  --accent-foreground: 24 9.8% 10%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 60 9.1% 97.8%;
+  --ring: 20 14.3% 4.1%;
+  --radius: 0.5rem;
+}
+
+@theme {
+  --color-primary: #2d607c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@utility input {
+  @apply w-full border h-[50px] px-5 relative flex items-center !border-primary placeholder:themeTextMuted
+}
+
+@utility pryBtn {
+  @apply bg-primary border-0 input justify-center px-5 text-sm text-white space-x-2
+}
+
+@utility themeTextMuted {
+  @apply text-[14px] font-light text-gray-500
+}
+
+@layer utilities {
+  .outer-container {
+      @apply mx-auto max-w-screen-xl p-10
+    }
+  
+        .page-title {
+          @apply font-[700] text-[1em] md:text-[1.5em]
+        }
+    
+        .themeBg {
+          @apply bg-[#f1f2f5]
+        }
+    
+        /* .themeTextError {
+          @apply text-red-600 label dark:text-red-400
+        } */
+    
+        
+    
+        .label {
+          @apply text-[#252631] font-[400] text-[14px]
+        }
+
+    
+        .pryBtnOutline {
+          @apply w-full bg-transparent !border pryBtn border-primary hover:bg-primary text-primary hover:text-white
+        }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+
+.with-divider::after {
+  content: '|';
+  margin-left: 0.5rem;
+  /* color: #ccc; */
+}
+
+.with-divider:last-child::after {
+  content: '';
+}
+
+/* Remove the spinner on the number input */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Remove the spinner in Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Hide default arrow and add custom icon */
+/* Hide default dropdown arrow */
+select {
+  -webkit-appearance: none;
+  /* Safari and Chrome */
+  -moz-appearance: none;
+  /* Firefox */
+  appearance: none;
+  /* Standard syntax */
+  background: transparent;
+  /* Hide the background */
+  padding-right: 20px;
+  /* Add space for custom icon */
+  cursor: pointer;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+option {
+  background-color: red;
+  /* Light background on hover */
+}
+
+button:disabled {
+  pointer-events: none;
+  /* Prevent interactions */
+}
+
+button:disabled:hover {
+  background-color: inherit;
+  /* Maintain original background */
+  cursor: default;
+  /* Keep the default cursor */
+}
