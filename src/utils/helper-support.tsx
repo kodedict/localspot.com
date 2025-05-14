@@ -103,6 +103,13 @@ function ucFirst(str:string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+function ucWords(str: string): string {
+  return str
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
 const toggleNProgress = (on:boolean) => {
   const nprogress = document.getElementById('line_loader');
   on ? nprogress?.classList.remove('hidden') : nprogress?.classList.add('hidden');
@@ -142,6 +149,7 @@ export {
     removeCommas,
     abbreviateString,
     ucFirst,
+    ucWords,
     toggleNProgress,
     getGreeting,
     strReplace,

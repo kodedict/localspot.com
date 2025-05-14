@@ -93,20 +93,6 @@ export default function Category() {
             </div>
           </div>
         </div>
-        {/* Featured Listings box-shadow: box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px; */}
-        {/* <ListingsList 
-          title="Featured Car Boot Sales"
-          description="Discover top-rated car boot sales across the UK. View listings, schedules, and visitor ratings."
-        /> */}
-
-        {/* Related Locations */}
-        {/* <RelatedLocations /> */}
-
-        {/* Categories */}
-        {/* <Categories /> */}
-
-        {/* SEO Metrics */}
-        {/* <SEOMetrics /> */}
       </main>
   </>
   );
