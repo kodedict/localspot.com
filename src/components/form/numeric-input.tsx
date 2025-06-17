@@ -75,14 +75,20 @@ const NumericInput = ({
         }
 
         seInputBox(groupInput);
-        onInput && onInput(groupInput.join(''));
+        if (onInput) {
+            onInput(groupInput.join(''));
+        }
     }
 
     const handleFilled = (otp:string) => {
-        onInput && onInput(otp);
+        if (onInput) {
+            onInput(otp);
+        }
         if ( otp.length === length ){
             inputRefs.current[inputRefs.current.length - 1]?.blur();
-            onFilled && onFilled(otp);
+            if (onFilled) {
+                onFilled(otp);
+            }
         }
     }
 

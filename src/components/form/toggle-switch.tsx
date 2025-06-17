@@ -1,6 +1,6 @@
 import { ucFirst } from "@/utils/helper-support";
-import { Check, LucideIcon, X } from "lucide-react";
-import React, {ReactNode, useState} from "react";
+import { Check, X } from "lucide-react";
+import React, {ReactNode} from "react"; // useState removed
 
 type ToggleSwitchType = {
     initialState:boolean,

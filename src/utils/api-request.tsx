@@ -1,4 +1,4 @@
-import { AuthToken, onLogout } from "@/store/_auth_";
+import { AuthToken } from "@/store/_auth_";
 import axios from "axios";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
@@ -16,12 +16,14 @@ export const ApiRequest = async <T = any>({
 }): Promise<T> => {
   try {
 
-    let headers: any = {
+    const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       accept: "*/*",
     };
 
-    token && (headers['Authorization'] = `Bearer ${token}`);
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     const { data } = await axios({
       method,
@@ -31,20 +33,25 @@ export const ApiRequest = async <T = any>({
     });
 
     return data; // Return only the response data
-  } catch (error: any) {
-    if (error.response?.status === 401) {
-      // Handle unauthorized logout
-      //onLogout();
-      //document.getElementById('unauthorized_layout')?.classList.remove('hidden');
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      if (error.response?.status === 401) {
+        // Handle unauthorized logout
+        //onLogout();
+        //document.getElementById('unauthorized_layout')?.classList.remove('hidden');
+        return error.response?.data || "An error occurred";
+      }
       return error.response?.data || "An error occurred";
     }
-    return error.response?.data || "An error occurred";
+    return "An unexpected error occurred";
   }
 };
 
 export const DownloadApiRequest = async ({ endpoint }: { endpoint: string }) => {
-  let headers: any = {}
-  token && (headers['Authorization'] = `Bearer ${token}`);
+  const headers: Record<string, string> = {}
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   const response = await axios.post(
     endpoint,
     {}, // Empty body, or add data if required

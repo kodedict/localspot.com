@@ -8,12 +8,12 @@ import { strReplace } from '@/utils/helper-support';
 import RelatedListing from './RelatedListing';
 
 interface ByLocationIdProps {
-    listing: any
-    category: string
-    location: string,
+    // listing: any; // Removed
+    category: string;
+    location: string;
 }
 
-export default function SingleListing({ listing, category, location }: ByLocationIdProps) {
+export default function SingleListing({ category, location }: ByLocationIdProps) { // listing removed
     return (
         <main className="my-[2em]">
             <BreadCrumbs navs={[

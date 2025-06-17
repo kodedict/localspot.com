@@ -18,8 +18,8 @@ const decrypt = (data:string) => {
     return CryptoJS.AES.decrypt(data, app_key ?? '').toString(CryptoJS.enc.Utf8);
 }
 
-const EmptyFormInput = (formSchema: any) => {
-    return Object.keys(formSchema.fields).reduce((acc:any, item:any) => {
+const EmptyFormInput = (formSchema: { fields: Record<string, unknown> }) => {
+    return Object.keys(formSchema.fields).reduce((acc: Record<string, string>, item: string) => {
         acc[item] = '';
         return acc;
       }, {});
@@ -56,7 +56,7 @@ const numberWithCommas = (input: string | number, withDecimal = false, onlyDecim
   return parts.join('.');
 }
 
-const convertToBase64 = async (file:any) => {
+const convertToBase64 = async (file: File) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);
@@ -72,7 +72,7 @@ const convertToBase64 = async (file:any) => {
       });
 }
 
-const getFileSizeInMB = (file:any) : number => {
+const getFileSizeInMB = (file: File) : number => {
   return parseInt((file.size / (1024 * 1024)).toFixed(2));
 }
 
@@ -113,7 +113,11 @@ function ucWords(str: string): string {
 const toggleNProgress = (on:boolean) => {
   const nprogress = document.getElementById('line_loader');
   if (nprogress) {
-    on ? nprogress.classList.remove('hidden') : nprogress.classList.add('hidden');
+    if (on) {
+        nprogress.classList.remove('hidden');
+    } else {
+        nprogress.classList.add('hidden');
+    }
   }
 }
 
@@ -131,7 +135,7 @@ function getGreeting() {
   }
 }
 
-const strReplace = (str:string, search:string, replace:any) => {
+const strReplace = (str:string, search:string, replace:string) => {
   return str
     .split(search)
     .map(word => word.charAt(0) + word.slice(1))

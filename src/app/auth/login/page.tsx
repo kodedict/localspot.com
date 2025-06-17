@@ -1,14 +1,13 @@
 // import ByCategory from '@/components/page/ByCategory';
 import { Metadata } from 'next';
-import { strReplace } from '@/utils/helper-support';
 import LoginPage from '@/components/page/admin/auth/login';
 
-interface PageProps {
-    params: { category: string };
-}
+// interface PageProps { // Interface removed
+//     // params: { category: string };
+// }
 
 export async function generateMetadata(
-    { params }: PageProps
+    // No props used
 ): Promise<Metadata> {
     // let category = decodeURIComponent(params.category);
     // category = strReplace(category, '-', ' ');
@@ -18,6 +17,6 @@ export async function generateMetadata(
     };
 }
 
-export default function Category({  }: PageProps) {
+export default function LoginFormPage() { // PageProps removed
     return (<LoginPage />);
 }

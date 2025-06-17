@@ -9,7 +9,7 @@ const useReactQuery = () => {
       mutationFn: ({ endpoint, payload }: { endpoint: string, payload?: any, refreshEndpoint?: string|string[] }) => {
           return ApiRequest({ endpoint, method: "POST", payload })
       },
-          onSuccess: (data, variables, context) => {
+          onSuccess: (data, variables) => { // context removed
             const refreshEndpoints = Array.isArray(variables.refreshEndpoint)
             ? variables.refreshEndpoint
             : variables.refreshEndpoint

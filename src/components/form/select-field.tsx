@@ -10,7 +10,7 @@ type OptionType = {
 }
 
 type InputType = {
-    placeholder?:any,
+    placeholder?:string,
     label?: string,
     labelClass?: string,
     id?: string,
@@ -49,7 +49,11 @@ const SelectField = ({
     }
 
     const onShowOption = (triggerBy = 'default') => {
-        triggerBy === 'outsideEvent'  ? setShowMOptions(false) : setShowMOptions(!showMOptions)
+        if (triggerBy === 'outsideEvent') {
+            setShowMOptions(false);
+        } else {
+            setShowMOptions(!showMOptions);
+        }
     };
 
     const handleOnClickOutside = (event: MouseEvent) => {
@@ -67,7 +71,9 @@ const SelectField = ({
       });
 
       const onSelectOption = (value:string) => {
-        onChangeInput && onChangeInput(value);
+        if (onChangeInput) {
+            onChangeInput(value);
+        }
         setShowMOptions(false);
       }
 

@@ -64,7 +64,7 @@ const HomePage = () => {
                                     <span> 06:00-14:00</span>
                                 </div>
                             </div>
-                            <p className="text-neutral-600 mb-4">One of London's most popular car boot sales, featuring over 200 stalls with everything from antiques to children's toys. Great food vendors and free parking available.</p>
+                            <p className="text-neutral-600 mb-4">One of London&apos;s most popular car boot sales, featuring over 200 stalls with everything from antiques to children&apos;s toys. Great food vendors and free parking available.</p>
                             <div className="flex flex-wrap gap-2 mb-4">
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Indoor</span>
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Weekend</span>
@@ -89,24 +89,24 @@ const HomePage = () => {
                 <div className='outer-container mt-10'>
                     <h4 className='text-2xl font-bold'>Browse Car Boot Sales by Location</h4>
                     <div className='grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-6'>
-                        <a href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
+                        <Link href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
                             <span className="font-medium text-neutral-800">London</span>
-                        </a>
-                        <a href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
+                        </Link>
+                        <Link href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
                             <span className="font-medium text-neutral-800">Manchester</span>
-                        </a>
-                        <a href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
+                        </Link>
+                        <Link href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
                             <span className="font-medium text-neutral-800">Leeds</span>
-                        </a>
-                        <a href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
+                        </Link>
+                        <Link href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
                             <span className="font-medium text-neutral-800">Birmingham</span>
-                        </a>
-                        <a href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
+                        </Link>
+                        <Link href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
                             <span className="font-medium text-neutral-800">Bristol</span>
-                        </a>
-                        <a href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
+                        </Link>
+                        <Link href="/car-boot-sales/london/" className="bg-white p-4 rounded-md shadow-sm border border-neutral-100 hover:shadow-md transition flex items-center justify-center">
                             <span className="font-medium text-neutral-800">Edinburgh</span>
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>

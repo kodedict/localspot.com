@@ -27,7 +27,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
     const currentUrl = useMemo(() => location, [location]);
 
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [isMenuOpen] = useState(false); // setIsMenuOpen removed
 
     return (
         <>

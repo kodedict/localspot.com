@@ -42,7 +42,7 @@ const RelatedListing = () => {
                                     <span> 06:00-14:00</span>
                                 </div>
                             </div>
-                            <p className="text-neutral-600 mb-4">One of London's most popular car boot sales, featuring over 200 stalls with everything from antiques to children's toys. Great food vendors and free parking available.</p>
+                            <p className="text-neutral-600 mb-4">One of London&apos;s most popular car boot sales, featuring over 200 stalls with everything from antiques to children&apos;s toys. Great food vendors and free parking available.</p>
                             <div className="flex flex-wrap gap-2 mb-4">
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Indoor</span>
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Weekend</span>
@@ -89,7 +89,7 @@ const RelatedListing = () => {
                                     <span> 06:00-14:00</span>
                                 </div>
                             </div>
-                            <p className="text-neutral-600 mb-4">One of London's most popular car boot sales, featuring over 200 stalls with everything from antiques to children's toys. Great food vendors and free parking available.</p>
+                            <p className="text-neutral-600 mb-4">One of London&apos;s most popular car boot sales, featuring over 200 stalls with everything from antiques to children&apos;s toys. Great food vendors and free parking available.</p>
                             <div className="flex flex-wrap gap-2 mb-4">
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Indoor</span>
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Weekend</span>
@@ -136,7 +136,7 @@ const RelatedListing = () => {
                                     <span> 06:00-14:00</span>
                                 </div>
                             </div>
-                            <p className="text-neutral-600 mb-4">One of London's most popular car boot sales, featuring over 200 stalls with everything from antiques to children's toys. Great food vendors and free parking available.</p>
+                            <p className="text-neutral-600 mb-4">One of London&apos;s most popular car boot sales, featuring over 200 stalls with everything from antiques to children&apos;s toys. Great food vendors and free parking available.</p>
                             <div className="flex flex-wrap gap-2 mb-4">
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Indoor</span>
                                 <span className="inline-block px-2 py-1 leading-none bg-neutral-100 text-neutral-800 rounded-full text-xs">Weekend</span>

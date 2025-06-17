@@ -1,7 +1,7 @@
-import OptionType from "@/types/option-type";
+import OptionType from "@/type/option-type"; // Corrected path
 import { ucFirst } from "@/utils/helper-support";
 import { Search } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 type onChangeInputFunc = (e:React.ChangeEvent<HTMLInputElement>) => void
 
@@ -11,26 +11,26 @@ const SearchableDropdown = ({
     placeholder,
     label = 'Search',
     labelClass,
-    id,
+    // id, // Removed
     value,
     error,
     disabled = false,
     onChangeInput,
     inputClass,
-    toolTip,
+    // toolTip, // Removed
 } : {
     options?: OptionType[],
     placeholder?:string,
     label?: string,
     labelClass?: string,
-    id?: string,
+    // id?: string, // Removed
     value?:string,
     error?:string|null,
     disabled?:boolean,
     onChangeInput?: onChangeInputFunc,
     onSelectedOption?: (value:string) => void,
     inputClass?:string,
-    toolTip?:string,
+    // toolTip?:string, // Removed
 }) => {
 
     const [showMOptions, setShowMOptions] = useState<boolean>(false);
@@ -41,24 +41,32 @@ const SearchableDropdown = ({
 
     const [getValue, setGetValue] = useState<string>(value ?? '');
 
-    useEffect(() => {setGetValue(value ?? ''); setGetPlaceholder(value ?? placeholder ?? `Select ${label}`)}, [value])
+    useEffect(() => {setGetValue(value ?? ''); setGetPlaceholder(value ?? placeholder ?? `Select ${label}`)}, [value, placeholder, label])
 
     useEffect(() => {
         if (options && options.length == 0){
-            onSelectedOption && onSelectedOption('nil');
+            if (onSelectedOption) {
+                onSelectedOption('nil');
+            }
             return;
         }
         setShowMOptions(true);
-    }, [options])
+    }, [options, onSelectedOption])
 
 
-    const onShowOption = (triggerBy = 'default') => {
-        triggerBy === 'outsideEvent'  ? setShowMOptions(false) : setShowMOptions(!showMOptions)
-    };
+    const onShowOption = useCallback((triggerBy = 'default') => {
+        if (triggerBy === 'outsideEvent') {
+            setShowMOptions(false);
+        } else {
+            setShowMOptions(prevShowMOptions => !prevShowMOptions);
+        }
+    }, []); // showMOptions is managed by setShowMOptions, so it's not a direct dependency here if using functional update
 
-    const handleOnClickOutside = (event: MouseEvent) => {
-        if (showMOptionsRef.current && ! showMOptionsRef.current.contains(event.target as Node))  onShowOption('outsideEvent');
-    }
+    const handleOnClickOutside = useCallback((event: MouseEvent) => {
+        if (showMOptionsRef.current && !showMOptionsRef.current.contains(event.target as Node)) {
+            onShowOption('outsideEvent');
+        }
+    }, [onShowOption]);
 
     useEffect(() => {
         // Add event listener when the component mounts
@@ -66,19 +74,23 @@ const SearchableDropdown = ({
 
         // Cleanup event listener when the component unmounts
         return () => {
-        document.removeEventListener('mousedown', handleOnClickOutside);
+        document.removeEventListener('click', handleOnClickOutside);
         };
-    });
+    }, [handleOnClickOutside]);
 
     const onSelectOption = (item:OptionType|null) => {
         if (!item){
             setGetPlaceholder(placeholder ?? `Select ${label}`);
             setShowMOptions(false)
-            onSelectedOption && onSelectedOption('nil');
+            if (onSelectedOption) {
+                onSelectedOption('nil');
+            }
             setGetValue('');
             return;
         }
-       onSelectedOption && onSelectedOption(item.value);
+       if (onSelectedOption) {
+           onSelectedOption(item.value);
+       }
         setGetPlaceholder(item.name);
         setGetValue(item.name);
         setShowMOptions(false);
