@@ -32,7 +32,7 @@ const getQueryInstance = async (endpoint: string) => {
   });
 };
 
-  const getQuery = (endpoint: string) => {
+  const GetQuery = (endpoint: string) => {
     const params = endpoint.split('?')[0];
     return useQuery({
        queryKey: [endpoint, params],
@@ -47,7 +47,7 @@ const getQueryInstance = async (endpoint: string) => {
   
   return {
     postQuery,
-    getQuery,
+    GetQuery,
     getQueryInstance
   }
 }
