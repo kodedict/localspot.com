@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react"; // ApiRequest removed
+import { useState } from "react";
 import useReactQuery from ".";
 import { toggleNProgress } from "@/utils/helper-support";
 import { ErrorToast } from "@/utils/toast-notification";
-import ApiResponseType from "@/types/api-response-type";
+import ApiResponseType from "@/type/api-response-type";
 
 const useApiRequest = (setError?: any) => {
 
-    const {postQuery,getQuery, getQueryInstance} = useReactQuery();
+    const { postQuery, getQueryInstance} = useReactQuery();
 
     const [requestErrors, setRequestErrors] = useState<any>(null);
     const [requestLoading, setRequestLoading] = useState<boolean>(false);
@@ -16,25 +16,35 @@ const useApiRequest = (setError?: any) => {
 
     const [getData, setGetData] = useState<ApiResponseType|null|any>(null);
 
-    const Get = async (endpoint?: string|null) => { // staleTime removed
+    const Get = async (endpoint?: string | null) => {
         if (!endpoint) return;
-        // toggleNProgress(true);
-        // const data = await getQuery(endpoint);
-        // toggleNProgress(false);
-        // setGetData(data?.data);
-        // data.status !== '200' && [ErrorToast(data.message), setIsErrorRequest(true)]
-        // data.status == '200' && setIsSuccessRequest(true)
-        // return data.data
+        try {
+            setRequestLoading(true);
+            toggleNProgress(true);
+            setIsErrorRequest(false);
+            setIsSuccessRequest(false);
+            setErrorMessage(null);
 
-        const {data, isLoading} = getQuery(endpoint, staleTime);
-         useEffect(() => {  
-            isLoading ? toggleNProgress(true) : toggleNProgress(false);
+            const { data } = await getQueryInstance(endpoint);
+
             if (data) {
-                data.status !== '200' && [ErrorToast(data.message), setIsErrorRequest(true)]
-                data.status == '200' && setIsSuccessRequest(true)
-                setGetData(data?.data);  // Update state only when data is available
+                if (data.status !== '200') {
+                    ErrorToast(data.message);
+                    setIsErrorRequest(true);
+                }
+                if (data.status === '200') {
+                    setIsSuccessRequest(true);
+                }
+                setGetData(data?.data);
             }
-        }, [data]);  // Only re-run when `data` changes
+        } catch (error: any) {
+            ErrorToast("Something went wrong!");
+            setIsErrorRequest(true);
+            setErrorMessage(error?.message || "Unknown error");
+        } finally {
+            toggleNProgress(false);
+            setRequestLoading(false);
+        }
     }
 
     const ReturnGet = async (endpoint?: string|null) => { // staleTime removed
