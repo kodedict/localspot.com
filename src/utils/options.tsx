@@ -1,8 +1,10 @@
-const ProductTypes : OptionType[] = ['land', 'land_investment'].map((item: any) => ({value: item, name: item.replace('_', ' ')})); //land_investment
+import OptionType from '@/type/option-type'; // Adjusted path, assuming @ is src
 
-const LandTypes : OptionType[] = ['plot', 'acre'].map((item: any) => ({value: item, name: item.replace('_', ' ')}));
+const ProductTypes : OptionType[] = ['land', 'land_investment'].map((item: string) => ({value: item, name: item.replace('_', ' ')})); //land_investment
 
-const ProductPaymentPlanTypes : OptionType[] = ['days', 'weeks', 'months', 'years'].map((item: any) => ({value: item, name: item.replace('_', ' ')}));
+const LandTypes : OptionType[] = ['plot', 'acre'].map((item: string) => ({value: item, name: item.replace('_', ' ')}));
+
+const ProductPaymentPlanTypes : OptionType[] = ['days', 'weeks', 'months', 'years'].map((item: string) => ({value: item, name: item.replace('_', ' ')}));
 
 const SubscriptionStatusOptions : OptionType[] = [
     {value: 'ongoing', name: 'Ongoing'},
@@ -10,7 +12,7 @@ const SubscriptionStatusOptions : OptionType[] = [
     {value: 'completed', name: 'Completed'},
     {value: 'awaiting_payment_confirmation', name: 'Confirming payment'},
     {value: 'cancelled', name: 'Cancelled'},
-    ].map((item: any) => ({value: item.value, name: item.name}));
+    ].map((item: {value: string; name: string}) => ({value: item.value, name: item.name}));
 
     // 'awaiting_payment' => 'Not paid',
     // 'completed',
@@ -19,7 +21,7 @@ const SubscriptionStatusOptions : OptionType[] = [
     // 'cancelled',
 
 const CustomOptions = (options: string[]) => {
-    return options.map((item: any) => ({value: item, name: item.replace('_', ' ')}));
+    return options.map((item: string) => ({value: item, name: item.replace('_', ' ')}));
 }
 
 export { 

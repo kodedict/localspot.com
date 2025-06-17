@@ -29,7 +29,7 @@ export default function LayoutManager({ children }: { children: React.ReactNode 
 
         // Mark session check as complete
         setIsReady(true);
-    }, [pathname, auth]);
+}, [pathname, auth, isLoginPage, isAdminRoute, router]);
 
     // Wait until session logic runs
     if (!isReady) {

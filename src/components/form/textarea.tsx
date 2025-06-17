@@ -5,7 +5,7 @@ type onChangeInputFunc = (e:React.ChangeEvent<HTMLTextAreaElement>) => void
 type InputType = {
     placeholder?:string,
     label?: string,
-    id?: string,
+    // id?: string, // Removed
     value?:string,
     error?:string|null,
     onChangeInput?: onChangeInputFunc,
@@ -14,12 +14,11 @@ type InputType = {
 const TextareaField = ({
     placeholder,
     label,
-    id,
+    // id, // Removed
     value,
     error,
     onChangeInput
 } : InputType) => {
-    const Id = id ?? label;
 
     return(
         <div className="">

@@ -34,10 +34,12 @@ const DatePickerField = ({
 
     const [date, setDate] = useState(new Date());
 
-    const onChangeDate = (date:any) => {
+    const onChangeDate = (date: Date) => {
         setDate(date);
-        date = moment(date).format('L');
-        onChangeInput ? onChangeInput(date) : null;
+        const formattedDate = moment(date).format('L');
+        if (onChangeInput) {
+            onChangeInput(formattedDate);
+        }
     }
 
     const PlaceholderText = placeholder ?? `dd/mm/yyyy`;

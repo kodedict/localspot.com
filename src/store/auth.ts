@@ -1,6 +1,6 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import useApiRequest from '@/hooks/api-request/request';
+// import useApiRequest from '@/hooks/api-request/request'; // Removed
 import { ApiRequest } from "@/utils/api-request";
 
 // const {
@@ -31,7 +31,7 @@ export const authOptions: any = {
 
                     //return credentials;
                     return request;
-                } catch (error) {
+                } catch { // error removed
                     throw new Error(
                         JSON.stringify({ errors: "Authorize error", status: false })
                     );
@@ -44,7 +44,7 @@ export const authOptions: any = {
     },
     session: { strategy: "jwt" },
     callbacks: {
-        async signIn({ user, account, profile, email, credentials }) {
+        async signIn({ account }) { // user, profile, email, credentials removed
             if (account?.provider === "credentials") return true;
             return false;
         },
@@ -56,7 +56,7 @@ export const authOptions: any = {
             return session;
           },
         async jwt({ token, user }) {
-            let newUser = { ...user } as any;
+            const newUser = { ...user } as any;
             if (newUser.first_name && newUser.last_name)
                 token.name = `${newUser.first_name} ${newUser.last_name}`;
             return token;
@@ -68,5 +68,5 @@ export const authOptions: any = {
 // export const GET = NextAuth(authOptions);
 // export const POST = NextAuth(authOptions);
 
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
+const { handlers, auth, signIn, signOut } = NextAuth(authOptions);
+export { handlers as GET, handlers as POST, auth, signIn, signOut };

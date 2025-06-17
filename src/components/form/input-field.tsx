@@ -58,11 +58,12 @@ const InputField = ({
 
     const [inputType, setInputType] = useState<InputTypeLabel>(getType(type));
 
-    const [inputMode, setInputMode] = useState<InputModeLabel>(getInputMode(type));
+    const [inputMode] = useState<InputModeLabel>(getInputMode(type)); // setInputMode removed
 
     const onTogglePassword = () => {
-        setShowPassword(!showPassword)
-        showPassword ? setInputType('password') : setInputType('text');
+        const newShowPasswordState = !showPassword;
+        setShowPassword(newShowPasswordState);
+        setInputType(newShowPasswordState ? 'text' : 'password');
     }
 
     const onInput = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -76,7 +77,9 @@ const InputField = ({
             e.target.value = value.slice(0, -1);
             return;
         }
-        onChangeInput && onChangeInput(e);
+        if (onChangeInput) {
+            onChangeInput(e);
+        }
     }
 
     const formatValue = (value?:string) => {

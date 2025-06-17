@@ -25,7 +25,9 @@ const TickerField = ({
     const Id = `${id ?? value}_${type}`;
 
     const handleToggle = (e:React.ChangeEvent<HTMLInputElement>) => {
-        onChangeInput && onChangeInput(e.target.checked);
+        if (onChangeInput) {
+            onChangeInput(e.target.checked);
+        }
     }
 
     return(

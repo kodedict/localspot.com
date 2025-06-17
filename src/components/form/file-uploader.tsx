@@ -1,7 +1,7 @@
 import { Upload, X } from "lucide-react"
 import { useState, useRef } from "react"
 
-const FileUploader = ({onChange}:{onChange?: (file:{file:File|any, fileName:string, base64:string, fileSize:{sizeInText:string, sizeInMb:number}, extension:string}) => Promise<string|void>}) => {
+const FileUploader = ({onChange}:{onChange?: (file:{file:File, fileName:string, base64:string, fileSize:{sizeInText:string, sizeInMb:number}, extension:string}) => Promise<string|void>}) => {
     const [file, setFile] = useState<File>();
 
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -9,7 +9,9 @@ const FileUploader = ({onChange}:{onChange?: (file:{file:File|any, fileName:stri
     const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
         setFile(selectedFile);
-        fileInputRef.current && (fileInputRef.current.value = '');
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
 
         if ( onChange ) {
             const fileName = selectedFile?.name ?? '';
@@ -25,21 +27,25 @@ const FileUploader = ({onChange}:{onChange?: (file:{file:File|any, fileName:stri
                 fileName,
             });
 
-            action == 'done' && removeFile();
+            if (action == 'done') {
+                removeFile();
+            }
         }
     };
 
     const removeFile = () => {
         setFile(undefined);
-        fileInputRef.current && (fileInputRef.current.value = '');
+        if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+        }
     }
 
     const getFileSize = (fileSizeInBytes:number) => {
         const fileSizeInKB = fileSizeInBytes / 1024;
         const fileSizeInMB = fileSizeInKB / 1024;
 
-        let size = Math.round(fileSizeInMB) > 0 ? (fileSizeInMB).toFixed(1) : Math.round(fileSizeInKB);
-        let sizeType = Math.round(fileSizeInMB) > 0 ? 'MB' : 'KB';
+        const size = Math.round(fileSizeInMB) > 0 ? (fileSizeInMB).toFixed(1) : Math.round(fileSizeInKB);
+        const sizeType = Math.round(fileSizeInMB) > 0 ? 'MB' : 'KB';
 
         return {
             sizeInText: `${size} ${sizeType}`,
@@ -47,7 +53,7 @@ const FileUploader = ({onChange}:{onChange?: (file:{file:File|any, fileName:stri
         }
     }
 
-    const toBase64 = (file:File|any) => {
+    const toBase64 = (file:File) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         reader.readAsDataURL(file);

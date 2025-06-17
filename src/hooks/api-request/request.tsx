@@ -1,5 +1,4 @@
-import { ApiRequest } from "@/utils/api-request";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "react"; // ApiRequest removed
 import useReactQuery from ".";
 import { toggleNProgress } from "@/utils/helper-support";
 import { ErrorToast } from "@/utils/toast-notification";
@@ -17,7 +16,7 @@ const useApiRequest = (setError?: any) => {
 
     const [getData, setGetData] = useState<ApiResponseType|null|any>(null);
 
-    const Get = async (endpoint?: string|null, staleTime?: number) => {
+    const Get = async (endpoint?: string|null) => { // staleTime removed
         if (!endpoint) return;
         // toggleNProgress(true);
         // const data = await getQuery(endpoint);
@@ -38,7 +37,7 @@ const useApiRequest = (setError?: any) => {
         }, [data]);  // Only re-run when `data` changes
     }
 
-    const ReturnGet = async (endpoint?: string|null, staleTime?: number) => {
+    const ReturnGet = async (endpoint?: string|null) => { // staleTime removed
         if (!endpoint) return;
         toggleNProgress(true);
         const {data, status, message} = await getQueryInstance(endpoint);
@@ -97,7 +96,7 @@ const useApiRequest = (setError?: any) => {
 
                 return false;
             }
-        } catch (error) {
+        } catch { // error removed
             ErrorToast("Something went wrong!");
             return false;
         } finally {
