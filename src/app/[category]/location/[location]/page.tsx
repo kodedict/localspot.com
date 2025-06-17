@@ -1,16 +1,16 @@
 import { Metadata } from 'next';
-import ByLocationId from '../../../components/page/ByLocationId';
+import ByLocationId from '@/components/page/ByLocationId';
 import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
 
 
 interface PageProps {
-  params: { id: string, category: string };
+  params: { location: string, category: string };
 }
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
-  const location = decodeURIComponent(params.id);
+  const location = decodeURIComponent(params.location);
   let category = decodeURIComponent(params.category);
   category = strReplace(category, '-', ' ');
   return {
@@ -18,9 +18,10 @@ export async function generateMetadata(
     description: `Discover top-rated ${ucWords(category)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
   };
 }
+
 export default function Page({ params }: PageProps) {
-  const { id, category } = params;
+  const { location, category } = params;
   return (
-  <ByLocationId location={id} category={category}/>
+  <ByLocationId location={location} category={category}/>
   );
 }

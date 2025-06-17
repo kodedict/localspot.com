@@ -1,8 +1,7 @@
-import DefaultModal from "@/components/modal/default-modal";
-import { AuthToken, onLogout } from "@/store/auth";
+import { AuthToken, onLogout } from "@/store/_auth_";
 import axios from "axios";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
 
 const token = AuthToken();
 
@@ -17,10 +16,10 @@ export const ApiRequest = async <T = any>({
 }): Promise<T> => {
   try {
 
-    let headers : any = {
-        'Content-Type': 'application/json',
-        accept: "*/*",
-      };
+    let headers: any = {
+      'Content-Type': 'application/json',
+      accept: "*/*",
+    };
 
     token && (headers['Authorization'] = `Bearer ${token}`);
 
@@ -35,7 +34,7 @@ export const ApiRequest = async <T = any>({
   } catch (error: any) {
     if (error.response?.status === 401) {
       // Handle unauthorized logout
-      onLogout();
+      //onLogout();
       //document.getElementById('unauthorized_layout')?.classList.remove('hidden');
       return error.response?.data || "An error occurred";
     }
@@ -43,35 +42,35 @@ export const ApiRequest = async <T = any>({
   }
 };
 
-export const DownloadApiRequest = async ({endpoint} : {endpoint: string}) => {
-  let headers : any = {}
+export const DownloadApiRequest = async ({ endpoint }: { endpoint: string }) => {
+  let headers: any = {}
   token && (headers['Authorization'] = `Bearer ${token}`);
   const response = await axios.post(
-      endpoint,
-      {}, // Empty body, or add data if required
-      {
-        responseType: 'blob', // Important for file download
-        headers
-      }
-    );
-
-    /// Extract filename from Content-Disposition header
-    const disposition = response.headers['content-disposition'];
-    let filename = 'file.pdf';
-
-    if (disposition && disposition.includes('filename=')) {
-      const match = disposition.match(/filename="?([^"]+)"?/);
-      if (match && match[1]) {
-        filename = match[1];
-      }
+    endpoint,
+    {}, // Empty body, or add data if required
+    {
+      responseType: 'blob', // Important for file download
+      headers
     }
+  );
 
-    // Trigger download
-    const url = window.URL.createObjectURL(new Blob([response.data]));
-    const link = document.createElement('a');
-    link.href = url;
-    link.setAttribute('download', filename);
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
+  /// Extract filename from Content-Disposition header
+  const disposition = response.headers['content-disposition'];
+  let filename = 'file.pdf';
+
+  if (disposition && disposition.includes('filename=')) {
+    const match = disposition.match(/filename="?([^"]+)"?/);
+    if (match && match[1]) {
+      filename = match[1];
+    }
+  }
+
+  // Trigger download
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }

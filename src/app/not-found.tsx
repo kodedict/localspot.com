@@ -14,9 +14,9 @@ export default function NotFound() {
         <h2 className="mb-8 font-extrabold text-6xl text-gray-700">
           <span className="sr-only">Error</span>404
         </h2>
-        <p className="text-2xl font-semibold md:text-3xl mb-8">Sorry, we couldn't find this page.</p>
+        <p className="text-2xl font-semibold md:text-3xl mb-8">Sorry, we couldn&apos;t find this page.</p>
         <p className="mb-8 text-gray-600">
-          But don't worry, you can find plenty of car boot sales on our homepage.
+          But don&apos;t worry, you can find plenty of car boot sales on our homepage.
         </p>
         <Link href="/" className="px-8 py-3 font-semibold rounded bg-primary text-white hover:bg-primary/90">
           Back to homepage

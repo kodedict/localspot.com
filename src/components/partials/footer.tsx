@@ -8,7 +8,7 @@ const Footer = () => {
           <div>
             <h2 className="mb-6 text-sm font-semibold text-white uppercase">LocalSpot</h2>
             <p className="font-medium">
-                The UK's largest directory of car boot sales, markets, and local events.
+                The UK&apos;s largest directory of car boot sales, markets, and local events.
             </p>
           </div>
           <div>

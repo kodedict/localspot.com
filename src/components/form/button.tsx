@@ -1,6 +1,7 @@
 // import SpinnerLoader from "../loader/spinner-loader"
 
 import { ReactNode } from "react"
+import DotsLoader from "../loader/dot-loader"
 
 type ButtonProps = {
     design?: 'primary' | 'secondary' | 'primary-outline' | 'primary-danger-outline' | '',
@@ -37,8 +38,8 @@ const Button = ({
     }
     return (
         <button onClick={onClick} type={type} className={`${getDesign()} ${className} flex space-x-2 cursor-pointer items-center w-fit ${(isLoading||disabled) && 'bg-gray-200 text-gray-400'}`} disabled={isLoading||disabled}>
-            <span>{text}</span>
-            {/* {isLoading && <SpinnerLoader/>} */}
+            <span className={`${isLoading && 'hidden'}`}>{text}</span>
+            {isLoading && <DotsLoader/>}
         </button>
     )
 }

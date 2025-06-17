@@ -23,7 +23,7 @@ const ToggleSwitch = ({initialState, label, onToggle = () => {}, disableToggle =
 
     return (
         <div>
-            <div onClick={handleToggle} className="flex items-center space-x-2">
+            <div onClick={handleToggle} className="flex items-center space-x-2 w-fit">
                 <div className={`relative grid ${!disableToggle && 'cursor-pointer'} content-center w-11 h-6 p-1 rounded-full ${initialState ? 'bg-primary justify-items-end' : 'bg-gray-300'}`}>
                     <div className="grid p-1 bg-white rounded-full w-fit justify-items-center dark:text-black">
                         {initialState ? activeIcon ?? <Check size={10} />  : disableIcon ?? <X size={10}/>}

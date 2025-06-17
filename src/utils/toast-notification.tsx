@@ -1,4 +1,4 @@
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const SuccessToast = (message?: string) => {
     Toast({message: message ?? 'Request processed successfully', type: 'success'})

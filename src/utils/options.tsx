@@ -1,5 +1,3 @@
-import OptionType from "@/types/option-type";
-
 const ProductTypes : OptionType[] = ['land', 'land_investment'].map((item: any) => ({value: item, name: item.replace('_', ' ')})); //land_investment
 
 const LandTypes : OptionType[] = ['plot', 'acre'].map((item: any) => ({value: item, name: item.replace('_', ' ')}));

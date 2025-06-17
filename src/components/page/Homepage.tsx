@@ -73,7 +73,7 @@ const HomePage = () => {
                             </div>
                             <div className="flex justify-between items-center">
                                 <span className="text-neutral-500 text-sm">Last updated: 14 minutes ago</span>
-                                <Link href="/car-boot-sales/1234/wimbledon-car-boot-sale" className="inline-flex items-center text-primary font-medium hover:text-primary-dark">
+                                <Link href="/car-boot-sales/london/1234/wimbledon-car-boot-sale" className="inline-flex items-center text-primary font-medium hover:text-primary-dark">
                                     View Details
                                     <ArrowRight size={18} />
                                 </Link>
@@ -110,20 +110,6 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            {/* Featured Listings box-shadow: box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px; */}
-            {/* <ListingsList 
-          title="Featured Car Boot Sales"
-          description="Discover top-rated car boot sales across the UK. View listings, schedules, and visitor ratings."
-        /> */}
-
-            {/* Related Locations */}
-            {/* <RelatedLocations /> */}
-
-            {/* Categories */}
-            {/* <Categories /> */}
-
-            {/* SEO Metrics */}
-            {/* <SEOMetrics /> */}
         </main>
     )
 }

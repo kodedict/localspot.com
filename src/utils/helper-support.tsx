@@ -1,6 +1,6 @@
-// import CryptoJS from 'crypto-js';
+import CryptoJS from 'crypto-js';
 
-// const app_key : string | undefined = ''//process.env.REACT_APP_KEY;
+const app_key : string | undefined = ''//process.env.REACT_APP_KEY;
 
 const SmoothScroll = () => {
     window.scrollTo({
@@ -10,13 +10,13 @@ const SmoothScroll = () => {
       });
 }
 
-// const encrypt = (data:string) => {
-//     return CryptoJS.AES.encrypt(data, app_key ?? '').toString();
-// }
+const encrypt = (data:string) => {
+    return CryptoJS.AES.encrypt(data, app_key ?? '').toString();
+}
 
-// const decrypt = (data:string) => {
-//     return CryptoJS.AES.decrypt(data, app_key ?? '').toString(CryptoJS.enc.Utf8);
-// }
+const decrypt = (data:string) => {
+    return CryptoJS.AES.decrypt(data, app_key ?? '').toString(CryptoJS.enc.Utf8);
+}
 
 const EmptyFormInput = (formSchema: any) => {
     return Object.keys(formSchema.fields).reduce((acc:any, item:any) => {
@@ -112,7 +112,9 @@ function ucWords(str: string): string {
 
 const toggleNProgress = (on:boolean) => {
   const nprogress = document.getElementById('line_loader');
-  on ? nprogress?.classList.remove('hidden') : nprogress?.classList.add('hidden');
+  if (nprogress) {
+    on ? nprogress.classList.remove('hidden') : nprogress.classList.add('hidden');
+  }
 }
 
 function getGreeting() {
@@ -138,8 +140,8 @@ const strReplace = (str:string, search:string, replace:any) => {
 
 export {
     SmoothScroll,
-    // encrypt,
-    // decrypt,
+    encrypt,
+    decrypt,
     EmptyFormInput,
     convertToBase64,
     getFileSizeInMB,

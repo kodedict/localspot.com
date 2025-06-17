@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { ArrowRight, Clock, MapPin, Star } from 'lucide-react';
 import Link from 'next/link';
 import { strReplace, ucWords } from '@/utils/helper-support';
+import BreadCrumbs from '../breadcrumbs';
 
 interface ByLocationIdProps {
     location: string;
@@ -15,6 +16,7 @@ export default function ByLocationId({ location, category }: ByLocationIdProps) 
   category = strReplace(category, '-', ' ');
     return (
         <main className="my-[1em]">
+        <BreadCrumbs navs={[{ name: 'Home', href: '/' }, { name: category, href: `/${strReplace(category, ' ', '-')}` }, { name: location }]} />
             <div className='outer-container'>
           <h1 className='text-2xl font-bold'>{ucWords(category)} in <span className='capitalize'>{location}</span></h1>
           <p className='text-gray-600'>Discover top-rated {category} in <span className='capitalize'>{location}</span>. View listings, schedules, and visitor ratings.</p>
@@ -59,7 +61,7 @@ export default function ByLocationId({ location, category }: ByLocationIdProps) 
                             </div>
                             <div className="flex justify-between items-center">
                               <span className="text-neutral-500 text-sm">Last updated: 14 minutes ago</span>
-                              <Link href="/car-boot-sales/1234/wimbledon-car-boot-sale" className="inline-flex items-center text-primary font-medium hover:text-primary-dark">
+                              <Link href="/car-boot-sales/london/1234/wimbledon-car-boot-sale" className="inline-flex items-center text-primary font-medium hover:text-primary-dark">
                                 View Details
                                 <ArrowRight size={18}/>
                               </Link>

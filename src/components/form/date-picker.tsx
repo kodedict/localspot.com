@@ -16,6 +16,7 @@ type InputType = {
     disabled?:boolean,
     onChangeInput?: onChangeInputFunc,
     inputClass?:string,
+    withTime?:boolean
 }
 
 const DatePickerField = ({
@@ -26,7 +27,8 @@ const DatePickerField = ({
     error,
     onChangeInput,
     disabled = false,
-    inputClass
+    inputClass,
+    withTime = false,
 } : InputType) => {
     const Id = id ?? label;
 
@@ -35,7 +37,7 @@ const DatePickerField = ({
     const onChangeDate = (date:any) => {
         setDate(date);
         date = moment(date).format('L');
-        onChangeInput && onChangeInput(date);
+        onChangeInput ? onChangeInput(date) : null;
     }
 
     const PlaceholderText = placeholder ?? `dd/mm/yyyy`;
@@ -43,7 +45,7 @@ const DatePickerField = ({
     return(
         <label htmlFor={Id} className="label">
             <span>{label}</span>
-            <div className={`relative justify-between w-full bg-white input ${inputClass} ${error && 'border-red-500'} ${disabled && 'text-light-black'}`}>
+            <div className={`relative justify-between w-full bg-white mt-1 input ${inputClass} ${error && 'border-red-500'} ${disabled && 'text-light-black'}`}>
                     <span className="">{value ? moment(value).format('DD/MM/YYYY') : PlaceholderText}</span>                    
                     <div className="ml-5">
                         <Calendar size={16}/>
@@ -53,9 +55,9 @@ const DatePickerField = ({
                         value={date}
                         onChange={(dateValue) => onChangeDate(dateValue[0]??new Date())} 
                         options={{
-                        dateFormat: "Y-m-d",
-                        enableTime: false, // Set to true if you need time selection,
-                        allowInput: true
+                            dateFormat: withTime ? "Y-m-d H:i" : "Y-m-d",
+                            enableTime: withTime, // Set to true if you need time selection,
+                            allowInput: true,
                         }}
                         className="absolute top-0 left-0 w-full h-full opacity-0"
                     />
