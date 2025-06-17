@@ -13,11 +13,11 @@ const FileUploader = ({onChange}:{onChange?: (file:{file:File, fileName:string, 
             fileInputRef.current.value = '';
         }
 
-        if ( onChange ) {
-            const fileName = selectedFile?.name ?? '';
-            const extension = fileName?.split('.').pop();
+        if (onChange && selectedFile) {
+            const fileName = selectedFile.name;
+            const extension = fileName.split('.').pop();
             const base64 = await toBase64(selectedFile);
-            const fileSize = getFileSize(selectedFile?.size ?? 0);
+            const fileSize = getFileSize(selectedFile.size);
 
             const action = await onChange({
                 file: selectedFile,

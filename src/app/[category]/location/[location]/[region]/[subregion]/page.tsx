@@ -4,24 +4,29 @@ import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
 
 
 interface PageProps {
-  params: { location: string, category: string };
+  params: Promise<{ borough: string, subregion: string, region: string, location: string, category: string }>;
 }
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
-  const location = decodeURIComponent(params.location);
-  let category = decodeURIComponent(params.category);
-  category = strReplace(category, '-', ' ');
+  const {
+    // borough,
+    // subregion,
+    // region,
+    category,
+    location
+  } = await params;
+  const formattedCategory = strReplace(category, '-', ' ');
   return {
-    title: `Best ${ucWords(category)} in ${ucWords(location)}`,
-    description: `Discover top-rated ${ucWords(category)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
+    title: `Best ${ucWords(formattedCategory)} in ${ucWords(location)}`,
+    description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
   };
 }
 
-export default function Page({ params }: PageProps) {
-  const { location, category } = params;
+export default async function Page({ params }: PageProps) {
+  const { borough, category } = await params;
   return (
-  <ByLocationId location={location} category={category}/>
+    <ByLocationId location={borough} category={category}/>
   );
 }

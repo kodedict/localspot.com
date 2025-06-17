@@ -1,23 +1,32 @@
-
-import SingleListing from '@/components/page/SingleListing';
-import { strReplace } from '@/utils/helper-support';
 import { Metadata } from 'next';
+import ByLocationId from '@/components/page/ByLocationId';
+import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
 
-// interface PageProps removed
+
+interface PageProps {
+  params: Promise<{ borough: string, subregion: string, region: string, location: string, category: string }>;
+}
 
 export async function generateMetadata(
-  // { params }: { params: { id: string, category: string, location: string, slug: string } } // params removed as it's not used
+  { params }: PageProps
 ): Promise<Metadata> {
-  // params are available here if needed in the future, e.g., for dynamic titles
-  // const { id, category, location, slug } = params;
+  const {
+    // borough,
+    // subregion,
+    // region,
+    category,
+    location
+  } = await params;
+  const formattedCategory = strReplace(category, '-', ' ');
   return {
-    title: `Old Trafford Boot Sale`, // This could be made dynamic using params
-    description: `LISTING DESCRIPTION`, // This could also be dynamic
+    title: `Best ${ucWords(formattedCategory)} in ${ucWords(location)}`,
+    description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
   };
 }
 
-export default function Page({ params }: { params: { id: string, category: string, location: string, slug: string } }) {
-  const category = strReplace(params.category, '-', ' ');
-  const location = strReplace(params.location, '-', ' ');
-  return (<SingleListing listing={null} category={category} location={location} />);
+export default async function Page({ params }: PageProps) {
+  const { borough, category } = await params;
+  return (
+    <ByLocationId location={borough} category={category} />
+  );
 }

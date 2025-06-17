@@ -44,18 +44,18 @@ export const authOptions: any = {
     },
     session: { strategy: "jwt" },
     callbacks: {
-        async signIn({ account }) { // user, profile, email, credentials removed
+        async signIn({ account }: { account?: import("next-auth").Account | null }) { // user, profile, email, credentials removed
             if (account?.provider === "credentials") return true;
             return false;
         },
-        async redirect({ baseUrl }) {
+        async redirect({ baseUrl }: { baseUrl: string }) {
             return `${baseUrl}/admin/dashboard`;
         },
-        async session({ session, token }) {
+        async session({ session, token }: { session: any; token: any }) {
             if (session.user?.name) session.user.name = token.name;
             return session;
           },
-        async jwt({ token, user }) {
+        async jwt({ token, user }: { token: any; user?: any }) {
             const newUser = { ...user } as any;
             if (newUser.first_name && newUser.last_name)
                 token.name = `${newUser.first_name} ${newUser.last_name}`;

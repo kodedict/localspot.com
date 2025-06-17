@@ -1,4 +1,4 @@
-import { AuthToken } from "@/store/_auth_";
+import { AuthToken, onLogout } from "@/store/_auth_";
 import axios from "axios";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_API_URL;
@@ -13,7 +13,7 @@ export const ApiRequest = async <T = any>({
   endpoint: string;
   method: "GET" | "POST";
   payload?: any;
-}): Promise<T> => {
+}): Promise<T | string> => {
   try {
 
     const headers: Record<string, string> = {
@@ -37,7 +37,7 @@ export const ApiRequest = async <T = any>({
     if (axios.isAxiosError(error)) {
       if (error.response?.status === 401) {
         // Handle unauthorized logout
-        //onLogout();
+        onLogout();
         //document.getElementById('unauthorized_layout')?.classList.remove('hidden');
         return error.response?.data || "An error occurred";
       }

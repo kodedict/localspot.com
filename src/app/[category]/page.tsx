@@ -1,22 +1,32 @@
-import ByCategory from '@/components/page/ByCategory';
 import { Metadata } from 'next';
-import { strReplace, ucWords } from '@/utils/helper-support';
+import ByLocationId from '@/components/page/ByLocationId';
+import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
+
 
 interface PageProps {
-  params: { category: string };
+  params: Promise<{ borough: string, subregion: string, region: string, location: string, category: string }>;
 }
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
-  let category = decodeURIComponent(params.category);
-  category = strReplace(category, '-', ' ');
+  const {
+    // borough,
+    // subregion,
+    // region,
+    category,
+    location
+  } = await params;
+  const formattedCategory = strReplace(category, '-', ' ');
   return {
-    title: `Best ${ucWords(category)} in UK`,
-    description: `Discover top-rated ${ucWords(category)} in UK. View listings, schedules, and visitor ratings.`,
+    title: `Best ${ucWords(formattedCategory)} in ${ucWords(location)}`,
+    description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
   };
 }
 
-export default function Category({ params }: PageProps) {
-  return (<ByCategory category={params.category}/>);
+export default async function Page({ params }: PageProps) {
+  const { borough, category } = await params;
+  return (
+    <ByLocationId location={borough} category={category}/>
+  );
 }
