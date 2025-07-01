@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
---background: 0 0% 100%;
+  --background: 0 0% 100%;
   --foreground: 20 14.3% 4.1%;
   --muted: 60 4.8% 95.9%;
   --muted-foreground: 25 5.3% 44.7%;
@@ -11,7 +11,7 @@
   --card-foreground: 20 14.3% 4.1%;
   --border: 20 5.9% 90%;
   --input: 20 5.9% 90%;
-  --primary: #2d607c;
+  --primary: #e47850;
   --primary-foreground: 211 100% 99%;
   --secondary: 60 4.8% 95.9%;
   --secondary-foreground: 24 9.8% 10%;
@@ -24,7 +24,8 @@
 }
 
 @theme {
-  --color-primary: #2d607c;
+  --color-primary: #e47850;
+  --color-secondary: #4976cb;
 }
 
 @theme inline {
@@ -42,7 +43,11 @@
 }
 
 @utility input {
-  @apply w-full border h-[50px] px-5 relative flex items-center !border-primary placeholder:themeTextMuted
+  @apply w-full border h-[45px] px-5 relative flex items-center !border-primary placeholder:themeTextMuted themeRounded
+}
+
+@utility themeRounded {
+  @apply rounded-[5px]
 }
 
 @utility pryBtn {
@@ -63,31 +68,35 @@
 
 @layer utilities {
   .outer-container {
-      @apply mx-auto max-w-screen-xl p-10
-    }
-  
-        .page-title {
-          @apply font-[700] text-[1em] md:text-[1.5em] text-primary
-        }
-    
-        .themeBg {
-          @apply bg-[#f1f2f5]
-        }
-    
-        /* .themeTextError {
+    @apply mx-auto max-w-screen-xl p-10
+  }
+
+  .page-title {
+    @apply font-[700] text-[1em] md:text-[1.5em] text-primary
+  }
+
+  .themeBg {
+    @apply bg-[#f1f2f5]
+  }
+
+  /* .themeTextError {
           @apply text-red-600 label dark:text-red-400
         } */
-    
-        
-    
-        /* .label {
+
+
+
+  /* .label {
           @apply text-[#252631] font-[400] text-[14px]
         } */
 
-    
-        .pryBtnOutline {
-          @apply w-full bg-transparent !border pryBtn border-primary hover:bg-primary text-primary hover:text-white
-        }
+
+  .pryBtnOutline {
+    @apply w-full bg-transparent !border pryBtn border-primary hover:bg-primary text-primary hover:text-white
+  }
+
+  .secondaryBtnOutline {
+    @apply w-full bg-transparent !border pryBtn !border-secondary hover:bg-secondary text-secondary hover:text-white
+  }
 }
 
 body {

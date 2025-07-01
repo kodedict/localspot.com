@@ -13,12 +13,15 @@ import CustomOptions from "@/type/options/custom-option"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ucFirst } from "@/utils/helper-support"
 import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
+import debounce from "lodash.debounce"
+import OptionType from "@/type/option-type"
 
 const ListingForm = () => {
+
     const formSchema = yup.object({
         name: yup.string().label('name').required(),
         category: yup.string().label('category').required(),
@@ -35,8 +38,6 @@ const ListingForm = () => {
         isParkingAvailable: yup.boolean().label('is parking available'),
     });
 
-    const [isParkingAvailable, setIsParkingAvailable] = useState<boolean>(false);
-
     const {
         setValue,
         setError,
@@ -48,11 +49,28 @@ const ListingForm = () => {
     const {
         Post,
         requestLoading,
-        // errorMessage, // Removed
+        ReturnGet,
     } = useApiRequest(setError);
 
+
+    const [isParkingAvailable, setIsParkingAvailable] = useState<boolean>(false);
+
+    const [searchCategory, setSearchCategory] = useState<string>('');
+    const [category, setCategory] = useState<OptionType[]>([]);
+
+    useEffect(() => {
+        const handler = debounce(async () => {
+            const response = await ReturnGet(`admin/car-boot/category?search=${searchCategory}`)
+            if (!response) return;
+            setCategory(response.items.map((item: CategoryType) => ({ value: item.slug, name: `${item.name}` })));
+        }, 500)
+
+        handler()
+        return () => handler.cancel()
+    }, [searchCategory])
+
+
     const SubmitForm = async (data:any) => {
-        console.log(data);
         try {
             const request = await Post({
                 endpoint: 'admin/car-boot',
@@ -65,22 +83,24 @@ const ListingForm = () => {
             
         } catch (error) {
             console.error('Submission error:', error);
-          }
+        }
     }
 
     return (
-        <form onSubmit={handleSubmit(SubmitForm)} className="grid gap-4 mt-10">
-            <div className="grid gap-2 md:grid-cols-2">
+        <form onSubmit={handleSubmit(SubmitForm)} className="grid gap-5 mt-10">
+            <div className="grid gap-4 md:grid-cols-2">
                 <InputField label="Name" 
                     value={getValues('name')}
                     error={errors.name?.message}
                     onChangeInput={(e) => [setValue('name', e.target.value), setError('name', { message: '' })]}
                 />
-                <SelectField label="Category" 
-                    options={CustomOptions(['Sports', 'Music', 'Art', 'Food'])}
-                    value={getValues('category')}
-                    error={errors.category?.message}
-                    onChangeInput={(value) => [setValue('category', value), setError('category', { message: '' })]}
+                <SearchableDropdown
+                    label="Category"
+                    placeholder="Search for category"
+                    onChangeInput={(e) => setSearchCategory(e.target.value)}
+                    value={searchCategory}
+                    options={category}
+                    onSelectedOption={(value => setValue('category', value))}
                 />
                 <SelectField label="Event mode" options={CustomOptions(['Indoor', 'Outdoor'])}
                     value={getValues('eventMode')}

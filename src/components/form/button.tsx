@@ -4,7 +4,7 @@ import { ReactNode } from "react"
 import DotsLoader from "../loader/dot-loader"
 
 type ButtonProps = {
-    design?: 'primary' | 'secondary' | 'primary-outline' | 'primary-danger-outline' | '',
+    design?: 'primary' | 'secondary' | 'primary-outline' | 'secondary-outline' | 'primary-danger-outline' | '',
     text?:ReactNode,
     type?: 'button' | 'submit',
     className?: string,
@@ -30,6 +30,8 @@ const Button = ({
                 return ''
             case 'primary-outline':
                 return 'pryBtnOutline'
+            case 'secondary-outline':
+                return 'secondaryBtnOutline'
             case 'primary-danger-outline':
                 return 'pryBtnOutline text-red-700 border-red-700 hover:bg-red-700 hover:text-white'
             default:

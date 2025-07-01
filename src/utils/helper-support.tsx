@@ -100,10 +100,12 @@ const abbreviateString = (string:string, maxLength = 10) => {
 }
 
 function ucFirst(str:string) {
+  if (str === '' || str === undefined) return '';
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function ucWords(str: string): string {
+  if (str === '' || str === undefined) return '';
   return str
     .split(' ')
     .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
@@ -136,6 +138,7 @@ function getGreeting() {
 }
 
 const strReplace = (str:string, search:string, replace:string) => {
+  if (str === '' || str === undefined) return '';
   return str
     .split(search)
     .map(word => word.charAt(0) + word.slice(1))

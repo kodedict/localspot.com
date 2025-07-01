@@ -44,7 +44,7 @@ export default function LayoutManager({ children }: { children: React.ReactNode 
     // Guest access
     return (
         <GuestLayout>
-            <div className="my-5 outer-container">{children}</div>
+            <div className="">{children}</div>
         </GuestLayout>
     );
 }

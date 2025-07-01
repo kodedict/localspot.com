@@ -1,32 +1,28 @@
 import { Metadata } from 'next';
-import ByLocationId from '@/components/page/ByLocationId';
 import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
+import ByCategory from '@/components/page/ByCategory';
 
 
 interface PageProps {
-  params: Promise<{ borough: string, subregion: string, region: string, location: string, category: string }>;
+  params: Promise<{category: string}>;
 }
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
   const {
-    // borough,
-    // subregion,
-    // region,
     category,
-    location
   } = await params;
   const formattedCategory = strReplace(category, '-', ' ');
   return {
-    title: `Best ${ucWords(formattedCategory)} in ${ucWords(location)}`,
-    description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
+    title: `${ucWords(formattedCategory)} across the UK`,
+    description: `Discover top-rated ${ucWords(formattedCategory)} across the UK. View listings, schedules, and visitor ratings.`,
   };
 }
 
 export default async function Page({ params }: PageProps) {
-  const { borough, category } = await params;
+  const { category } = await params;
   return (
-    <ByLocationId location={borough} category={category}/>
+    <ByCategory category={category}/>
   );
 }

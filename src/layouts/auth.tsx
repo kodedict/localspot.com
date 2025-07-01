@@ -1,10 +1,12 @@
 "use client"
 
-import { House, List, ListCollapse, Locate } from "lucide-react";
+import { House, List, ListCollapse, Locate, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePathname } from 'next/navigation';
 import { ToastContainer } from "react-toastify";
+import { AuthUser } from "@/store/_auth_";
+import { abbreviateString } from "@/utils/helper-support";
 
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
@@ -21,6 +23,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         { to: "/listing", label: "Listing", icon: <List size={18} /> },
         { to: "/category", label: "Category", icon: <ListCollapse size={18} /> },
         { to: "/location", label: "Location", icon: <Locate size={18} /> },
+        { to: "/account", label: "Account", icon: <User size={18} /> },
     ];
 
     const location = usePathname();
@@ -28,6 +31,8 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
     const currentUrl = useMemo(() => location, [location]);
 
     const [isMenuOpen] = useState(false); // setIsMenuOpen removed
+
+    const Auth = AuthUser();
 
     return (
         <>
@@ -64,12 +69,16 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                     <div className="relative w-full">
                         {/* <div id="line_loader" className="fixed z-50 hidden w-full"><LineLoader /></div> */}
                         <div className="outer-container">
-                            <div className="flex justify-between">
-                                {/* <h3 className="page-title text-[1.3em] font-medium">{getGreeting()}, {ucFirst(Auth.first_name)}</h3> */}
-                                {/* <div className="flex items-center space-x-6">
-                                            <AppNotification setCurrentNotificationPage={setCurrentNotificationPage} data={getData} />
-                                            <MenuDropdown />
-                                        </div> */}
+                            <div className="flex justify-between border-b border-[#E6EAF0] pb-5">
+                                <h3 className="page-title text-[1.3em] font-medium"></h3>
+                                <div className="flex items-center space-x-6">
+                                    <div className="flex items-center space-x-4 cursor-pointer">
+                                        <h2 className="page-titlee text-[0.8em] uppercase">{abbreviateString(`${Auth.first_name} ${Auth.last_name}`, 15)}</h2>
+                                        <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-green-300 rounded-full">
+                                            <User size={18} />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             {/* <button onClick={() => setIsMenuOpen(true)} type="button" className="flex items-center my-3 space-x-2 md:hidden">
                                         <Menu size={18} />
@@ -82,9 +91,6 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                     </div>
                 </div>
                 <ToastContainer pauseOnFocusLoss={false} />
-                <div id="unauthorized_layout">
-
-                </div>
             </div>
         </>
     )
