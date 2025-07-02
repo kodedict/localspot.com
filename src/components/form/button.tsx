@@ -27,7 +27,7 @@ const Button = ({
             case 'primary':
                 return 'pryBtn'
             case 'secondary':
-                return ''
+                return 'secondaryBtn'
             case 'primary-outline':
                 return 'pryBtnOutline'
             case 'secondary-outline':

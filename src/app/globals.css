@@ -54,6 +54,10 @@
   @apply bg-primary border-0 input justify-center px-5 text-sm text-white space-x-2
 }
 
+@utility secondaryBtn {
+  @apply bg-secondary border-0 input justify-center px-5 text-sm text-white space-x-2
+}
+
 @utility themeTextMuted {
   @apply text-[14px] font-light text-gray-500
 }

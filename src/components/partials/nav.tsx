@@ -10,7 +10,7 @@ const Navbar = () => {
             <div className="outer-container flex flex-wrap items-center gap-10 !py-5">
                 <Link href="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     {/* <img src="https://flowbite.com/docs/images/logo.svg" className="h-8" alt="Flowbite Logo" /> */}
-                    <span className="self-center text-2xl font-semibold whitespace-nowrap text-secondary">LocalSpot</span>
+                    <span className="self-center text-2xl font-semibold whitespace-nowrap text-secondary">localboot</span>
                 </Link>
                 <button data-collapse-toggle="navbar-solid-bg" type="button" className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-solid-bg" aria-expanded="false">
                     <span className="sr-only">Open main menu</span>
