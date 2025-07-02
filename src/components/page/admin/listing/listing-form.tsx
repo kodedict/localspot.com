@@ -28,14 +28,15 @@ const ListingForm = () => {
         eventMode: yup.string().label('event mode').required(),
         entryFee: yup.string().label('entry fee'),
         weatherOutlook: yup.string().label('weather outlook'),
-        dateTime: yup.string().label('date and time'),
-        location: yup.string().label('location'),
+        date: yup.string().label('date'),
+        time: yup.array().label('time'),
         address: yup.string().label('address'),
-        district: yup.string().label('district'),
         //isParkingAvailable: yup.boolean().label('is parking available'),
         description: yup.string().label('description').required(),
         images: yup.array().label('images'),
         isParkingAvailable: yup.boolean().label('is parking available'),
+        openingTime: yup.string().label('opening time'),
+        closingTime: yup.string().label('closing time'),
     });
 
     const {
@@ -117,38 +118,36 @@ const ListingForm = () => {
                     error={errors.weatherOutlook?.message}
                     onChangeInput={(e) => [setValue('weatherOutlook', e.target.value), setError('weatherOutlook', { message: '' })]}
                 />
-                <DatePickerField label="Date and time" withTime={true} 
-                    value={getValues('dateTime')}
-                    error={errors.dateTime?.message}
-                    onChangeInput={(value) => [setValue('dateTime', value), setError('dateTime', { message: '' })]}
+                <DatePickerField label="Date"
+                    value={getValues('date')}
+                    error={errors.date?.message}
+                    onChangeInput={(value) => {
+                        const dateValue = Array.isArray(value) ? value[0] : value;
+                        return [setValue('date', dateValue), setError('date', { message: '' })];
+                    }}
                 />
-                <SearchableDropdown label="Location" placeholder="Search Location"
-                    value={getValues('location')}
-                    error={errors.location?.message}
-                    //onChangeInput={(value) => [setValue('location', value), setError('location', { message: '' })]}
+                <DatePickerField label="Opening Time"
+                    value={getValues('openingTime')}
+                    error={errors.openingTime?.message}
+                    onlyTime
+                    onChangeInput={(value) => {
+                        const openingTimeValue = Array.isArray(value) ? value[0] : value;
+                        return [setValue('openingTime', openingTimeValue), setError('openingTime', { message: '' })];
+                    }}
                 />
-                <InputField label="Address" 
+                <DatePickerField label="Closing Time"
+                    value={getValues('closingTime')}
+                    error={errors.closingTime?.message}
+                    onlyTime
+                    onChangeInput={(value) => {
+                        const closingTimeValue = Array.isArray(value) ? value[0] : value;
+                        return [setValue('closingTime', closingTimeValue), setError('time', { message: '' })];
+                    }}
+                />
+                <SearchableDropdown label="Address" placeholder="Search address"
                     value={getValues('address')}
                     error={errors.address?.message}
-                    onChangeInput={(e) => [setValue('address', e.target.value), setError('address', { message: '' })]}
-                />
-                <SelectField label="Region"
-                    options={CustomOptions(['Central', 'North', 'South', 'East', 'West'])}
-                    value={getValues('district')}
-                    error={errors.district?.message}
-                    onChangeInput={(value) => [setValue('district', value), setError('district', { message: '' })]}
-                />
-                <SelectField label="Subregion"
-                    options={CustomOptions(['Central', 'North', 'South', 'East', 'West'])}
-                    value={getValues('district')}
-                    error={errors.district?.message}
-                    onChangeInput={(value) => [setValue('district', value), setError('district', { message: '' })]}
-                />
-                <SelectField label="Borough"
-                    options={CustomOptions(['Central', 'North', 'South', 'East', 'West'])}
-                    value={getValues('district')}
-                    error={errors.district?.message}
-                    onChangeInput={(value) => [setValue('district', value), setError('district', { message: '' })]}
+                    //onChangeInput={(value) => [setValue('location', value), setError('location', { message: '' })]}
                 />
             </div>
             <div>
@@ -168,6 +167,9 @@ const ListingForm = () => {
                     onChangeInput={(e) => [setValue('description', e.target.value), setError('description', { message: '' })]}
                 />
             </div>
+            {/* <div>
+                <p className="label">Dates</p>
+            </div> */}
             <label className="label">Images</label>
             <FileUploader/>
             <Button isLoading={requestLoading} type="submit" text="Submit"/>

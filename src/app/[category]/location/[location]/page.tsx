@@ -4,16 +4,13 @@ import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
 
 
 interface PageProps {
-  params: Promise<{ borough: string, subregion: string, region: string, location: string, category: string }>;
+  params: Promise<{ location: string, category: string }>;
 }
 
 export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
   const {
-    // borough,
-    // subregion,
-    // region,
     category,
     location
   } = await params;
@@ -25,8 +22,8 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: PageProps) {
-  const { borough, category } = await params;
+  const { location, category } = await params;
   return (
-    <ByLocationId location={borough} category={category} />
+    <ByLocationId location={location} category={category} />
   );
 }

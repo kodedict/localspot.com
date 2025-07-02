@@ -33,7 +33,7 @@ const ListingIndex = () => {
                     <thead>
                         <tr className="border-b border-[#E6EAF0] bg-[#fafafa]">
                             <td className="px-4 py-3">Name</td>
-                            <td className="px-6 py-3">Location</td>
+                            {/* <td className="px-6 py-3">Location</td> */}
                             <td className="px-6 py-3">Category</td>
                             <td className="px-6 py-3">Last updated</td>
                         </tr>
@@ -44,7 +44,7 @@ const ListingIndex = () => {
                                 <td className="flex px-4 py-3 space-x-2 capitalize cursor-pointer text-primary hover:underline">
                                     <span>{item.name}</span>
                                 </td>
-                                <td className="px-6 py-3">{item.location_code}</td>
+                                {/* <td className="px-6 py-3">{item.location_code}</td> */}
                                 <td className="px-6 py-3">{item.category}</td>
                                 <td className="px-6 py-3">{moment(`${item.updated_at}`).format('Do MMM, YYYY')}</td>
                             </tr>

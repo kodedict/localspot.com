@@ -22,8 +22,8 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         { to: "/dashboard", label: "Dashboard", icon: <House size={18} /> },
         { to: "/listing", label: "Listing", icon: <List size={18} /> },
         { to: "/category", label: "Category", icon: <ListCollapse size={18} /> },
-        { to: "/location", label: "Location", icon: <Locate size={18} /> },
-        { to: "/account", label: "Account", icon: <User size={18} /> },
+        // { to: "/location", label: "Location", icon: <Locate size={18} /> },
+        // { to: "/account", label: "Account", icon: <User size={18} /> },
     ];
 
     const location = usePathname();
@@ -73,7 +73,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                                 <h3 className="page-title text-[1.3em] font-medium"></h3>
                                 <div className="flex items-center space-x-6">
                                     <div className="flex items-center space-x-4 cursor-pointer">
-                                        <h2 className="page-titlee text-[0.8em] uppercase">{abbreviateString(`${Auth.first_name} ${Auth.last_name}`, 15)}</h2>
+                                        <h2 className="page-titlee text-[0.8em] uppercase">{abbreviateString(`${Auth.name}`, 15)}</h2>
                                         <div className="flex items-center justify-center w-8 h-8 overflow-hidden bg-green-300 rounded-full">
                                             <User size={18} />
                                         </div>

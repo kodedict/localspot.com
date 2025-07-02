@@ -52,7 +52,7 @@ export const useAppStore = create(
     return JSON.parse(decrypt(useAppStore.getState().user ?? ''));
   }
 
-  export const AuthUser = () : {uuid:string, first_name:string, last_name:string, email:string, email_verified:boolean, role:string, permissions: any}  => {
+  export const AuthUser = () : {uuid:string, name:string, email:string, email_verified:boolean, role:string, permissions: any}  => {
     return Auth();
   }
 

@@ -26,7 +26,7 @@ const HomePage = () => {
                     <input placeholder='Search by town, postcode or venue' className='absolute inset-0 w-full h-full border-0 pl-5' />
                     <Button design='primary' text='Search' />
                 </div>
-                <div className='outer-container mt-0'>
+                <div className='outer-container mt-5'>
                     <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
                     <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
@@ -93,7 +93,7 @@ const HomePage = () => {
                     <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
                         <div className='grid gap-4 mt-8 md:grid-cols-4'>
                             {['England', 'Scotland', 'Wales', 'London', 'Leicester', 'Wolverhampton', 'Nottingham', 'Sheffield'].map((item, index) => (
-                                <Link href="" className='text-[#6a90da] font-[450] hover:underline w-fit' key={index}>Car Boot Sales in {item}</Link>
+                                <Link href={`/car-boot-sales/location/${item}`} className='text-[#6a90da] font-[450] hover:underline w-fit' key={index}>Car Boot Sales in {item}</Link>
                             ))}
                         </div>
                         <div className='mt-5 text-center flex justify-center'>
