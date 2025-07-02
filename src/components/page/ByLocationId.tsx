@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { ArrowRight, Clock, MapPin, Star } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import BreadCrumbs from '../breadcrumbs';

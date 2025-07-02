@@ -8,8 +8,8 @@ import Link from "next/link"
 
 const CategoryIndex = () => {
     const { ReturnGet } = useApiRequest();
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [queryParams, setQueryParams] = useState<string>('');
+    const [currentPage,] = useState<number>(1);
+    const [queryParams,] = useState<string>('');
     const [category, setCategory] = useState<CategoryType[]>([]);
 
     const GetIndex = async () => {

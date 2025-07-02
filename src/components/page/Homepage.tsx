@@ -1,10 +1,8 @@
 "use client"
 
-import InputField from '@/components/form/input-field';
-import SelectField from '@/components/form/select-field';
 import Button from '@/components/form/button';
 import Image from 'next/image';
-import { ArrowRight, Clock, MapPin, Star } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import Link from 'next/link';
 
 const HomePage = () => {

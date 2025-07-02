@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
+import { strReplace, ucWords } from '@/utils/helper-support';
 import ByCategory from '@/components/page/ByCategory';
 
 

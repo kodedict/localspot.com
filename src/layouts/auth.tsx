@@ -1,6 +1,6 @@
 "use client"
 
-import { House, List, ListCollapse, Locate, User } from "lucide-react";
+import { House, List, ListCollapse, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePathname } from 'next/navigation';

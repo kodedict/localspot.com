@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import ByLocationId from '@/components/page/ByLocationId';
 import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
 import SingleListing from '@/components/page/SingleListing';
 

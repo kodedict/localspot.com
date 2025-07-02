@@ -1,13 +1,12 @@
 "use client";
 
 import Image from 'next/image';
-import { ArrowRight, Clock, MapPin, Star } from 'lucide-react';
+import { MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import BreadCrumbs from '../breadcrumbs';
 import useApiRequest from "@/hooks/api-request/request";
 import { useEffect, useState } from "react";
-import moment from 'moment';
 
 interface ByLocationIdProps {
     category: string
@@ -15,8 +14,8 @@ interface ByLocationIdProps {
 
 export default function ByCategory({ category }: ByLocationIdProps) {
     const { ReturnGet } = useApiRequest();
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [queryParams, setQueryParams] = useState<string>('');
+    const [currentPage, ] = useState<number>(1);
+    const [queryParams, ] = useState<string>('');
     const [listings, setListings] = useState([]);
     const GetListing = async () => {
         const request = await ReturnGet(`car-boot?page=${currentPage}&category=${category}${queryParams}`);
