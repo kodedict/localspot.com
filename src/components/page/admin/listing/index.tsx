@@ -4,21 +4,22 @@ import Button from "@/components/form/button"
 import useApiRequest from "@/hooks/api-request/request";
 import moment from "moment";
 import Link from "next/link"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const ListingIndex = () => {
     const { ReturnGet} = useApiRequest();
     const [currentPage,] = useState<number>(1);
     const [queryParams,] = useState<string>('');
     const [listings, setListings] = useState([]);
-    const GetListing = async () => {
+    const GetListing = useCallback(async () => {
         const request = await ReturnGet(`admin/car-boot?page=${currentPage}${queryParams}`);
         if ( ! request ) return;
         setListings(request.items);
-    }
+    }, [ReturnGet, currentPage, queryParams]);
+
     useEffect(() => {
         GetListing();
-    },[]);
+    },[GetListing]);
     return (
         <div>
             <div className="flex items-center justify-between mb-4">

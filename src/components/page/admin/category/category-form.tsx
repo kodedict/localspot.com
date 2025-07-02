@@ -25,7 +25,6 @@ const CategoryForm = () => {
 
     const {
         Post,
-        requestLoading,
         // errorMessage, // Removed
     } = useApiRequest(setError);
 

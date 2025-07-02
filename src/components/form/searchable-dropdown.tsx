@@ -52,7 +52,7 @@ const SearchableDropdown = ({
             setShowMOptions(true);
         }
         setToggle(true);
-    }, [options, onSelectedOption])
+    }, [options, onSelectedOption, initialState])
 
 
     const onShowOption = useCallback((triggerBy = 'default') => {

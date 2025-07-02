@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Button from "@/components/form/button"
 import useApiRequest from "@/hooks/api-request/request";
 import moment from "moment";
@@ -12,14 +12,15 @@ const CategoryIndex = () => {
     const [queryParams,] = useState<string>('');
     const [category, setCategory] = useState<CategoryType[]>([]);
 
-    const GetIndex = async () => {
+    const GetIndex = useCallback(async () => {
         const request = await ReturnGet(`admin/car-boot/category?page=${currentPage}${queryParams}`);
         if ( ! request ) return;
         setCategory(request.items);
-    }
+    }, [ReturnGet, currentPage, queryParams]);
+
     useEffect(() => {
         GetIndex();
-    },[]);
+    },[GetIndex]);
     return (
         <div>
             <div className="flex items-center justify-between mb-4">

@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import BreadCrumbs from '../breadcrumbs';
 import useApiRequest from "@/hooks/api-request/request";
-import { useEffect, useState } from "react";
+import { ListingType } from "@/type/model/ListingType";
+import { useEffect, useState, useCallback } from "react";
 
 interface ByLocationIdProps {
     category: string
@@ -17,14 +18,15 @@ export default function ByCategory({ category }: ByLocationIdProps) {
     const [currentPage, ] = useState<number>(1);
     const [queryParams, ] = useState<string>('');
     const [listings, setListings] = useState([]);
-    const GetListing = async () => {
+    const GetListing = useCallback(async () => {
         const request = await ReturnGet(`car-boot?page=${currentPage}&category=${category}${queryParams}`);
         if (!request) return;
         setListings(request.items);
-    }
+    }, [ReturnGet, currentPage, category, queryParams]);
+
     useEffect(() => {
         GetListing();
-    }, []);
+    }, [GetListing]);
 
     let name = decodeURIComponent(category);
     name = strReplace(name, '-', ' ');

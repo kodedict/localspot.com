@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { Calendar, Clock } from "lucide-react";
@@ -36,7 +36,7 @@ const DatePickerField = ({
 }: InputType) => {
     const Id = id ?? label;
 
-    const parseInitialDates = (val: string | string[] | undefined) => {
+    const parseInitialDates = useCallback((val: string | string[] | undefined) => {
         if (!val) return [];
         const values = Array.isArray(val) ? val : [val];
         return values
@@ -59,13 +59,13 @@ const DatePickerField = ({
                 return null;
             })
             .filter((d): d is Date => d !== null);
-    };
+    }, [onlyTime, withTime]);
 
     const [dates, setDates] = useState<Date[]>([]);
 
     useEffect(() => {
         setDates(parseInitialDates(value));
-    }, [value]);
+    }, [value, parseInitialDates]);
 
     const formatDate = (date: Date) => {
         if (onlyTime) {
