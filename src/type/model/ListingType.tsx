@@ -1,4 +1,4 @@
-interface ListingType {
+export interface ListingType {
     name: string;
     code: string;
     slug: string;

@@ -7,7 +7,7 @@ import BreadCrumbs from '../breadcrumbs';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import RelatedListing from './RelatedListing';
 import useApiRequest from "@/hooks/api-request/request";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import moment from 'moment';
 
 interface ByLocationIdProps {
@@ -20,16 +20,17 @@ export default function SingleListing({ category, location, slug }: ByLocationId
     const { ReturnGet } = useApiRequest();
     const [listing, setListing] = useState<ListingType>({} as ListingType);
     const [loading, setLoading] = useState<boolean>(true);
-    const GetListing = async () => {
+    const GetListing = useCallback(async () => {
         setLoading(true);
         const request = await ReturnGet(`car-boot/${slug}`);
         setLoading(false);
         if (!request) return;
         setListing(request);
-    }
+    }, [ReturnGet, slug]);
+
     useEffect(() => {
         GetListing();
-    }, []);
+    }, [GetListing]);
     return (
             loading ? (
                 <div className="flex items-center justify-center h-screen">

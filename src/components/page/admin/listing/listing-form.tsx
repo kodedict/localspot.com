@@ -68,7 +68,7 @@ const ListingForm = () => {
 
         handler()
         return () => handler.cancel()
-    }, [searchCategory])
+    }, [searchCategory, ReturnGet])
 
 
     const SubmitForm = async (data:any) => {
