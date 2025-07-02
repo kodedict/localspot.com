@@ -7,6 +7,7 @@ import BreadCrumbs from '../breadcrumbs';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import RelatedListing from './RelatedListing';
 import useApiRequest from "@/hooks/api-request/request";
+import { ListingType } from "@/type/model/ListingType";
 import { useEffect, useState, useCallback } from "react";
 import moment from 'moment';
 
