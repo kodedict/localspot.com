@@ -31,7 +31,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
 
     useEffect(() => {
         GetListing();
-    }, [GetListing]);
+    }, []);
     return (
             loading ? (
                 <div className="flex items-center justify-center h-screen">
