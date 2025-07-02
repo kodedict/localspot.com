@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import BreadCrumbs from '../breadcrumbs';
 import useApiRequest from "@/hooks/api-request/request";
+import { ListingType } from "@/type/model/ListingType";
 import { useEffect, useState, useCallback } from "react";
 
 interface ByLocationIdProps {
