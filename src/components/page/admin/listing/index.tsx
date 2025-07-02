@@ -2,6 +2,7 @@
 
 import Button from "@/components/form/button"
 import useApiRequest from "@/hooks/api-request/request";
+import { ListingType } from "@/type/model/ListingType";
 import moment from "moment";
 import Link from "next/link"
 import { useEffect, useState, useCallback } from "react";

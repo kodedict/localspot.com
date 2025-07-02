@@ -5,6 +5,7 @@ import Button from "@/components/form/button"
 import useApiRequest from "@/hooks/api-request/request";
 import moment from "moment";
 import Link from "next/link"
+import { CategoryType } from "@/type/model/CategoryType";
 
 const CategoryIndex = () => {
     const { ReturnGet } = useApiRequest();

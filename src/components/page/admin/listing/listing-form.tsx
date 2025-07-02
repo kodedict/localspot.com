@@ -19,6 +19,7 @@ import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
 import debounce from "lodash.debounce"
 import OptionType from "@/type/option-type"
+import { CategoryType } from "@/type/model/CategoryType"
 
 const ListingForm = () => {
 
