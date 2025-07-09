@@ -56,7 +56,6 @@ const SearchableDropdown = ({
 
 
     const onShowOption = useCallback((triggerBy = 'default') => {
-        console.log('jere')
         if (triggerBy === 'outsideEvent') {
             setShowMOptions(false);
         } else {
@@ -120,8 +119,8 @@ const SearchableDropdown = ({
                 {(showMOptions && (options && options.length > 0)) && (
                     <div className="absolute left-0 right-0 w-full themeBg h-[10em] overflow-y-auto z-50 rounded shadow-md border p-2 top-12">
                     <ul className="grid gap-y-2">
-                        <li onClick={() => onSelectOption(null)} className="p-1 cursor-pointer themeTextMuted hover:bg-gray-50 dark:hover:bg-gray-700">{ `Select ${label}`}</li>
-                        {options?.map((option, index) => <li key={index} onClick={() => onSelectOption(option)} className="p-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">{ucFirst(option.name)}</li>)}
+                        <li onClick={() => onSelectOption(null)} className="p-1 cursor-pointer themeTextMuted hover:bg-gray-50">{ `Select ${label}`}</li>
+                        {options?.map((option, index) => <li key={index} onClick={() => onSelectOption(option)} className="p-1 cursor-pointer hover:bg-gray-50">{ucFirst(option.name)}</li>)}
                     </ul>
                 </div>
                 )}

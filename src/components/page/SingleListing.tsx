@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { Accessibility, ArrowLeft, Baby, Banknote, Car, Clock, CreditCard, Info, MapPin, Shield, Star, Users, Utensils, Heart, Camera, Wifi, Volume2, Coffee, Trash2 } from 'lucide-react';
+import { Accessibility, Baby, Banknote, Car, Clock, CreditCard, Info, MapPin, Shield, Star, Users, Utensils, Heart, Camera, Wifi, Volume2, Coffee, Trash2 } from 'lucide-react';
 import Button from '../form/button';
 import BreadCrumbs from '../breadcrumbs';
 import { strReplace, ucWords } from '@/utils/helper-support';
@@ -9,7 +9,6 @@ import RelatedListing from './RelatedListing';
 import useApiRequest from "@/hooks/api-request/request";
 import { ListingType } from "@/type/model/ListingType";
 import { useEffect, useState, useCallback } from "react";
-import Link from 'next/link';
 
 interface ByLocationIdProps {
     slug: string;
@@ -44,19 +43,13 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                 </div>
             ) : (
                 <main className="">
-                    <div className='bg-[#f9fafb] border-t border-b border-gray-200'>
-                        <div className='md:flex justify-between outer-container items-center !py-2'>
-                            <Link href={''} className='flex items-center gap-5'>
-                                <ArrowLeft size={18} />
-                                <span>Back to search results</span>
-                            </Link>
                             <BreadCrumbs navs={[
                                 { name: 'Home', href: '/' },
                                 { name: category, href: `/${strReplace(category, ' ', '-')}` },
-                                { name: location, href: `/${strReplace(category, ' ', '-')}/${strReplace(location, ' ', '-')}` },
-                                { name: `${strReplace(slug, '-', ' ')}` }]} />
-                        </div>
-                    </div>
+                                { name: location, href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}` },
+                                { name: `${strReplace(slug, '-', ' ')}` }]}
+                                backText='Back to search results'
+                            />
                     <div className="outer-container md:flex gap-8">
                         <div className="md:w-3/4">
                             <h1 className="text-2xl md:text-3xl font-bold font-['Inter'] mb-2">{listing.name}</h1>

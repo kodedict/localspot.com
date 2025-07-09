@@ -44,7 +44,7 @@ const ListingIndex = () => {
                         {listings.map((item:ListingType, index: number) => (
                             <tr key={index} className="border-b border-[#E6EAF0] themeTextMuted">
                                 <td className="flex px-4 py-3 space-x-2 capitalize cursor-pointer text-primary hover:underline">
-                                    <span>{item.name}</span>
+                                    <Link href={`/admin/listing/${item.slug}`}>{item.name}</Link>
                                 </td>
                                 {/* <td className="px-6 py-3">{item.location_code}</td> */}
                                 <td className="px-6 py-3">{item.category}</td>

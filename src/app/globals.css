@@ -63,7 +63,7 @@
 }
 
 @utility themeTextError {
-  @apply text-red-600 label dark:text-red-400
+  @apply text-red-600 label 
 }
 
 @utility label {
@@ -84,7 +84,7 @@
   }
 
   /* .themeTextError {
-          @apply text-red-600 label dark:text-red-400
+          @apply text-red-600 label
         } */
 
 

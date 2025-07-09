@@ -4,12 +4,12 @@ import React, { ReactNode } from "react";
 type InputType = {
     label?: string | ReactNode,
     id?: string,
-    value?:string,
-    error?:string|null,
+    value?: string,
+    error?: string | null,
     name?: string,
-    checked?:boolean,
+    checked?: boolean,
     type?: 'radio' | 'checkbox',
-    onChangeInput?: (state: boolean) => void | null,
+    onChangeInput?: (state: boolean) => void,
 }
 
 const TickerField = ({
@@ -36,8 +36,9 @@ const TickerField = ({
                 name={name ?? Id}
                 type={type}
                 onChange={handleToggle}
-                value={value}
-                checked={checked}
+                {...(type === 'checkbox' || type === 'radio'
+                    ? { checked }
+                    : { value })}
                 className="w-[20px] h-[20px]"
                 id={Id}
             />

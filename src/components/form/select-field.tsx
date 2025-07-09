@@ -80,7 +80,7 @@ const SelectField = ({
     return(
         <label onClick={(() => setShowMOptions(!showMOptions))} ref={showMOptionsRef} htmlFor={Id} className="relative">
             <p className={`${labelClass} label`}>{label}</p>
-            <div className={`relative  mt-1 input border-[#E8ECEF] ${inputClass} border ${error && 'border-red-500'} ${disabled && 'text-light-black'}  justify-between bg-white dark:bg-gray-900`}>
+            <div className={`relative  mt-1 input border-[#E8ECEF] ${inputClass} border ${error && 'border-red-500'} ${disabled && 'text-light-black'}  justify-between bg-white`}>
                 <span className={`${!value&& 'themeTextMuted'}`}>{ucFirst(getPlaceholder())}</span>
                 <span>
                 <ChevronDown size={18}/>
@@ -88,8 +88,8 @@ const SelectField = ({
                 {showMOptions && (
                     <div className="absolute left-0 right-0 w-full themeBg h-[10em] overflow-y-auto z-50 rounded shadow-md border p-2 top-0">
                     <ul className="grid gap-y-2">
-                        <li onClick={() => onSelectOption('')} className="p-1 cursor-pointer themeTextMuted hover:bg-gray-50 dark:hover:bg-gray-700">{placeholder ?? `Select ${label}`}</li>
-                        {options?.map((option, index) => <li key={index} onClick={() => onSelectOption(option.value)} className="p-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">{ucFirst(option.name)}</li>)}
+                        <li onClick={() => onSelectOption('')} className="p-1 cursor-pointer themeTextMuted hover:bg-gray-50">{placeholder ?? `Select ${label}`}</li>
+                        {options?.map((option, index) => <li key={index} onClick={() => onSelectOption(option.value)} className="p-1 cursor-pointer hover:bg-gray-50">{ucFirst(option.name)}</li>)}
                     </ul>
                 </div>
                 )}
