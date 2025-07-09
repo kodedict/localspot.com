@@ -4,8 +4,35 @@ import Button from '@/components/form/button';
 import Image from 'next/image';
 import { ArrowRight, MapPin } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import useApiRequest from "@/hooks/api-request/request"
+import { ListingType } from '@/type/model/ListingType';
 
 const HomePage = () => {
+    const [upcomingSales, setUpcomingSales] = useState([]);
+    const [popularSales, setPopularSales] = useState([]);
+
+    const {
+        ReturnGet,
+    } = useApiRequest();
+
+    const getUpcomingSales = async () => {
+        const request = await ReturnGet(`car-boot`);
+        if (!request) return;
+        setUpcomingSales(request.items);
+    }
+
+    const getPopularSales = async () => {
+        const request = await ReturnGet(`car-boot`);
+        if (!request) return;
+        setPopularSales(request.items);
+    }
+
+    useEffect(() => {
+        getUpcomingSales();
+        getPopularSales();
+    }, []);
+
     return (
         <main className=" mb-[5em]">
             {/* Hero Section */}
@@ -28,62 +55,66 @@ const HomePage = () => {
                     <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
                     <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        <div className="themeRounded bg-white">
-                            <div className="relative h-[10em]">
-                                <Image
-                                    src="https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                    width={500}
-                                    height={500}
-                                    alt="Picture of the author"
-                                    className='absolute inset-0 w-full h-full object-cover'
-                                />
-                            </div>
-                            <div className="md:p-4">
-                                <div>
-                                    <h3 className="text-md font-bold font-['Inter'] mb-2">Wimbledon Car Boot Sale</h3>
+                        {upcomingSales.map((item: ListingType, index:number)=>(
+                            <Link href={`/${item.category === 'nil' ? 'car-boot-sales' : item.category}/london/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
+                                <div className="relative h-[10em]">
+                                    <Image
+                                        src="https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                                        width={500}
+                                        height={500}
+                                        alt="Picture of the author"
+                                        className='absolute inset-0 w-full h-full object-cover'
+                                    />
                                 </div>
-                                <div className="flex flex-wrap gap-2 text-sm mb-4">
-                                    <div className="flex items-center text-neutral-600 space-x-2">
-                                        <MapPin size={15} />
-                                        <span>Church Road, Wimbledon, London</span>
+                                <div className="md:p-4">
+                                    <div>
+                                        <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
                                     </div>
-                                    <div className="flex items-center text-neutral-600 space-x-2">
-                                        <span> 06:00-14:00</span>
+                                    <div className="flex flex-wrap gap-2 text-sm mb-4">
+                                        <div className="flex items-center text-neutral-600 space-x-2">
+                                            <MapPin size={15} />
+                                            <span>Church Road, Wimbledon, London</span>
+                                        </div>
+                                        <div className="flex items-center text-neutral-600 space-x-2">
+                                            <span>{item.opening_time}-{item.closing_time}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
                 <div className='outer-container !pt-0'>
                     <h4 className='text-2xl font-bold'>Popular Car Boot Sales</h4>
                     <p className='text-gray-600'>Discover the most popular car boot sales with the highest ratings and best bargains.</p>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        <div className="themeRounded bg-white">
-                            <div className="relative h-[10em]">
-                                <Image
-                                    src="https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                                    width={500}
-                                    height={500}
-                                    alt="Picture of the author"
-                                    className='absolute inset-0 w-full h-full object-cover'
-                                />
-                            </div>
-                            <div className="md:p-4">
-                                <div>
-                                    <h3 className="text-md font-bold font-['Inter'] mb-2">Wimbledon Car Boot Sale</h3>
+                        {popularSales.map((item: ListingType, index:number)=>(
+                            <Link href={`/${item.category === 'nil' ? 'car-boot-sales': item.category}/london/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
+                                <div className="relative h-[10em]">
+                                    <Image
+                                        src="https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                                        width={500}
+                                        height={500}
+                                        alt="Picture of the author"
+                                        className='absolute inset-0 w-full h-full object-cover'
+                                    />
                                 </div>
-                                <div className="flex flex-wrap gap-2 text-sm mb-4">
-                                    <div className="flex items-center text-neutral-600 space-x-2">
-                                        <MapPin size={15} />
-                                        <span>Church Road, Wimbledon, London</span>
+                                <div className="md:p-4">
+                                    <div>
+                                        <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
                                     </div>
-                                    <div className="flex items-center text-neutral-600 space-x-2">
-                                        <span> 06:00-14:00</span>
+                                    <div className="flex flex-wrap gap-2 text-sm mb-4">
+                                        <div className="flex items-center text-neutral-600 space-x-2">
+                                            <MapPin size={15} />
+                                            <span>Church Road, Wimbledon, London</span>
+                                        </div>
+                                        <div className="flex items-center text-neutral-600 space-x-2">
+                                            <span> 06:00-14:00</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
                 <div className='outer-container mt-2'>

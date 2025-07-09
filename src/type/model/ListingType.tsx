@@ -19,4 +19,6 @@ export interface ListingType {
     created_at: string;
     entry_fee: string;
     weather_outlook: string;
+    opening_time:string;
+    closing_time:string;
 }
