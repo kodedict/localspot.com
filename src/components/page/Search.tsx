@@ -41,7 +41,7 @@ export default function SearchPage({ query }: { query: string }) {
     }, [search, GetListing]);
 
     useEffect(() => {
-        if(query){
+        if (query) {
             setSearch(strReplace(query, '-', ' '));
         }
     }, [query]);
