@@ -4,34 +4,42 @@ import Button from '@/components/form/button';
 import Image from 'next/image';
 import { ArrowRight, MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useApiRequest from "@/hooks/api-request/request"
 import { ListingType } from '@/type/model/ListingType';
+import SearchComponent from '../search-component';
+import { strReplace } from '@/utils/helper-support';
+import { useRouter } from 'next/navigation';
 
 const HomePage = () => {
     const [upcomingSales, setUpcomingSales] = useState([]);
     const [popularSales, setPopularSales] = useState([]);
-
+    const navigate = useRouter();
     const {
         ReturnGet,
     } = useApiRequest();
 
-    const getUpcomingSales = async () => {
+    const getUpcomingSales = useCallback(async () => {
         const request = await ReturnGet(`car-boot`);
         if (!request) return;
         setUpcomingSales(request.items);
-    }
+    }, [ReturnGet])
 
-    const getPopularSales = async () => {
+    const getPopularSales = useCallback(async () => {
         const request = await ReturnGet(`car-boot`);
         if (!request) return;
         setPopularSales(request.items);
-    }
+    }, [ReturnGet])
 
     useEffect(() => {
         getUpcomingSales();
         getPopularSales();
-    }, []);
+    }, [getUpcomingSales, getPopularSales]);
+
+    const onSearch = (search: string) => {
+        search = strReplace(search, ' ', '-'); 
+        navigate.replace(`/search/${search || 'car-boot-sales'}`);
+    }
 
     return (
         <main className=" mb-[5em]">
@@ -47,10 +55,8 @@ const HomePage = () => {
                         </p>
                     </div>
                 </div>
-                <div style={{ boxShadow: "rgba(17, 12, 46, 0.15) 0px 48px 100px 0px" }} className='bg-white md:w-1/2 mx-auto p-2 gap-4 flex relative themeRounded justify-end'>
-                    <input placeholder='Search by town, postcode or venue' className='absolute inset-0 w-full h-full border-0 pl-5' />
-                    <Button design='primary' text='Search' />
-                </div>
+                <div className='mx-auto md:w-1/2 w-5/6'><SearchComponent onSearch={onSearch}/></div>
+                
                 <div className='outer-container mt-5'>
                     <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
                     <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { EmptyFormInput, strReplace, ucFirst } from "@/utils/helper-support"
 import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
@@ -53,7 +53,7 @@ const ListingForm = ({ id }: { id?: string }) => {
         ReturnGet,
     } = useApiRequest(setError);
 
-    const GetListing = async () => {
+    const GetListing = useCallback(async () => {
         const response = await ReturnGet(`/admin/car-boot/in/${id}`)
         if (!response) return;
         const { name, category_name, category, event_mode, description, is_parking_available, opening_time, closing_time } = response;
@@ -76,17 +76,17 @@ const ListingForm = ({ id }: { id?: string }) => {
             id: key,
             label: strReplace(key, '_', ' '),
             status: Boolean(value)
-          })))
+        })))
 
         const getDates = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=dates`)
         setDates(getDates)
-    }
+    }, [ReturnGet, id, reset])
 
     useEffect(() => {
         if (id) {
             GetListing();
         }
-    }, [id]);
+    }, [id, GetListing]);
 
     const [facilities, setFacilities] = useState<{ label: string; status: unknown }[]>([]);
 
@@ -104,12 +104,12 @@ const ListingForm = ({ id }: { id?: string }) => {
 
         handler()
         return () => handler.cancel()
-    }, [searchCategory])
+    }, [searchCategory, ReturnGet])
 
 
     const SubmitForm = async (data: any) => {
         try {
-            if(id){
+            if (id) {
                 data['slug'] = id
             }
             const request = await Post({
@@ -121,7 +121,7 @@ const ListingForm = ({ id }: { id?: string }) => {
 
             SuccessToast(`${id ? 'Listing updated successfully' : 'Listing created successfully'}`);
 
-            if ( !id ){
+            if (!id) {
                 reset(EmptyFormInput(formSchema));
 
                 router.push(`/admin/listing/${request.slug}`);
@@ -166,7 +166,7 @@ const ListingForm = ({ id }: { id?: string }) => {
 
     return (
         <div>
-            {id &&(
+            {id && (
                 <div className="flex gap-4 flex-wrap">
                     <div onClick={() => setTab('overview')} className={`p-2 cursor-pointer ${tab === 'overview' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Overview</div>
                     <div onClick={() => setTab('dates')} className={`p-2 cursor-pointer ${tab === 'dates' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Dates</div>
@@ -174,7 +174,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                     {/* <div onClick={() => setTab('images')} className={`p-2 cursor-pointer ${tab === 'images' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Images</div> */}
                 </div>
             )}
-            {tab ==='overview' && (
+            {tab === 'overview' && (
                 <div>
                     <form onSubmit={handleSubmit(SubmitForm)} className="grid gap-5 mt-10">
                         <div className="grid gap-4 md:grid-cols-2">

@@ -1,5 +1,6 @@
 import { ApiRequest } from "@/utils/api-request";
 import { useQuery, useMutation, useQueryClient, UseMutationResult } from "@tanstack/react-query";
+import { useCallback } from "react";
 
 const useReactQuery = () => {
 
@@ -21,16 +22,16 @@ const useReactQuery = () => {
     },
   })
 
-const getQueryInstance = async (endpoint: string) => {
-  return await queryClient.fetchQuery({
-    queryKey: [endpoint],
-    queryFn: async () => {
-            const response = await ApiRequest({ endpoint, method: "GET" });
-            return response; // Ensure that only `data` is returned
-        },
-    //staleTime: 1000 * 60 * 5, // ✅ Cache is fresh for 5 minutes
-  });
-};
+  const getQueryInstance = useCallback(async (endpoint: string) => {
+    return await queryClient.fetchQuery({
+      queryKey: [endpoint],
+      queryFn: async () => {
+        const response = await ApiRequest({ endpoint, method: "GET" });
+        return response;
+      },
+      staleTime: 1000 * 60 * 5,
+    });
+  }, [queryClient]);
 
   const GetQuery = (endpoint: string) => {
     const params = endpoint.split('?')[0];
