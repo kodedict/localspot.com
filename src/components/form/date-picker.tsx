@@ -65,7 +65,7 @@ const DatePickerField = ({
 
     useEffect(() => {
         setDates(parseInitialDates(value));
-    }, [value, parseInitialDates]);
+    }, [parseInitialDates]);
 
     const formatDate = (date: Date) => {
         if (onlyTime) {

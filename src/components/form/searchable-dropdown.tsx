@@ -3,7 +3,7 @@ import { ucFirst } from "@/utils/helper-support";
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState, useCallback } from "react";
 
-type onChangeInputFunc = (e:React.ChangeEvent<HTMLInputElement>) => void
+type onChangeInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => void
 
 const SearchableDropdown = ({
     options,
@@ -16,17 +16,17 @@ const SearchableDropdown = ({
     disabled = false,
     onChangeInput,
     inputClass,
-} : {
+}: {
     options?: OptionType[],
-    placeholder?:string,
+    placeholder?: string,
     label?: string,
     labelClass?: string,
-    value?:string,
-    error?:string|null,
-    disabled?:boolean,
+    value?: string | null,
+    error?: string | null,
+    disabled?: boolean,
     onChangeInput?: onChangeInputFunc,
-    onSelectedOption?: (value:string) => void,
-    inputClass?:string,
+    onSelectedOption?: (value: string | null) => void,
+    inputClass?: string,
 }) => {
 
     const [showMOptions, setShowMOptions] = useState<boolean>(false);
@@ -39,20 +39,24 @@ const SearchableDropdown = ({
 
     const [initialState, setToggle] = useState<boolean>(true);
 
-    useEffect(() => {setGetValue(value ?? ''); setGetPlaceholder(value ?? placeholder ?? `Select ${label}`)}, [value, placeholder, label])
+    useEffect(() => { setGetValue(value ?? ''); setGetPlaceholder(value ?? placeholder ?? `Select ${label}`) }, [value, placeholder, label])
 
     useEffect(() => {
-        if (options && options.length == 0){
-            if (onSelectedOption) {
-                onSelectedOption('nil');
+        if (options && options.length == 0) {
+            if (onSelectedOption && value) {
+                onSelectedOption(null);
             }
             return;
         }
-        if ( !initialState ){
+        if (!initialState) {
             setShowMOptions(true);
         }
+
+        if (value && onSelectedOption) {
+            onSelectedOption(options?.find((option) => option.name === value)?.value ?? null);
+        }
         setToggle(true);
-    }, [options, onSelectedOption, initialState])
+    }, [options])
 
 
     const onShowOption = useCallback((triggerBy = 'default') => {
@@ -76,27 +80,27 @@ const SearchableDropdown = ({
 
         // Cleanup event listener when the component unmounts
         return () => {
-        document.removeEventListener('click', handleOnClickOutside);
+            document.removeEventListener('click', handleOnClickOutside);
         };
     }, [handleOnClickOutside]);
 
-    const onSelectOption = (item:OptionType|null) => {
-        if (!item){
+    const onSelectOption = (item: OptionType | null) => {
+        if (!item) {
             setGetPlaceholder(placeholder ?? `Select ${label}`);
             setShowMOptions(false)
             if (onSelectedOption) {
-                onSelectedOption('nil');
+                onSelectedOption(null);
             }
             setGetValue('');
             return;
         }
-       if (onSelectedOption) {
-           onSelectedOption(item.value);
-       }
+        if (onSelectedOption) {
+            onSelectedOption(item.value);
+        }
         setGetPlaceholder(item.name);
         setGetValue(item.name);
         setShowMOptions(false);
-      }
+    }
 
     return (
         <div onClick={(() => setShowMOptions(!showMOptions))} ref={showMOptionsRef} className="relative">
@@ -105,7 +109,7 @@ const SearchableDropdown = ({
             </p>
             <div className="relative flex items-center">
                 <div className="absolute z-10 left-5">
-                    <Search size={18}/>
+                    <Search size={18} />
                 </div>
                 <input
                     placeholder={getPlaceholder}
@@ -118,11 +122,11 @@ const SearchableDropdown = ({
                 />
                 {(showMOptions && (options && options.length > 0)) && (
                     <div className="absolute left-0 right-0 w-full themeBg h-[10em] overflow-y-auto z-50 rounded shadow-md border p-2 top-12">
-                    <ul className="grid gap-y-2">
-                        <li onClick={() => onSelectOption(null)} className="p-1 cursor-pointer themeTextMuted hover:bg-gray-50">{ `Select ${label}`}</li>
-                        {options?.map((option, index) => <li key={index} onClick={() => onSelectOption(option)} className="p-1 cursor-pointer hover:bg-gray-50">{ucFirst(option.name)}</li>)}
-                    </ul>
-                </div>
+                        <ul className="grid gap-y-2">
+                            <li onClick={() => onSelectOption(null)} className="p-1 cursor-pointer themeTextMuted hover:bg-gray-50 dark:hover:bg-gray-700">{`Select ${label}`}</li>
+                            {options?.map((option, index) => <li key={index} onClick={() => onSelectOption(option)} className="p-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">{ucFirst(option.name)}</li>)}
+                        </ul>
+                    </div>
                 )}
                 {/* <input type={'text'} className="absolute top-0 left-0 w-full h-full bg-transparent border-0 cursor-pointer input" readOnly/> */}
             </div>

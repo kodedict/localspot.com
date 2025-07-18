@@ -43,13 +43,13 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                 </div>
             ) : (
                 <main className="">
-                            <BreadCrumbs navs={[
-                                { name: 'Home', href: '/' },
-                                { name: category, href: `/${strReplace(category, ' ', '-')}` },
-                                { name: location, href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}` },
-                                { name: `${strReplace(slug, '-', ' ')}` }]}
-                                backText='Back to search results'
-                            />
+                    <BreadCrumbs navs={[
+                        { name: 'Home', href: '/' },
+                        { name: strReplace(category, '-', ' '), href: `/${strReplace(category, ' ', '-')}` },
+                        { name: strReplace(location, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}` },
+                        { name: `${strReplace(slug, '-', ' ')}` }]}
+                        backText='Back to search results'
+                    />
                     <div className="outer-container md:flex gap-8">
                         <div className="md:w-3/4">
                             <h1 className="text-2xl md:text-3xl font-bold font-['Inter'] mb-2">{listing.name}</h1>
@@ -222,7 +222,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                         width="100%"
                                         height="100%"
                                         frameBorder="0"
-                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=53.4631,-2.2913&zoom=15"
+                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=6.6716029,3.3173874&zoom=15"
                                         allowFullScreen
                                     ></iframe>
                                 </div>

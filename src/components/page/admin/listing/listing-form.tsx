@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { EmptyFormInput, strReplace, ucFirst } from "@/utils/helper-support"
 import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
@@ -22,20 +22,27 @@ import debounce from "lodash.debounce"
 import OptionType from "@/type/option-type"
 import { CategoryType } from "@/type/model/CategoryType"
 import TickerField from "@/components/form/ticker-field"
+import GoogleAddressSearch from "@/components/form/google-address-search"
 
 const ListingForm = ({ id }: { id?: string }) => {
     const router = useRouter();
     const formSchema = yup.object({
         name: yup.string().label('name'),
-        category: yup.string().label('category'),
+        category: yup.string().nullable().label('category'),
         event_mode: yup.string().label('event mode'),
-        //address: yup.string().nullable().label('address'),
         //is_parking_available: yup.boolean().label('is parking available'),
         description: yup.string().label('description'),
         images: yup.array().label('images'),
         is_parking_available: yup.boolean().label('is parking available'),
         opening_time: yup.string().label('opening time'),
         closing_time: yup.string().label('closing time'),
+        borough: yup.string().nullable(),
+        region: yup.string().nullable(),
+        subregion: yup.string().nullable(),
+        postcode: yup.string().nullable(),
+        latitude: yup.number().nullable(),
+        longitude: yup.number().nullable(),
+        address: yup.string().nullable(),
     });
 
     const {
@@ -53,23 +60,32 @@ const ListingForm = ({ id }: { id?: string }) => {
         ReturnGet,
     } = useApiRequest(setError);
 
+    const resetRef = useRef(reset);
+    resetRef.current = reset;
+
     const GetListing = useCallback(async () => {
         const response = await ReturnGet(`/admin/car-boot/in/${id}`)
         if (!response) return;
-        const { name, category_name, category, event_mode, description, is_parking_available, opening_time, closing_time } = response;
-        reset({
+        const { 
+            name, category_name, category, 
+            event_mode, description, is_parking_available, 
+            opening_time, closing_time, address,
+            borough, region, subregion, postcode, latitude, longitude
+        } = response;
+        resetRef.current({
             name,
             category,
             event_mode,
-            //address,
+            address,
             description,
+            borough, region, subregion, postcode, latitude, longitude,
             //images,
             //is_parking_available,
             opening_time,
             closing_time,
-            is_parking_available
+            is_parking_available: Boolean(is_parking_available),
         })
-        setSearchCategory(category_name)
+        setSearchCategory(category_name||'')
 
         const getFacilities = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=facilities`)
         setFacilities(Object.entries(getFacilities).map(([key, value]) => ({
@@ -80,7 +96,7 @@ const ListingForm = ({ id }: { id?: string }) => {
 
         const getDates = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=dates`)
         setDates(getDates)
-    }, [ReturnGet, id, reset])
+    }, [])
 
     useEffect(() => {
         if (id) {
@@ -96,18 +112,28 @@ const ListingForm = ({ id }: { id?: string }) => {
     const [category, setCategory] = useState<OptionType[]>([]);
 
     useEffect(() => {
-        const handler = debounce(async () => {
-            const response = await ReturnGet(`admin/car-boot/category?search=${searchCategory}`)
+        const fetchData = async () => {
+            const response = await ReturnGet(`admin/car-boot/category?search=${searchCategory}`);
             if (!response) return;
-            setCategory(response.items.map((item: CategoryType) => ({ value: item.slug, name: `${item.name}` })));
-        }, 500)
+            setCategory(
+                response.items.map((item: CategoryType) => ({
+                    value: item.slug,
+                    name: item.name,
+                }))
+            );
+        };
 
-        handler()
-        return () => handler.cancel()
-    }, [searchCategory, ReturnGet])
+        const debouncedFetch = debounce(fetchData, 500);
+        debouncedFetch();
+
+        return () => {
+            debouncedFetch.cancel(); // clean up on unmount or next run
+        };
+    }, [searchCategory]);
 
 
     const SubmitForm = async (data: any) => {
+       
         try {
             if (id) {
                 data['slug'] = id
@@ -164,6 +190,15 @@ const ListingForm = ({ id }: { id?: string }) => {
         SuccessToast('Dates updated successfully')
     }
 
+    const handleAddress = (data:any) => {
+        setValue('borough', data.borough)
+        setValue('subregion', data.subregion)
+        setValue('region', data.region)
+        setValue('postcode', data.postal_code)
+        setValue('latitude', data.latitude)
+        setValue('longitude', data.longitude)
+    }
+
     return (
         <div>
             {id && (
@@ -214,11 +249,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                                     return [setValue('closing_time', closing_timeValue), setError('closing_time', { message: '' })];
                                 }}
                             />
-                            {/* <SearchableDropdown label="Address" placeholder="Search address"
-                                value={getValues('address') ?? ''}
-                                error={errors.address?.message}
-                            //onChangeInput={(value) => [setValue('location', value), setError('location', { message: '' })]}
-                            /> */}
+                            <GoogleAddressSearch value={getValues('address') || ''} onChangeInput={(e) => [setValue('address', e.target.value), setError('address', { message: '' })]} onSelectedOption={(data)=> handleAddress(data)}/>
                         </div>
                         <div>
                             <ToggleSwitch

@@ -27,29 +27,30 @@ export default function SearchPage({ query }: { query: string }) {
     const [paginationData, setPaginationData] = useState<ApiResponseType>({} as ApiResponseType);
 
     const GetListing = useCallback(async () => {
-        const request = await ReturnGet(`car-boot?page=${currentPage}&search=${search}${queryParams}`);
+        const request = await ReturnGet(`car-boot?page=${currentPage}&search=${search}&event_mode=${filterEventMode}${queryParams}`);
         if (!request) return;
         setListings(request.items);
         setPaginationData(request);
-    }, [ReturnGet, currentPage, queryParams, search]);
+    }, [ReturnGet, currentPage, queryParams, search, filterEventMode]);
 
 
     useEffect(() => {
-        if (search) {
-            GetListing();
-        }
+        GetListing();
     }, [search, GetListing]);
 
     useEffect(() => {
-        if (query) {
+        if (query && !search) {
             setSearch(strReplace(query, '-', ' '));
         }
-    }, [query]);
+    }, [query, search]);
 
-    const onSearch = (search: string) => {
+    const onSearch = (search: string) => {  
         setSearch(search);
-        //update url
-        navigate.replace(`/search/${search || 'car-boot-sales'}`);
+        if(search){
+            search = strReplace(search, ' ', '-');
+            //update url
+            navigate.replace(`/search/${search}`);
+        }
     }
 
     return (
@@ -61,7 +62,7 @@ export default function SearchPage({ query }: { query: string }) {
                 </div>
             </div>
             <div className="flex md:flex-row flex-col-reverse outer-container mt-5 gap-y-8 gap-4">
-                <div className="md:w-1/4 grid gap-4 border border-[#E6EAF0] themeRounded p-5 shadow-sm">
+                <div className="md:w-1/4 grid gap-4 border border-[#E6EAF0] themeRounded p-5 shadow-sm h-fit">
                     <div>
                         <div className="mb-2 grid gap-2">
                             <h3 className="text-md font-bold">Search Filters</h3>
