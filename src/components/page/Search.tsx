@@ -8,6 +8,9 @@ import useApiRequest from "@/hooks/api-request/request";
 import ApiResponseType from "@/type/api-response-type";
 import { useRouter } from 'next/navigation';
 import { ListingType } from "@/type/model/ListingType";
+import Image from "next/image";
+import Button from "../form/button";
+import Link from "next/link";
 
 export default function SearchPage({ query }: { query: string }) {
     const navigate = useRouter();
@@ -44,9 +47,9 @@ export default function SearchPage({ query }: { query: string }) {
         }
     }, [query, search]);
 
-    const onSearch = (search: string) => {  
+    const onSearch = (search: string) => {
         setSearch(search);
-        if(search){
+        if (search) {
             search = strReplace(search, ' ', '-');
             //update url
             navigate.replace(`/search/${search}`);
@@ -96,16 +99,28 @@ export default function SearchPage({ query }: { query: string }) {
                         {listings.map((item: ListingType, index: number) => (
                             <div key={index} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
                                 <div className="md:w-1/4">
-                                    <div className="bg-gray-100 h-[10em] p-5">
-                                        Image
+                                    <div className="relative h-[10em] bg-gray-100">
+                                        {item?.images?.[0] && <Image
+                                            src={item?.images[0]}
+                                            width={500}
+                                            height={500}
+                                            alt={item.name}
+                                            className='absolute inset-0 w-full h-full object-cover'
+                                        />}
                                     </div>
                                 </div>
                                 <div className="md:w-3/4 p-6">
                                     <h1 className="text-md font-bold font-['Inter'] mb-1">{item.name}</h1>
-                                    <span className="text-sm text-neutral-600">Postcode</span>
-                                    <div className="flex items-center text-neutral-600 space-x-2">
-                                        <MapPin size={15} />
-                                        <span>Church Road, Wimbledon, London</span>
+                                    {item.postcode && <span className="text-sm text-neutral-600">{item.postcode}</span>}
+                                    {item.address && <div className="flex items-center text-neutral-600 space-x-2">
+                                        <MapPin size={18} />
+                                        <span>{item.address}</span>
+                                    </div>}
+                                    <h3 className="text-sm font-bold my-3">Boot type available</h3>
+                                    <span className="p-2 rounded-full border text-sm px-8 border-gray-200">{item.event_mode}</span>
+                                    <div className="mt-5 flex justify-between">
+                                        <div></div>
+                                        <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/london/${item.code}/${item.slug}`}><Button design='primary' text='View details' /></Link>
                                     </div>
                                 </div>
                             </div>

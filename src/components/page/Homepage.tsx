@@ -37,7 +37,7 @@ const HomePage = () => {
     }, [getUpcomingSales, getPopularSales]);
 
     const onSearch = (search: string) => {
-        search = strReplace(search, ' ', '-'); 
+        search = strReplace(search, ' ', '-');
         navigate.replace(`/search/${search || 'car-boot-sales'}`);
     }
 
@@ -55,22 +55,22 @@ const HomePage = () => {
                         </p>
                     </div>
                 </div>
-                <div className='mx-auto md:w-1/2 w-5/6'><SearchComponent onSearch={onSearch}/></div>
-                
+                <div className='mx-auto md:w-1/2 w-5/6'><SearchComponent onSearch={onSearch} /></div>
+
                 <div className='outer-container mt-5'>
                     <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
                     <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        {upcomingSales.map((item: ListingType, index:number)=>(
-                            <Link href={`/${item.category === 'nil' ? 'car-boot-sales' : item.category}/london/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
-                                <div className="relative h-[10em]">
-                                    <Image
-                                        src="https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        {upcomingSales.map((item: ListingType, index: number) => (
+                            <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/london/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
+                                <div className="relative h-[10em] bg-gray-100">
+                                    {item?.images?.[0] && <Image
+                                        src={item?.images[0]}
                                         width={500}
                                         height={500}
-                                        alt="Picture of the author"
+                                        alt={item.name}
                                         className='absolute inset-0 w-full h-full object-cover'
-                                    />
+                                    />}
                                 </div>
                                 <div className="md:p-4">
                                     <div>
@@ -94,16 +94,16 @@ const HomePage = () => {
                     <h4 className='text-2xl font-bold'>Popular Car Boot Sales</h4>
                     <p className='text-gray-600'>Discover the most popular car boot sales with the highest ratings and best bargains.</p>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        {popularSales.map((item: ListingType, index:number)=>(
-                            <Link href={`/${item.category === 'nil' ? 'car-boot-sales': item.category}/london/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
-                                <div className="relative h-[10em]">
-                                    <Image
-                                        src="https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                        {popularSales.map((item: ListingType, index: number) => (
+                            <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/london/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
+                                <div className="relative h-[10em] bg-gray-100">
+                                    {item?.images?.[0] && <Image
+                                        src={item?.images[0]}
                                         width={500}
                                         height={500}
-                                        alt="Picture of the author"
+                                        alt={item.name}
                                         className='absolute inset-0 w-full h-full object-cover'
-                                    />
+                                    />}
                                 </div>
                                 <div className="md:p-4">
                                     <div>

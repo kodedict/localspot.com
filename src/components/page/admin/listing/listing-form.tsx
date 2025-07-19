@@ -2,7 +2,6 @@
 
 import Button from "@/components/form/button"
 import DatePickerField from "@/components/form/date-picker"
-// import FileUploader from "@/components/form/file-uploader"
 import InputField from "@/components/form/input-field"
 import SearchableDropdown from "@/components/form/searchable-dropdown"
 import SelectField from "@/components/form/select-field"
@@ -15,7 +14,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useCallback, useEffect, useRef, useState } from "react"
-import { EmptyFormInput, strReplace, ucFirst } from "@/utils/helper-support"
+import { abbreviateString, EmptyFormInput, strReplace, ucFirst } from "@/utils/helper-support"
 import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
 import debounce from "lodash.debounce"
@@ -23,6 +22,10 @@ import OptionType from "@/type/option-type"
 import { CategoryType } from "@/type/model/CategoryType"
 import TickerField from "@/components/form/ticker-field"
 import GoogleAddressSearch from "@/components/form/google-address-search"
+import FileUploader from "@/components/form/file-uploader"
+import SpinnerLoader from "@/components/loader/spinner-loader"
+import Link from "next/link"
+import Image from "next/image"
 
 const ListingForm = ({ id }: { id?: string }) => {
     const router = useRouter();
@@ -63,13 +66,15 @@ const ListingForm = ({ id }: { id?: string }) => {
     const resetRef = useRef(reset);
     resetRef.current = reset;
 
+    const [imageLinks, setImageLinks] = useState<string[]>([]);
+
     const GetListing = useCallback(async () => {
         const response = await ReturnGet(`/admin/car-boot/in/${id}`)
         if (!response) return;
-        const { 
-            name, category_name, category, 
-            event_mode, description, is_parking_available, 
-            opening_time, closing_time, address,
+        const {
+            name, category_name, category,
+            event_mode, description, is_parking_available,
+            opening_time, closing_time, address, images,
             borough, region, subregion, postcode, latitude, longitude
         } = response;
         resetRef.current({
@@ -79,13 +84,14 @@ const ListingForm = ({ id }: { id?: string }) => {
             address,
             description,
             borough, region, subregion, postcode, latitude, longitude,
-            //images,
             //is_parking_available,
             opening_time,
             closing_time,
             is_parking_available: Boolean(is_parking_available),
         })
-        setSearchCategory(category_name||'')
+        setSearchCategory(category_name || '')
+
+        setImageLinks(images)
 
         const getFacilities = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=facilities`)
         setFacilities(Object.entries(getFacilities).map(([key, value]) => ({
@@ -133,7 +139,7 @@ const ListingForm = ({ id }: { id?: string }) => {
 
 
     const SubmitForm = async (data: any) => {
-       
+
         try {
             if (id) {
                 data['slug'] = id
@@ -190,13 +196,52 @@ const ListingForm = ({ id }: { id?: string }) => {
         SuccessToast('Dates updated successfully')
     }
 
-    const handleAddress = (data:any) => {
+    const handleAddress = (data: any) => {
         setValue('borough', data.borough)
         setValue('subregion', data.subregion)
         setValue('region', data.region)
         setValue('postcode', data.postal_code)
         setValue('latitude', data.latitude)
         setValue('longitude', data.longitude)
+    }
+
+    const [loadingFileUpload, setLoadingFileUpload] = useState<boolean>(false);
+
+
+    const onFileUpload = async (data: any) => {
+        setLoadingFileUpload(true);
+        //setImageLinks([]);
+
+        const files = data.map((file: any) => {
+            return {
+                file_name: file.fileName,
+                file_in_base64: file.base64,
+                file_extension: file.extension,
+            }
+        })
+
+        const upload = await Post({
+            endpoint: 'media/upload/multiple',
+            payload: {
+                files,
+                folder_path: 'car-boot',
+            }
+        });
+        if (!upload) {
+            setLoadingFileUpload(false);
+            return 'done';
+        }
+        const save = await Post({
+            endpoint: 'admin/car-boot/images',
+            payload: {
+                slug: id,
+                images: upload?.files
+            }
+        })
+        setLoadingFileUpload(false);
+        if (!save) return 'done';
+        setImageLinks(save?.images);
+        return 'done';
     }
 
     return (
@@ -206,7 +251,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                     <div onClick={() => setTab('overview')} className={`p-2 cursor-pointer ${tab === 'overview' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Overview</div>
                     <div onClick={() => setTab('dates')} className={`p-2 cursor-pointer ${tab === 'dates' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Dates</div>
                     <div onClick={() => setTab('facilities')} className={`p-2 cursor-pointer ${tab === 'facilities' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Facilities</div>
-                    {/* <div onClick={() => setTab('images')} className={`p-2 cursor-pointer ${tab === 'images' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Images</div> */}
+                    <div onClick={() => setTab('images')} className={`p-2 cursor-pointer ${tab === 'images' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Images</div>
                 </div>
             )}
             {tab === 'overview' && (
@@ -249,7 +294,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                                     return [setValue('closing_time', closing_timeValue), setError('closing_time', { message: '' })];
                                 }}
                             />
-                            <GoogleAddressSearch value={getValues('address') || ''} onChangeInput={(e) => [setValue('address', e.target.value), setError('address', { message: '' })]} onSelectedOption={(data)=> handleAddress(data)}/>
+                            <GoogleAddressSearch value={getValues('address') || ''} onChangeInput={(e) => [setValue('address', e.target.value), setError('address', { message: '' })]} onSelectedOption={(data) => handleAddress(data)} />
                         </div>
                         <div>
                             <ToggleSwitch
@@ -323,6 +368,36 @@ const ListingForm = ({ id }: { id?: string }) => {
                         ))}
                     </div>
                     <Button text="Save facilities" isLoading={requestLoading} onClick={saveFacilities} />
+                </div>
+            )}
+            {tab === 'images' && (
+                <div className="grid gap-5 mt-10">
+                    <FileUploader onChange={(data) => onFileUpload(data)} multiple />
+                    {loadingFileUpload && <div className="flex items-center mt-3 space-x-2 themeTextMuted">
+                        <span className="animate-pulse">Uploading</span>
+                        <SpinnerLoader />
+                    </div>}
+                    <div className="relative overflow-x-auto whitespace-nowrap">
+                        <table className="text-primary font-[500] text-[14px] w-full relative z-10">
+                            <thead>
+                                <tr className="border-b border-[#E6EAF0] bg-[#fafafa]">
+                                    <td className="py-3">Image</td>
+                                </tr>
+                            </thead>
+                            <tbody className="relative">
+                                {imageLinks?.map((item: string, index) => (
+                                    <tr key={index} className="border-b border-[#E6EAF0]">
+                                        <td className=" py-3">
+                                            <Image src={item} alt="" width={100} />
+                                            <Link href={item} target="_blank">
+                                                {abbreviateString(item, 50)}
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </div>

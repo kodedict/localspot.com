@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { Libraries, useLoadScript } from "@react-google-maps/api";
 
@@ -57,48 +57,51 @@ const GoogleAddressSearch = ({
         }
     }, [value]);
 
-    const handlePlaceChanged = (autocomplete: google.maps.places.Autocomplete) => {
-        const place = autocomplete.getPlace();
+    const handlePlaceChanged = useCallback(
+        (autocomplete: google.maps.places.Autocomplete) => {
+            const place = autocomplete.getPlace();
 
-        if (!place || !place.geometry) {
-            setInput({});
-            return;
-        }
+            if (!place || !place.geometry) {
+                setInput({});
+                return;
+            }
 
-        const addressComponents = place.address_components ?? [];
+            const addressComponents = place.address_components ?? [];
 
-        const getComponent = (type: string) =>
-            addressComponents.find(c => c.types.includes(type))?.long_name || "";
+            const getComponent = (type: string) =>
+                addressComponents.find(c => c.types.includes(type))?.long_name || "";
 
-        const streetAddress = [
-            getComponent("subpremise"),
-            getComponent("premise"),
-            getComponent("street_number"),
-            getComponent("route"),
-        ]
-            .filter(Boolean)
-            .join(" ");
+            const streetAddress = [
+                getComponent("subpremise"),
+                getComponent("premise"),
+                getComponent("street_number"),
+                getComponent("route"),
+            ]
+                .filter(Boolean)
+                .join(" ");
 
-        const latitude = place.geometry.location?.lat();
-        const longitude = place.geometry.location?.lng();
+            const latitude = place.geometry.location?.lat();
+            const longitude = place.geometry.location?.lng();
 
-        const data: InputState = {
-            streetAddress,
-            country: getComponent("country"),
-            postal_code: getComponent("postal_code"),
-            subregion: getComponent("administrative_area_level_2"),
-            region: getComponent("administrative_area_level_1"),
-            borough: getComponent("administrative_area_level_3") || getComponent("locality"),
-            latitude,
-            longitude,
-        };
+            const data: InputState = {
+                streetAddress,
+                country: getComponent("country"),
+                postal_code: getComponent("postal_code"),
+                subregion: getComponent("administrative_area_level_2"),
+                region: getComponent("administrative_area_level_1"),
+                borough: getComponent("administrative_area_level_3") || getComponent("locality"),
+                latitude,
+                longitude,
+            };
 
-        setInput(data);
+            setInput(data);
 
-        if (onSelectedOption) {
-            onSelectedOption(data);
-        }
-    };
+            if (onSelectedOption) {
+                onSelectedOption(data);
+            }
+        },
+        [onSelectedOption]
+    );
 
     useEffect(() => {
         if (!isLoaded || loadError || !inputRef.current) return;

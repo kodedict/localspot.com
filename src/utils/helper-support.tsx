@@ -91,12 +91,6 @@ const abbreviateString = (string:string, maxLength = 10) => {
     if (string.length <= maxLength) return string;
 
     return string.slice(0, maxLength) + '...';
-
-    const [firstString, lastString] = string.split(' ');
-
-    const abbreviatedLastString = lastString.slice(0, maxLength - firstString.length - 4) + '...';
-
-    return `${firstString} ${abbreviatedLastString}`;
 }
 
 function ucFirst(str:string) {

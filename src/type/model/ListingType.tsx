@@ -21,4 +21,24 @@ export interface ListingType {
     weather_outlook: string;
     opening_time:string;
     closing_time:string;
+    borough: string;
+    region: string;
+    subregion: string;
+    postcode: string;
+    facilities: {
+        free_parking: boolean;
+        food_drink: boolean;
+        atm_cash: boolean;
+        disabled_access: boolean;
+        baby_changing: boolean;
+        security: boolean;
+        information_point: boolean;
+        water_disposal: boolean;
+        cafe: boolean;
+        free_wifi: boolean;
+        photography: boolean;
+        pa_system: boolean;
+        dog_friendly: boolean;
+        family_friendly: boolean;
+    };
 }
