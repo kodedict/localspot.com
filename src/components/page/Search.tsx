@@ -117,7 +117,7 @@ export default function SearchPage({ query }: { query: string }) {
                                         <span>{item.address}</span>
                                     </div>}
                                     <h3 className="text-sm font-bold my-3">Boot type available</h3>
-                                    <span className="p-2 rounded-full border text-sm px-8 border-gray-200">{item.event_mode}</span>
+                                    <span className="p-2 rounded-full border text-sm px-8 border-gray-200">{item.event_mode || 'None'}</span>
                                     <div className="mt-5 flex justify-between">
                                         <div></div>
                                         <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/london/${item.code}/${item.slug}`}><Button design='primary' text='View details' /></Link>
