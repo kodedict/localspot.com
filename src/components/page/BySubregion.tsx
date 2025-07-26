@@ -12,9 +12,12 @@ import moment from 'moment';
 
 interface ByLocationIdProps {
     category: string
+    location: string
+    region: string
+    subregion: string
 }
 
-export default function ByCategory({ category }: ByLocationIdProps) {
+export default function BySubregion({ category, location, region, subregion }: ByLocationIdProps) {
     const { ReturnGet } = useApiRequest();
     const [currentPage,] = useState<number>(1);
     const [queryParams,] = useState<string>('');
@@ -22,7 +25,7 @@ export default function ByCategory({ category }: ByLocationIdProps) {
 
     useEffect(() => {
         const GetListing = (async () => {
-            const request = await ReturnGet(`car-boot?page=${currentPage}&category=${category}${queryParams}`);
+            const request = await ReturnGet(`car-boot?page=${currentPage}&borough=${strReplace(subregion, '-', ' ')}${queryParams}`);
             if (!request) return;
             setListings(request?.items);
         });
@@ -34,10 +37,17 @@ export default function ByCategory({ category }: ByLocationIdProps) {
 
     return (
         <main className="bg-[#f3f7fe]">
-            <BreadCrumbs navs={[{ name: 'Home', href: '/' }, { name: ucWords(name), href: `/categories/${name}` }]} />
+            <BreadCrumbs navs={[
+                { name: 'Home', href: '/' },
+                { name: strReplace(category, '-', ' '), href: `/${strReplace(category, ' ', '-')}` },
+                { name: strReplace(location, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}` },
+                { name: strReplace(region, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}/${region}` },
+                { name: strReplace(subregion, '-', ' ') },
+            ]}
+            />
             <div className='outer-container'>
                 <h1 className='text-2xl font-bold capitalize'>{ucWords(name)}</h1>
-                <p className='text-gray-600'>Discover top-rated {name} across the UK. View listings, schedules, and visitor ratings.</p>
+                <p className='text-gray-600'>Discover top-rated {name} in <span className='capitalize'>{subregion}</span> across the UK. View listings, schedules, and visitor ratings.</p>
                 <div className='mt-5'>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
                         {listings.map((item: ListingType, index: number) => (
@@ -81,7 +91,7 @@ export default function ByCategory({ category }: ByLocationIdProps) {
                         "@context": "https://schema.org",
                         "@type": "Category",
                         "name": category,
-                        "description": `Discover top-rated ${name} across the UK. View listings, schedules, and visitor ratings.`,
+                        "description": `Discover top-rated ${name} in ${subregion} across the UK. View listings, schedules, and visitor ratings.`,
                         "url": `https://www.carbootjunction.com/${name}`,
                         "image": "https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
                     })

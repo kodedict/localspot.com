@@ -67,10 +67,10 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                     <BreadCrumbs navs={[
                         { name: 'Home', href: '/' },
                         { name: strReplace(category, '-', ' '), href: `/${strReplace(category, ' ', '-')}` },
-                        { name: strReplace(location, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}` },
-                        ...listing.region ? [{ name: strReplace(listing.region, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}/${strReplace(listing.region, ' ', '-')}` }] : [],
-                        ...listing.subregion ? [{ name: strReplace(listing.subregion, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}/${strReplace(listing.region, ' ', '-')}/${strReplace(listing.subregion, ' ', '-')}` }] : [],
-                        ...listing.borough ? [{ name: strReplace(listing.borough, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}/${strReplace(listing.region, ' ', '-')}/${strReplace(listing.subregion, ' ', '-')}/${strReplace(listing.borough, ' ', '-')}` }] : [],
+                        // { name: strReplace(location, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(location, ' ', '-')}` },
+                        ...listing.region ? [{ name: strReplace(listing.region, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(listing.region, ' ', '-')}` }] : [],
+                        ...listing.subregion ? [{ name: strReplace(listing.subregion, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(listing.region, ' ', '-')}/${strReplace(listing.subregion, ' ', '-')}` }] : [],
+                        ...listing.borough ? [{ name: strReplace(listing.borough, '-', ' '), href: `/${strReplace(category, ' ', '-')}/location/${strReplace(listing.region, ' ', '-')}/${strReplace(listing.subregion, ' ', '-')}/${strReplace(listing.borough, ' ', '-')}` }] : [],
                         { name: `${strReplace(slug, '-', ' ')}` }]}
                         backText='Back to search results'
                     />
@@ -138,11 +138,11 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                 <Splide aria-label={listing.name} options={{
                                     type: 'loop',
                                     autoplay: true,
-                                            fixedHeight: 400
+                                    fixedHeight: 400
                                 }}>
                                     {listing?.images?.map((image, index) => (
                                         <SplideSlide key={index}>
-                                            <Image src={image} alt={listing.name} />
+                                            <Image src={image} alt={listing.name} layout='fill' />
                                         </SplideSlide>
                                     ))}
                                 </Splide>
@@ -173,7 +173,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                 <h2 className="text-xl font-bold font-['Inter'] mb-3">Location</h2>
                                 <div className="bg-neutral-50 rounded-lg h-64 overflow-hidden">
                                     <iframe
-                                        title="Map of Old Trafford Boot Sale"
+                                        title={listing.name}
                                         width="100%"
                                         height="100%"
                                         frameBorder="0"
@@ -197,7 +197,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                 "name": listing.name,
                                 "description": `${ucWords(listing.name)} in ${ucWords(category)} at ${ucWords(location)}. View listings, schedules, and visitor ratings.`,
                                 "url": `https://www.carbootjunction.com/${listing.name}`,
-                                "image": "https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                                "image": listing.images?.[0] || "",
                             })
                         }}
                     />

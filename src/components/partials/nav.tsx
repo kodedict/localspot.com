@@ -30,27 +30,27 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/car-boot-sales" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/car-boot-sales" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
+                            <Link href="/upcoming-car-boot-sales" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/upcoming-car-boot-sales" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 Upcoming Car Boot Sales
                             </Link>
                         </li>
                         <li>
-                            <Link href="/car-boot-sales" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/car-boot-sales" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
+                            <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/blog" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 Blog
                             </Link>
                         </li>
                         <li>
-                            <Link href="/car-boot-sales" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/car-boot-sales" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
+                            <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/contact" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 Contact
                             </Link>
                         </li>
                         <li>
-                            <Link href="/car-boot-sales" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/car-boot-sales" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
+                            <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/about" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 About
                             </Link>
                         </li>
                         <li>
-                            <Link href="/car-boot-sales" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/car-boot-sales" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
+                            <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/list" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 List With LocalBoot
                             </Link>
                         </li>

@@ -3,18 +3,14 @@
 import Image from 'next/image';
 import { MapPin } from 'lucide-react';
 import Link from 'next/link';
-import { strReplace, ucWords } from '@/utils/helper-support';
 import BreadCrumbs from '../breadcrumbs';
 import useApiRequest from "@/hooks/api-request/request";
 import { ListingType } from "@/type/model/ListingType";
 import { useEffect, useState, } from "react";//useCallback
 import moment from 'moment';
 
-interface ByLocationIdProps {
-    category: string
-}
 
-export default function ByCategory({ category }: ByLocationIdProps) {
+export default function ByUpcoming() {
     const { ReturnGet } = useApiRequest();
     const [currentPage,] = useState<number>(1);
     const [queryParams,] = useState<string>('');
@@ -22,22 +18,19 @@ export default function ByCategory({ category }: ByLocationIdProps) {
 
     useEffect(() => {
         const GetListing = (async () => {
-            const request = await ReturnGet(`car-boot?page=${currentPage}&category=${category}${queryParams}`);
+            const request = await ReturnGet(`car-boot?page=${currentPage}&filterBy=${'upcoming'}${queryParams}`);
             if (!request) return;
             setListings(request?.items);
         });
         GetListing();
-    }, [currentPage, category, queryParams, ReturnGet]);
-
-    let name = decodeURIComponent(category);
-    name = strReplace(name, '-', ' ');
+    }, [currentPage, queryParams, ReturnGet]);
 
     return (
         <main className="bg-[#f3f7fe]">
-            <BreadCrumbs navs={[{ name: 'Home', href: '/' }, { name: ucWords(name), href: `/categories/${name}` }]} />
+            <BreadCrumbs navs={[{ name: 'Home', href: '/' }, { name: 'Upcoming car boot sales' }]} />
             <div className='outer-container'>
-                <h1 className='text-2xl font-bold capitalize'>{ucWords(name)}</h1>
-                <p className='text-gray-600'>Discover top-rated {name} across the UK. View listings, schedules, and visitor ratings.</p>
+                <h1 className='text-2xl font-bold capitalize'>Upcoming car boot sales</h1>
+                <p className='text-gray-600'>Discover top-rated Upcoming car boot sales across the UK. View listings, schedules, and visitor ratings.</p>
                 <div className='mt-5'>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
                         {listings.map((item: ListingType, index: number) => (
@@ -80,9 +73,9 @@ export default function ByCategory({ category }: ByLocationIdProps) {
                     __html: JSON.stringify({
                         "@context": "https://schema.org",
                         "@type": "Category",
-                        "name": category,
-                        "description": `Discover top-rated ${name} across the UK. View listings, schedules, and visitor ratings.`,
-                        "url": `https://www.carbootjunction.com/${name}`,
+                        "name": 'Upcoming car boot sales',
+                        "description": `Discover top-rated Upcoming car boot sales across the UK. View listings, schedules, and visitor ratings.`,
+                        "url": `https://www.carbootjunction.com/upcoming-car-boot-sales`,
                         "image": "https://images.unsplash.com/photo-1465225314224-587cd83d322b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
                     })
                 }}

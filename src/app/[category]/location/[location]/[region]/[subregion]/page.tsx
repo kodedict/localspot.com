@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import ByLocationId from '@/components/page/ByLocationId';
 import { strReplace, ucFirst, ucWords } from '@/utils/helper-support';
+import BySubregion from '@/components/page/BySubregion';
 
 
 interface PageProps {
@@ -11,22 +11,19 @@ export async function generateMetadata(
   { params }: PageProps
 ): Promise<Metadata> {
   const {
-    // borough,
-    // subregion,
-    // region,
+    subregion,
     category,
-    location
   } = await params;
   const formattedCategory = strReplace(category, '-', ' ');
   return {
-    title: `Best ${ucWords(formattedCategory)} in ${ucWords(location)}`,
-    description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(location)}. View listings, schedules, and visitor ratings.`,
+    title: `Best ${ucWords(formattedCategory)} in ${ucWords(subregion)}`,
+    description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(subregion)}. View listings, schedules, and visitor ratings.`,
   };
 }
 
 export default async function Page({ params }: PageProps) {
-  const { borough, category } = await params;
+  const { region, category, location, subregion } = await params;
   return (
-    <ByLocationId location={borough} category={category}/>
+    <BySubregion region={region} subregion={subregion} location={location} category={category}/>
   );
 }
