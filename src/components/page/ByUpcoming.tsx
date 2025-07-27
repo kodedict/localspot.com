@@ -18,7 +18,7 @@ export default function ByUpcoming() {
 
     useEffect(() => {
         const GetListing = (async () => {
-            const request = await ReturnGet(`car-boot?page=${currentPage}&filterBy=${'upcoming'}${queryParams}`);
+            const request = await ReturnGet(`car-boot?page=${currentPage}&filter_by=${'upcoming'}${queryParams}`);
             if (!request) return;
             setListings(request?.items);
         });

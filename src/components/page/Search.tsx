@@ -11,9 +11,11 @@ import { ListingType } from "@/type/model/ListingType";
 import Image from "next/image";
 import Button from "../form/button";
 import Link from "next/link";
+import { useCoordinates } from "../GetCoordinate";
 
 export default function SearchPage({ query }: { query: string }) {
     const navigate = useRouter();
+    const { coordinates, error } = useCoordinates();
     const [filterEventMode, setFilterEventMode] = useState<string>('');
     const EventModes: string[] = ['outdoor', 'indoor'];
 
@@ -24,7 +26,7 @@ export default function SearchPage({ query }: { query: string }) {
 
     const { ReturnGet } = useApiRequest();
     const [currentPage,] = useState<number>(1);
-    const [queryParams,] = useState<string>('');
+    const [queryParams, setQueryParams] = useState<string>('');
     const [listings, setListings] = useState([]);
     const [search, setSearch] = useState<string>('');
     const [paginationData, setPaginationData] = useState<ApiResponseType>({} as ApiResponseType);
@@ -35,6 +37,13 @@ export default function SearchPage({ query }: { query: string }) {
         setListings(request.items);
         setPaginationData(request);
     }, [ReturnGet, currentPage, queryParams, search, filterEventMode]);
+
+    useEffect(() => {
+        setQueryParams('');
+        if (miles && coordinates && !error) {
+            setQueryParams(`&distance=${miles}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`);
+        }
+    }, [miles]);
 
 
     useEffect(() => {

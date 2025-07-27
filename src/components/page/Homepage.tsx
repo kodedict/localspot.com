@@ -11,10 +11,10 @@ import SearchComponent from '../search-component';
 import { strReplace } from '@/utils/helper-support';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
-import { useCoordinates } from '../GetCoordinate';
+// import { useCoordinates } from '../GetCoordinate';
 
 const HomePage = () => {
-    const { coordinates, error } = useCoordinates();
+    // const { coordinates, error } = useCoordinates();
     const [upcomingSales, setUpcomingSales] = useState([]);
     const [popularSales, setPopularSales] = useState([]);
     const navigate = useRouter();
@@ -22,16 +22,16 @@ const HomePage = () => {
         ReturnGet,
     } = useApiRequest();
 
-    useEffect(() => {
-        if (coordinates && !error) {
-            console.log("Coordinates:", coordinates);
-            // You can call any external handler here
-        }
-    }, [coordinates]);
+    // useEffect(() => {
+    //     if (coordinates && !error) {
+    //         console.log("Coordinates:", coordinates);
+    //         // You can call any external handler here
+    //     }
+    // }, [coordinates]);
 
 
     const getUpcomingSales = useCallback(async () => {
-        const request = await ReturnGet(`car-boot?filterBy=upcoming`);
+        const request = await ReturnGet(`car-boot?filter_by=upcoming`);
         if (!request) return;
         setUpcomingSales(request.items);
     }, [ReturnGet])
