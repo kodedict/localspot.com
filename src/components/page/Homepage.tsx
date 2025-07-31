@@ -82,7 +82,7 @@ const HomePage = () => {
                         {upcomingSales.map((item: ListingType, index: number) => (
                             <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
                                 <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                    {(item.date && item.time) && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                    {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                         <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                         <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
                                     </div>}
@@ -128,7 +128,7 @@ const HomePage = () => {
                         {popularSales.map((item: ListingType, index: number) => (
                             <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
                                 <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                    {(item.date && item.time) && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                    {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                         <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                         <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
                                     </div>}

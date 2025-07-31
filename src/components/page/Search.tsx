@@ -110,7 +110,7 @@ export default function SearchPage({ query }: { query: string }) {
                             <div key={index} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
                                 <div className="md:w-1/4">
                                     <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                        {(item.date && item.time) && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                        {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                             <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                             <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
                                         </div>}

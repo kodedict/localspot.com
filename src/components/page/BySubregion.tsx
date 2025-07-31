@@ -54,7 +54,7 @@ export default function BySubregion({ category, location, region, subregion }: B
                             <Link key={index} href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'london'}/${item.code}/${item.slug}`}>
                                 <div className="themeRounded bg-white">
                                     <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                        {(item.date && item.time) && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                        {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                             <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                             <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
                                         </div>}
