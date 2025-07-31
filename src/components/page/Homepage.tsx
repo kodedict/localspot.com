@@ -2,7 +2,7 @@
 
 import Button from '@/components/form/button';
 import Image from 'next/image';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, Calendar, Car, MapPin, Search, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
 import { useCallback, useEffect, useState } from 'react';
 import useApiRequest from "@/hooks/api-request/request"
@@ -69,8 +69,15 @@ const HomePage = () => {
                 <div className='mx-auto md:w-1/2 w-5/6'><SearchComponent onSearch={onSearch} /></div>
 
                 <div className='outer-container mt-5'>
-                    <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
-                    <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
+                    <div className='flex gap-4 items-center'>
+                        <div className='bg-[#e1eaf9] h-10 w-10 rounded-full flex justify-center items-center text-[#7b9ada]'>
+                            <Calendar size={18}/>
+                        </div>
+                        <div>
+                            <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
+                            <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
+                        </div>
+                    </div>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
                         {upcomingSales.map((item: ListingType, index: number) => (
                             <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
@@ -102,8 +109,15 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className='outer-container !pt-0'>
-                    <h4 className='text-2xl font-bold'>Popular Car Boot Sales</h4>
-                    <p className='text-gray-600'>Discover the most popular car boot sales with the highest ratings and best bargains.</p>
+                    <div className='flex gap-4 items-center'>
+                        <div className='bg-[#f3ecec] h-10 w-10 rounded-full flex justify-center items-center text-[#e47850]'>
+                            <TrendingUp size={18} />
+                        </div>
+                        <div>
+                            <h4 className='text-2xl font-bold'>Popular Car Boot Sales</h4>
+                            <p className='text-gray-600'>Discover the most popular car boot sales with the highest ratings and best bargains.</p>
+                        </div>
+                    </div>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
                         {popularSales.map((item: ListingType, index: number) => (
                             <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
@@ -135,7 +149,11 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className='outer-container mt-2'>
-                    <h4 className='text-2xl font-bold text-center'>Searching in a specific location?</h4>
+                    <h4 className='text-2xl font-bold gap-4 flex justify-center items-center'>
+                        <Search size={18} color='#7b9ada' />
+                        <Car size={18} color='#e47850'/>
+                        <span>Searching in a specific location?</span>
+                    </h4>
                     <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
                         <div className='grid gap-4 mt-8 md:grid-cols-4'>
                             {['England', 'Scotland', 'Wales', 'London', 'Leicester', 'Wolverhampton', 'Nottingham', 'Sheffield'].map((item, index) => (
