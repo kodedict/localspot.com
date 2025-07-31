@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import SearchComponent from "../search-component";
 import { strReplace } from "@/utils/helper-support";
-import { MapPin } from "lucide-react";
+import { ImageIcon, MapPin } from "lucide-react";
 import useApiRequest from "@/hooks/api-request/request";
 import ApiResponseType from "@/type/api-response-type";
 import { useRouter } from 'next/navigation';
@@ -12,6 +12,7 @@ import Image from "next/image";
 import Button from "../form/button";
 import Link from "next/link";
 import { useCoordinates } from "../GetCoordinate";
+import moment from "moment";
 
 export default function SearchPage({ query }: { query: string }) {
     const navigate = useRouter();
@@ -108,14 +109,20 @@ export default function SearchPage({ query }: { query: string }) {
                         {listings.map((item: ListingType, index: number) => (
                             <div key={index} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
                                 <div className="md:w-1/4">
-                                    <div className="relative h-[10em] bg-gray-100">
-                                        {item?.images?.[0] && <Image
+                                    <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                        {(item.date && item.time) && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                            <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
+                                            <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
+                                        </div>}
+                                        {item?.images?.[0] ? <Image
                                             src={item?.images[0]}
                                             width={500}
                                             height={500}
                                             alt={item.name}
                                             className='absolute inset-0 w-full h-full object-cover'
-                                        />}
+                                        /> : <div className='bg-[#f5f5f5] h-10 w-10 rounded-full flex justify-center items-center text-[#cacaca] border border-[#e7e7e7]'>
+                                            <ImageIcon size={20} />
+                                        </div>}
                                     </div>
                                 </div>
                                 <div className="md:w-3/4 p-6">
