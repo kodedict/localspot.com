@@ -1,6 +1,6 @@
 "use client";
 
-import { Accessibility, Baby, Banknote, Car, Clock, CreditCard, Info, MapPin, Shield, Star, Users, Utensils, Heart, Camera, Wifi, Volume2, Coffee, Trash2 } from 'lucide-react';
+import { Accessibility, Baby, Banknote, Car, Clock, CreditCard, Info, MapPin, Shield, Star, Users, Utensils, Heart, Camera, Wifi, Volume2, Coffee, Trash2, Calendar, Phone } from 'lucide-react';
 import Button from '../form/button';
 import BreadCrumbs from '../breadcrumbs';
 import { strReplace, ucWords } from '@/utils/helper-support';
@@ -43,7 +43,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
         { tag: 'disabled_access', name: 'Disabled Access', icon: <Accessibility size={15} /> },
         { tag: 'baby_changing', name: 'Baby Changing', icon: <Baby size={15} /> },
         { tag: 'security', name: 'Security', icon: <Shield size={15} /> },
-        { tag: 'information_point', name: 'Information Point', icon: <Car size={15} /> },
+        { tag: 'information_point', name: 'Information Point', icon: <Phone size={15} /> },
         { tag: 'water_disposal', name: 'Water Disposal', icon: <Trash2 size={15} /> },
         { tag: 'cafe', name: 'Cafe', icon: <Coffee size={15} /> },
         { tag: 'free_wifi', name: 'Free WiFi', icon: <Wifi size={15} /> },
@@ -74,7 +74,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                         { name: `${strReplace(slug, '-', ' ')}` }]}
                         backText='Back to search results'
                     />
-                    <div className="outer-container md:flex gap-8">
+                    <div className="outer-container md:flex gap-4">
                         <div className="md:w-3/4">
                             <h1 className="text-2xl md:text-3xl font-bold font-['Inter'] mb-2">{listing.name}</h1>
                             {listing.address && <div className="flex items-center text-neutral-600 space-x-2">
@@ -183,7 +183,22 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                 </div>
                             </div>
                         </div>
-                        <div className=" overflow-hidden">
+                        <div className="md:w-1/4">
+                            <div className='bg-[#fef8f6] border border-[#ed9c80] p-4 themeRounded'>
+                                <div className='flex flex-col items-center gap-2'>
+                                    <div className='bg-[#fbdfd4] h-10 w-10 rounded-full flex justify-center items-center text-[#e47850]'>
+                                        <Calendar size={18} />
+                                    </div>
+                                    <h2 className='font-bold mt-1 text-[#474646] text-sm'>Next Car Boot Sales</h2>
+                                </div>
+                                <div className='flex justify-between mt-3 items-center text-sm'>
+                                    {listing.date ? <>
+                                        <div>{moment(listing.date).format('dddd, MMM Do')}</div>
+                                        <div>
+                                            {(listing.opening_time && listing.closing_time) ? <span>{moment(listing.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(listing.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : ''}</div></>
+                                        : <p>No upcoming car boot sales</p>}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     {/* <RelatedListing /> */}

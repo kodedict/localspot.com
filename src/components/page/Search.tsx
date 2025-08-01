@@ -108,12 +108,15 @@ export default function SearchPage({ query }: { query: string }) {
                     <div className="grid gap-4">
                         {listings.map((item: ListingType, index: number) => (
                             <div key={index} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
-                                <div className="md:w-1/4">
+                                <div className="md:w-1/3">
                                     <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                        {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
-                                            <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
-                                            <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
-                                        </div>}
+                                        <div className="absolute top-2 left-2 z-10">
+                                            {item.date && <div className='bg-[#424242] p-1 px-6 rounded-full text-xs text-white font-bold'>
+                                                <span className='uppercase'>Next Sale:</span>
+                                                &nbsp;
+                                                <span className='uppercase'>{moment(item.date).format('dddd, MMM D')}</span>
+                                            </div>}
+                                        </div>
                                         {item?.images?.[0] ? <Image
                                             src={item?.images[0]}
                                             width={500}
@@ -125,7 +128,7 @@ export default function SearchPage({ query }: { query: string }) {
                                         </div>}
                                     </div>
                                 </div>
-                                <div className="md:w-3/4 p-6">
+                                <div className="md:w-2/3 p-6">
                                     <h1 className="text-md font-bold font-['Inter'] mb-1">{item.name}</h1>
                                     {item.postcode && <span className="text-sm text-neutral-600">{item.postcode}</span>}
                                     {item.address && <div className="flex items-center text-neutral-600 space-x-2">
