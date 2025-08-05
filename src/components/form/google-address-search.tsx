@@ -2,9 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Search } from "lucide-react";
 import { Libraries, useLoadScript } from "@react-google-maps/api";
 
-const libraries : Libraries = ["places"] as const;
-
-type OnChangeInputFunc = (e: React.ChangeEvent<HTMLInputElement>) => void;
+const libraries: Libraries = ["places"] as const;
 
 interface InputState {
     streetAddress?: string;
@@ -25,7 +23,6 @@ interface GoogleAddressSearchProps {
     value?: string;
     error?: string | null;
     disabled?: boolean;
-    onChangeInput?: OnChangeInputFunc;
     onSelectedOption?: (data: InputState) => void;
     inputClass?: string;
     country?: string;
@@ -38,84 +35,83 @@ const GoogleAddressSearch = ({
     value,
     error,
     disabled = false,
-    onChangeInput,
     onSelectedOption,
     inputClass,
     country = "gb",
 }: GoogleAddressSearchProps) => {
     const [, setInput] = useState<InputState>({});
     const inputRef = useRef<HTMLInputElement>(null);
+    const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
+    const sessionTokenRef = useRef<google.maps.places.AutocompleteSessionToken | null>(null);
 
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "",
         libraries,
     });
 
+    // Optional: Pre-fill input if value is passed
     useEffect(() => {
-        if (value && inputRef.current) {
+        if (value && inputRef.current && !inputRef.current.value) {
             inputRef.current.value = value;
         }
     }, [value]);
 
-    const handlePlaceChanged = useCallback(
-        (autocomplete: google.maps.places.Autocomplete) => {
-            const place = autocomplete.getPlace();
+    const handlePlaceChanged = useCallback(() => {
+        const autocomplete = autocompleteRef.current;
+        if (!autocomplete) return;
 
-            if (!place || !place.geometry) {
-                setInput({});
-                return;
-            }
+        const place = autocomplete.getPlace();
 
-            const addressComponents = place.address_components ?? [];
+        if (!place || !place.geometry) {
+            setInput({});
+            return;
+        }
 
-            const getComponent = (type: string) =>
-                addressComponents.find(c => c.types.includes(type))?.long_name || "";
+        const addressComponents = place.address_components ?? [];
 
-            const streetAddress = [
-                getComponent("subpremise"),
-                getComponent("premise"),
-                getComponent("street_number"),
-                getComponent("route"),
-            ]
-                .filter(Boolean)
-                .join(" ");
+        const getComponent = (type: string) =>
+            addressComponents.find(c => c.types.includes(type))?.long_name || "";
 
-            const latitude = place.geometry.location?.lat();
-            const longitude = place.geometry.location?.lng();
+        const latitude = place.geometry.location?.lat();
+        const longitude = place.geometry.location?.lng();
 
-            const data: InputState = {
-                streetAddress,
-                country: getComponent("country"),
-                postal_code: getComponent("postal_code"),
-                subregion: getComponent("administrative_area_level_2"),
-                region: getComponent("administrative_area_level_1"),
-                borough: getComponent("administrative_area_level_3") || getComponent("locality"),
-                latitude,
-                longitude,
-            };
+        const data: InputState = {
+            address: place.formatted_address,
+            country: getComponent("country"),
+            postal_code: getComponent("postal_code"),
+            subregion: getComponent("administrative_area_level_2"),
+            region: getComponent("administrative_area_level_1"),
+            borough: getComponent("administrative_area_level_3") || getComponent("locality"),
+            latitude,
+            longitude,
+            place_id: place.place_id,
+            place_object: place, // full place if needed
+        };
 
-            setInput(data);
+        setInput(data);
+        sessionTokenRef.current = null; // Clear token after use
 
-            if (onSelectedOption) {
-                onSelectedOption(data);
-            }
-        },
-        [onSelectedOption]
-    );
+        if (onSelectedOption) {
+            onSelectedOption(data);
+        }
+    }, [onSelectedOption]);
 
     useEffect(() => {
         if (!isLoaded || loadError || !inputRef.current) return;
 
-        const autocomplete = new google.maps.places.Autocomplete(inputRef.current, {
+        // Create new session token per instance
+        sessionTokenRef.current = new google.maps.places.AutocompleteSessionToken();
+
+        autocompleteRef.current = new google.maps.places.Autocomplete(inputRef.current, {
             componentRestrictions: { country },
-            fields: ["address_components", "geometry"],
+            fields: ["address_components", "geometry", "formatted_address"],
         });
 
-        const listener = autocomplete.addListener("place_changed", () =>
-            handlePlaceChanged(autocomplete)
-        );
+        const listener = autocompleteRef.current.addListener("place_changed", handlePlaceChanged);
 
-        return () => listener.remove();
+        return () => {
+            listener.remove();
+        };
     }, [isLoaded, loadError, country, handlePlaceChanged]);
 
     return (
@@ -135,7 +131,6 @@ const GoogleAddressSearch = ({
                     inputMode="search"
                     placeholder={placeholder ?? `Search for ${label}`}
                     disabled={disabled}
-                    onChange={onChangeInput}
                     className={`input border-[#E8ECEF] pl-12 ${inputClass} border ${error ? "border-red-500" : ""
                         } ${disabled ? "text-light-black" : ""}`}
                 />

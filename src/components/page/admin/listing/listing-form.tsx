@@ -203,6 +203,8 @@ const ListingForm = ({ id }: { id?: string }) => {
         setValue('postcode', data.postal_code)
         setValue('latitude', data.latitude)
         setValue('longitude', data.longitude)
+        setValue('address', data.address)
+        console.log(data)
     }
 
     const [loadingFileUpload, setLoadingFileUpload] = useState<boolean>(false);
@@ -294,7 +296,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                                     return [setValue('closing_time', closing_timeValue), setError('closing_time', { message: '' })];
                                 }}
                             />
-                            <GoogleAddressSearch value={getValues('address') || ''} onChangeInput={(e) => [setValue('address', e.target.value), setError('address', { message: '' })]} onSelectedOption={(data) => handleAddress(data)} />
+                            <GoogleAddressSearch value={getValues('address') || ''}  onSelectedOption={(data) => handleAddress(data)} />
                         </div>
                         <div>
                             <ToggleSwitch
@@ -338,10 +340,10 @@ const ListingForm = ({ id }: { id?: string }) => {
                                     return setDates(dates.map((d, i) => i === index ? { ...d, time: opening_timeValue } : d));
                                 }}
                             />
-                            <InputField label="Weather Outlook"
+                            {/* <InputField label="Weather Outlook"
                                 value={item.weather_outlook}
                                 onChangeInput={(e) => setDates(dates.map((d, i) => i === index ? { ...d, weather_outlook: e.target.value } : d))}
-                            />
+                            /> */}
                         </div>
                     ))}
                     <div className="flex justify-end w-fit">

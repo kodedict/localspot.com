@@ -6,6 +6,7 @@ import useApiRequest from "@/hooks/api-request/request";
 import moment from "moment";
 import Link from "next/link"
 import { CategoryType } from "@/type/model/CategoryType";
+import { strReplace } from "@/utils/helper-support";
 
 const CategoryIndex = () => {
     const { ReturnGet } = useApiRequest();
@@ -42,7 +43,7 @@ const CategoryIndex = () => {
                         {category.map((item:CategoryType, index: number) => (
                             <tr key={index} className="border-b border-[#E6EAF0] themeTextMuted">
                                 <td className="flex px-4 py-3 space-x-2 capitalize cursor-pointer text-primary hover:underline">
-                                    <span>{item.name}</span>
+                                    <span>{strReplace(item.name, '-', ' ')}</span>
                                 </td>
                                 <td className="px-6 py-3">{moment(`${item.created_at}`).format('Do MMM, YYYY')}</td>
                             </tr>

@@ -36,6 +36,8 @@ export default function SingleListing({ category, location, slug }: ByLocationId
         GetListing();
     }, [GetListing]);
 
+    const googleKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
+
     const facilitiesIcon = [
         { tag: 'free_parking', name: 'Free Parking', icon: <Car size={15} /> },
         { tag: 'food_drink', name: 'Food & Drink', icon: <Utensils size={15} /> },
@@ -169,19 +171,19 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                     ))}
                                 </div>
                             </div>
-                            <div className="mt-6">
-                                <h2 className="text-xl font-bold font-['Inter'] mb-3">Location</h2>
-                                <div className="bg-neutral-50 rounded-lg h-64 overflow-hidden">
-                                    <iframe
-                                        title={listing.name}
-                                        width="100%"
-                                        height="100%"
-                                        frameBorder="0"
-                                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY&q=6.6716029,3.3173874&zoom=15"
-                                        allowFullScreen
-                                    ></iframe>
-                                </div>
-                            </div>
+                                    {(listing.latitude && listing) && <div className="mt-6">
+                                        <h2 className="text-xl font-bold font-['Inter'] mb-3">Location</h2>
+                                        <div className="bg-neutral-50 rounded-lg h-64 overflow-hidden">
+                                            <iframe
+                                                title={listing.name}
+                                                width="100%"
+                                                height="100%"
+                                                frameBorder="0"
+                                                src={`https://www.google.com/maps/embed/v1/place?key=${googleKey}&q=${listing.latitude},${listing.longitude}&zoom=15`}
+                                                allowFullScreen
+                                            ></iframe>
+                                        </div>
+                                    </div>}
                         </div>
                         <div className="md:w-1/4">
                             <div className='bg-[#fef8f6] border border-[#ed9c80] p-4 themeRounded'>

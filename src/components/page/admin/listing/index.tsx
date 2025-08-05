@@ -3,6 +3,7 @@
 import Button from "@/components/form/button"
 import useApiRequest from "@/hooks/api-request/request";
 import { ListingType } from "@/type/model/ListingType";
+import { strReplace } from "@/utils/helper-support";
 import moment from "moment";
 import Link from "next/link"
 import { useEffect, useState, useCallback } from "react";
@@ -27,7 +28,7 @@ const ListingIndex = () => {
                 <h1 className="page-title">Listing</h1>
                 <div className="flex items-center gap-3">
                     <Link href={'/admin/listing/add-new'} className="w-fit"><Button text="Add listing" /></Link>
-                    <Link href={'/admin/listing/upload'} className="w-fit"><Button design='primary-outline' text="Upload file" /></Link>
+                    {/* <Link href={'/admin/listing/upload'} className="w-fit"><Button design='primary-outline' text="Upload file" /></Link> */}
                 </div>
             </div>
             <div className="relative overflow-x-auto whitespace-nowrap">
@@ -47,7 +48,7 @@ const ListingIndex = () => {
                                     <Link href={`/admin/listing/${item.slug}`}>{item.name}</Link>
                                 </td>
                                 {/* <td className="px-6 py-3">{item.location_code}</td> */}
-                                <td className="px-6 py-3">{item.category}</td>
+                                <td className="px-6 py-3 capitalize">{strReplace(item.category || '', '-', ' ')}</td>
                                 <td className="px-6 py-3">{moment(`${item.updated_at}`).format('Do MMM, YYYY')}</td>
                             </tr>
                         ))}
