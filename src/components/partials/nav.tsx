@@ -40,20 +40,20 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/contact" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
-                                Contact
-                            </Link>
-                        </li>
-                        <li>
                             <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/about" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 About
                             </Link>
                         </li>
                         <li>
+                            <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/contact" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
+                                Contact
+                            </Link>
+                        </li>
+                        {/* <li>
                             <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/list" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">
                                 List With LocalBoot
                             </Link>
-                        </li>
+                        </li> */}
                     </ul>
                 </div>
             </div>
