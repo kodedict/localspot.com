@@ -11,6 +11,8 @@ import SearchComponent from '../search-component';
 import { strReplace } from '@/utils/helper-support';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
+import { Splide, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css';
 // import { useCoordinates } from '../GetCoordinate';
 
 const HomePage = () => {
@@ -71,47 +73,59 @@ const HomePage = () => {
                 <div className='outer-container mt-5'>
                     <div className='flex gap-4 items-center'>
                         <div className='bg-[#e1eaf9] h-10 w-10 rounded-full flex justify-center items-center text-[#7b9ada]'>
-                            <Calendar size={18}/>
+                            <Calendar size={18} />
                         </div>
                         <div>
                             <h4 className='text-2xl font-bold'>Upcoming Car Boot Sales</h4>
                             <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
                         </div>
                     </div>
-                    <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        {upcomingSales.map((item: ListingType, index: number) => (
-                            <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
-                                <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                    {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
-                                        <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
-                                        <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
-                                    </div>}
-                                    {item?.images?.[0] ? <Image
-                                        src={item?.images[0]}
-                                        width={500}
-                                        height={500}
-                                        alt={item.name}
-                                        className='absolute inset-0 w-full h-full object-cover'
-                                    /> : <div className='bg-[#f5f5f5] h-10 w-10 rounded-full flex justify-center items-center text-[#cacaca] border border-[#e7e7e7]'>
-                                        <ImageIcon size={20} />
-                                    </div>}
-                                </div>
-                                <div className="md:p-4">
-                                    <div>
-                                        <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 text-sm mb-4">
-                                        {item.address && <div className="flex items-center text-neutral-600 space-x-2">
-                                            <MapPin size={18} />
-                                            <span>{item.address}</span>
-                                        </div>}
-                                        <div className="flex items-center text-neutral-600 space-x-2">
-                                            {(item.opening_time && item.closing_time) ? <span>{moment(item.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(item.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : 'Closed'}
+                    <div className='grid gap-4 mt-8'>
+                        <Splide aria-label={'popular sales'} options={{
+                            //type: 'loop',
+                            autoplay: true,
+                            fixedHeight: 400,
+                            perPage: 4,
+                            rewind: true,
+                            gap: '1rem',
+                        }}>
+                            {upcomingSales.map((item: ListingType, index: number) => (
+                                <SplideSlide key={index}>
+                                    <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
+                                        <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                            {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                                <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
+                                                <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
+                                            </div>}
+                                            {item?.images?.[0] ? <Image
+                                                src={item?.images[0]}
+                                                width={500}
+                                                height={500}
+                                                alt={item.name}
+                                                className='absolute inset-0 w-full h-full object-cover'
+                                            /> : <div className='bg-[#f5f5f5] h-10 w-10 rounded-full flex justify-center items-center text-[#cacaca] border border-[#e7e7e7]'>
+                                                <ImageIcon size={20} />
+                                            </div>}
                                         </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
+                                        <div className="md:p-4 bg-white">
+                                            <div>
+                                                <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
+                                            </div>
+                                            <div className="grid gap-2 text-sm mb-4">
+                                                {item.address && <div className="flex items-center text-neutral-600 space-x-2">
+                                                    <MapPin size={18} />
+                                                    <span>{item.address}</span>
+                                                </div>}
+                                                <div className="flex items-center text-neutral-600 space-x-2">
+                                                    {(item.opening_time && item.closing_time) ? <span>{moment(item.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(item.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : 'Closed'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </SplideSlide>
+                            ))}
+                        </Splide>
+
                     </div>
                 </div>
                 <div className='outer-container !pt-0'>
@@ -124,46 +138,58 @@ const HomePage = () => {
                             <p className='text-gray-600'>Discover the most popular car boot sales with the highest ratings and best bargains.</p>
                         </div>
                     </div>
-                    <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        {popularSales.map((item: ListingType, index: number) => (
-                            <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
-                                <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
-                                    {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
-                                        <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
-                                        <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
-                                    </div>}
-                                    {item?.images?.[0] ? <Image
-                                        src={item?.images[0]}
-                                        width={500}
-                                        height={500}
-                                        alt={item.name}
-                                        className='absolute inset-0 w-full h-full object-cover'
-                                    /> : <div className='bg-[#f5f5f5] h-10 w-10 rounded-full flex justify-center items-center text-[#cacaca] border border-[#e7e7e7]'>
-                                        <ImageIcon size={20} />
-                                    </div>}
-                                </div>
-                                <div className="md:p-4">
-                                    <div>
-                                        <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
-                                    </div>
-                                    <div className="flex flex-wrap gap-2 text-sm mb-4">
-                                        {item.address && <div className="flex items-center text-neutral-600 space-x-2">
-                                            <MapPin size={18} />
-                                            <span>{item.address}</span>
-                                        </div>}
-                                        <div className="flex items-center text-neutral-600 space-x-2">
-                                            {(item.opening_time && item.closing_time) ? <span>{moment(item.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(item.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : 'Closed'}
+                    <div className='grid gap-4 mt-8'>
+                        <Splide aria-label={'popular sales'} options={{
+                            //type: 'loop',
+                            autoplay: true,
+                            fixedHeight: 400,
+                            perPage: 4,
+                            rewind: true,
+                            gap: '1rem',
+                        }}>
+                            {popularSales.map((item: ListingType, index: number) => (
+                                <SplideSlide key={index}>
+                                    <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
+                                        <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                            {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
+                                                <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
+                                                <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
+                                            </div>}
+                                            {item?.images?.[0] ? <Image
+                                                src={item?.images[0]}
+                                                width={500}
+                                                height={500}
+                                                alt={item.name}
+                                                className='absolute inset-0 w-full h-full object-cover'
+                                            /> : <div className='bg-[#f5f5f5] h-10 w-10 rounded-full flex justify-center items-center text-[#cacaca] border border-[#e7e7e7]'>
+                                                <ImageIcon size={20} />
+                                            </div>}
                                         </div>
-                                    </div>
-                                </div>
-                            </Link>
-                        ))}
+                                        <div className="md:p-4 bg-white">
+                                            <div>
+                                                <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
+                                            </div>
+                                            <div className="grid gap-2 text-sm mb-4">
+                                                {item.address && <div className="flex items-center text-neutral-600 space-x-2">
+                                                    <MapPin size={18} />
+                                                    <span>{item.address}</span>
+                                                </div>}
+                                                <div className="flex items-center text-neutral-600 space-x-2">
+                                                    {(item.opening_time && item.closing_time) ? <span>{moment(item.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(item.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : 'Closed'}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </SplideSlide>
+                            ))}
+                        </Splide>
+
                     </div>
                 </div>
                 <div className='outer-container mt-2'>
                     <h4 className='text-2xl font-bold gap-4 flex justify-center items-center'>
                         <Search size={18} color='#7b9ada' />
-                        <Car size={18} color='#e47850'/>
+                        <Car size={18} color='#e47850' />
                         <span>Searching in a specific location?</span>
                     </h4>
                     <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
@@ -181,6 +207,20 @@ const HomePage = () => {
                                     </div>
                                 } className='!w-[20em]' />
                             </Link>
+                        </div>
+                    </div>
+                </div>
+                <div className='outer-container mt-2'>
+                    <h4 className='text-2xl font-bold gap-4 flex justify-center items-center'>
+                        <Search size={18} color='#7b9ada' />
+                        <Car size={18} color='#e47850' />
+                        <span>Searching by top search?</span>
+                    </h4>
+                    <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
+                        <div className='grid gap-4 mt-8 md:grid-cols-2 md:w-1/2 mx-auto'>
+                            {['bank-holiday-car-boot-sale', 'car-boot-today', 'car-boot-this-weekend', 'car-boot-near-me-this-weekend'].map((item, index) => (
+                                <Link href={`/${item}`} className='text-[#6a90da] font-[450] hover:underline w-fit capitalize' key={index}>{strReplace(item, '-', ' ')}</Link>
+                            ))}
                         </div>
                     </div>
                 </div>

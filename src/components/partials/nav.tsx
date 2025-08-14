@@ -16,7 +16,7 @@ const Navbar = () => {
                     <span className="sr-only">Open main menu</span>
 
                 </button>
-                <div className="hidden w-full md:block md:w-auto" id="navbar-solid-bg">
+                <div className="hidden w-full md:block md:w-auto flex justify-end" id="navbar-solid-bg">
                     <ul className="flex flex-col font-medium text-sm mt-4 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-transparent">
                         {/* <li>
                             <Link href="/" className={`block py-2 px-3 md:p-0 text-white ${pathname === "/" ? "bg-primary md:text-primary font-bold" : "bg-gray-50 md:text-gray-600"} rounded-sm md:bg-transparent`} aria-current="page">Home</Link>
