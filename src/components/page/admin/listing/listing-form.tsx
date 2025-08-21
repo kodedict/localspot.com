@@ -269,6 +269,17 @@ const ListingForm = ({ id }: { id?: string }) => {
         return 'done';
     }
 
+    const refreshWeather = async () => {
+        const response = await Post({
+            endpoint: 'admin/car-boot/refreshWeather',
+            payload: {
+                slug: id
+            }
+        })
+
+        console.log('response', response)
+    }
+
     return (
         <div>
             {id && (
@@ -281,8 +292,18 @@ const ListingForm = ({ id }: { id?: string }) => {
                 </div>
             )}
             {tab === 'overview' && (
-                <div>
-                    <form onSubmit={handleSubmit(SubmitForm)} className="grid gap-5 mt-10">
+                <div className="grid gap-5 mt-5">
+                    {id && (
+                        <div className="">
+                            <div className="md:w-fit mb-2">
+                                <Button onClick={refreshWeather} disabled={requestLoading} isLoading={requestLoading} className="md:w-fit" design="primary-outline" text="Update weather forcast"/>
+                            </div>
+                            <span className=" text-secondary">
+                                Weather outlook: {carboot?.weather_outlook ? <strong className="font-black">{carboot.weather_outlook}</strong> : 'N/A'}. For none recurring car boots, view dates for individual weather outlooks.
+                            </span>
+                        </div>
+                    )}
+                    <form onSubmit={handleSubmit(SubmitForm)} className="grid gap-5">
                         <div className="grid gap-4 md:grid-cols-2">
                             <InputField label="Name"
                                 value={getValues('name')}
@@ -388,7 +409,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                         </div>
                         {/* <label className="label">Images</label>
                         <FileUploader /> */}
-                        <Button isLoading={requestLoading} type="submit" text={id ? 'Update' : 'Submit'} />
+                        <Button isLoading={requestLoading} disabled={requestLoading} type="submit" text={id ? 'Update' : 'Submit'} />
                     </form>
                 </div>
             )}

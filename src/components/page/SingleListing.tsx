@@ -219,6 +219,12 @@ export default function SingleListing({ category, location, slug }: ByLocationId
 
                                         : <p>No upcoming car boot sales</p>}
                                 </div>
+                                <div className='themeRounded mt-3 p-4 bg-[#f1f6fe] text-sm'>
+                                    <div className='flex justify-between items-center flex-wrap'>
+                                        <span>Weather Outlook</span>
+                                        <span>{listing.weather_outlook}</span>
+                                    </div>
+                                </div>
                                 {Array.isArray(listing.upcoming_dates) && listing.upcoming_dates.length > 0 &&
                                     <div>
                                         <Button className='w-full mt-3 font-bold' text="View All Dates & Time" onClick={() => setOpenModal(true)} />
