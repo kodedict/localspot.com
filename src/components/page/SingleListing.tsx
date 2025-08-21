@@ -179,7 +179,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                     {facilitiesIcon.map((facility, index) => (
                                         <div key={index} className={`flex flex-col justify-center items-center border border-gray-200 p-3 themeRounded relative ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? '' : 'opacity-50'}`}>
                                             {listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? <div className='bg-green-500 p-1 rounded-full absolute right-1 top-1'></div> : ''}
-                                            <span className={`inline-block p-2 rounded-full text-sm ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? `bg-[${facility.color}]  text-white` : 'bg-gray-200 text-gray-600'}`}>
+                                            <span style={{ backgroundColor: listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? facility.color : '' }} className={`inline-block p-2 rounded-full text-sm ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? ` text-white` : 'bg-gray-200 text-gray-600'}`}>
                                                 {facility.icon}
                                             </span>
                                             <p className={`text-[14px] mt-2 font-[500] text-center ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? 'text-gray-600' : 'text-gray-500'}`}>
@@ -240,7 +240,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                 <div className='grid gap-4'>
                                     {listingUpdate.map((update: any, index: number) => (
                                         <div key={index} className={`p-3 border-l-3 ${update.status === 'danger' ? 'bg-red-50 text-red-600' : update.status === 'info' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
-                                            <div className='flex justify-between items-center'>
+                                            <div className='flex justify-between items-center flex-wrap'>
                                                 <h3 className='font-bold text-sm'>{update.title}</h3>
                                                 <p className='text-xs'>{moment(update.created_at).fromNow()}</p>
                                             </div>
