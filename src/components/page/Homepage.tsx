@@ -39,7 +39,7 @@ const HomePage = () => {
     }, [ReturnGet])
 
     const getPopularSales = useCallback(async () => {
-        const request = await ReturnGet(`car-boot`);
+        const request = await ReturnGet(`car-boot?filter_by=popular`);
         if (!request) return;
         setPopularSales(request.items);
     }, [ReturnGet])
