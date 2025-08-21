@@ -1,33 +1,12 @@
-import OptionType from '@/type/option-type'; // Adjusted path, assuming @ is src
+import OptionType from '@/type/option-type';
 
-const ProductTypes : OptionType[] = ['land', 'land_investment'].map((item: string) => ({value: item, name: item.replace('_', ' ')})); //land_investment
-
-const LandTypes : OptionType[] = ['plot', 'acre'].map((item: string) => ({value: item, name: item.replace('_', ' ')}));
-
-const ProductPaymentPlanTypes : OptionType[] = ['days', 'weeks', 'months', 'years'].map((item: string) => ({value: item, name: item.replace('_', ' ')}));
-
-const SubscriptionStatusOptions : OptionType[] = [
-    {value: 'ongoing', name: 'Ongoing'},
-    {value: 'awaiting_payment', name: 'Not paid'},
-    {value: 'completed', name: 'Completed'},
-    {value: 'awaiting_payment_confirmation', name: 'Confirming payment'},
-    {value: 'cancelled', name: 'Cancelled'},
-    ].map((item: {value: string; name: string}) => ({value: item.value, name: item.name}));
-
-    // 'awaiting_payment' => 'Not paid',
-    // 'completed',
-    // 'ongoing',
-    // 'awaiting_payment_confirmation', 
-    // 'cancelled',
+const recurringOptions : OptionType[] = ['daily', 'weekly', 'monthly', 'yearly', 'weekends', 'custom_days'].map((item: string) => ({value: item, name: item.replace('_', ' ')}));
 
 const CustomOptions = (options: string[]) => {
     return options.map((item: string) => ({value: item, name: item.replace('_', ' ')}));
 }
 
 export { 
-    ProductTypes,
-    LandTypes,
-    ProductPaymentPlanTypes,
-    SubscriptionStatusOptions,
+    recurringOptions,
     CustomOptions,
 };

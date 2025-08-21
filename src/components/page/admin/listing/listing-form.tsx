@@ -26,6 +26,7 @@ import FileUploader from "@/components/form/file-uploader"
 import SpinnerLoader from "@/components/loader/spinner-loader"
 import Link from "next/link"
 import Image from "next/image"
+import { recurringOptions } from "@/utils/options"
 
 const ListingForm = ({ id }: { id?: string }) => {
     const router = useRouter();
@@ -46,7 +47,13 @@ const ListingForm = ({ id }: { id?: string }) => {
         latitude: yup.number().nullable(),
         longitude: yup.number().nullable(),
         address: yup.string().nullable(),
+        start_date: yup.string().nullable(),
+        //recurring: yup.boolean().nullable(),
+        recurring_type: yup.string().nullable(),
     });
+
+    const [recurring, setRecurring] = useState<boolean>(false);
+    const [recurring_days, setRecurringDays] = useState<string[]>([]);
 
     const {
         setValue,
@@ -204,7 +211,6 @@ const ListingForm = ({ id }: { id?: string }) => {
         setValue('latitude', data.latitude)
         setValue('longitude', data.longitude)
         setValue('address', data.address)
-        console.log(data)
     }
 
     const [loadingFileUpload, setLoadingFileUpload] = useState<boolean>(false);
@@ -296,7 +302,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                                     return [setValue('closing_time', closing_timeValue), setError('closing_time', { message: '' })];
                                 }}
                             />
-                            <GoogleAddressSearch value={getValues('address') || ''}  onSelectedOption={(data) => handleAddress(data)} />
+                            <GoogleAddressSearch value={getValues('address') || ''} onSelectedOption={(data) => handleAddress(data)} />
                         </div>
                         <div>
                             <ToggleSwitch
@@ -307,6 +313,42 @@ const ListingForm = ({ id }: { id?: string }) => {
                             //error={errors.is_parking_available?.message}
                             />
                             {errors.is_parking_available?.message && <p className="my-1 text-[13px] themeTextError font-[400]">{ucFirst(errors.is_parking_available.message)}</p>}
+                        </div>
+                        <div>
+                            <TickerField
+                                label="Is Recurring?"
+                                id="recurring"
+                                onChangeInput={(state) => setRecurring(state)}
+                                checked={Boolean(recurring)}
+                            />
+                            {recurring && <div className="grid gap-4 md:grid-cols-2 mt-4">
+                                <SelectField
+                                    options={recurringOptions}
+                                    label="Recurring Type"
+                                    value={getValues('recurring_type') ?? ''}
+                                    error={errors.recurring_type?.message}
+                                    onChangeInput={(value) => [setValue('recurring_type', value), setError('recurring_type', { message: '' })]}
+                                />
+                            </div>}
+                            {recurring && getValues('recurring_type') === 'custom_days' && (
+                                <div className="mt-4">
+                                    {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day) => (
+                                        <TickerField
+                                            key={day}
+                                            label={day}
+                                            id={day.toLowerCase()}
+                                            onChangeInput={(state) => {
+                                                if (state) {
+                                                    setRecurringDays([...recurring_days, day.toLowerCase()]);
+                                                } else {
+                                                    setRecurringDays(recurring_days.filter(d => d !== day.toLowerCase()));
+                                                }
+                                            }}
+                                            checked={recurring_days.includes(day.toLowerCase())}
+                                        />
+                                    ))}
+                                </div>
+                            )}
                         </div>
                         <div>
                             <TextareaField label="Description"
