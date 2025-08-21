@@ -1,6 +1,6 @@
 "use client"
 
-import { House, List, ListCollapse, User } from "lucide-react";
+import { House, List, ListCollapse, Star, User } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { usePathname } from 'next/navigation';
@@ -22,6 +22,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         { to: "/dashboard", label: "Dashboard", icon: <House size={18} /> },
         { to: "/listing", label: "Listing", icon: <List size={18} /> },
         { to: "/category", label: "Category", icon: <ListCollapse size={18} /> },
+        { to: "/popular-carboot", label: "Popular Carboot", icon: <Star size={18} /> },
         // { to: "/location", label: "Location", icon: <Locate size={18} /> },
         // { to: "/account", label: "Account", icon: <User size={18} /> },
     ];

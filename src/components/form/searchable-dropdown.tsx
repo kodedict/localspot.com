@@ -51,7 +51,7 @@ const SearchableDropdown = ({
         if (!initialState) {
             setShowMOptions(true);
         }
-
+        
         if (value && onSelectedOption) {
             onSelectedOption(options?.find((option) => option.name === value)?.value ?? null);
         }
