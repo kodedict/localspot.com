@@ -27,6 +27,8 @@ import SpinnerLoader from "@/components/loader/spinner-loader"
 import Link from "next/link"
 import Image from "next/image"
 import { recurringOptions } from "@/utils/options"
+import CarBootUpdate from "./carboot-update"
+import { ListingType } from "@/type/model/ListingType"
 
 const ListingForm = ({ id }: { id?: string }) => {
     const router = useRouter();
@@ -47,10 +49,11 @@ const ListingForm = ({ id }: { id?: string }) => {
         latitude: yup.number().nullable(),
         longitude: yup.number().nullable(),
         address: yup.string().nullable(),
-        start_date: yup.string().nullable(),
+        start_date: yup.string(),
         //recurring: yup.boolean().nullable(),
         recurring_type: yup.string().nullable(),
     });
+
 
     const [recurring, setRecurring] = useState<boolean>(false);
     const [recurring_days, setRecurringDays] = useState<string[]>([]);
@@ -75,6 +78,8 @@ const ListingForm = ({ id }: { id?: string }) => {
 
     const [imageLinks, setImageLinks] = useState<string[]>([]);
 
+    const [carboot, setCarBoot] = useState<ListingType | null>(null);
+
     const GetListing = useCallback(async () => {
         const response = await ReturnGet(`/admin/car-boot/in/${id}`)
         if (!response) return;
@@ -82,7 +87,8 @@ const ListingForm = ({ id }: { id?: string }) => {
             name, category_name, category,
             event_mode, description, is_parking_available,
             opening_time, closing_time, address, images,
-            borough, region, subregion, postcode, latitude, longitude
+            borough, region, subregion, postcode, latitude, longitude,
+            recurring_type, recurring_days, start_date, recurring
         } = response;
         resetRef.current({
             name,
@@ -95,8 +101,15 @@ const ListingForm = ({ id }: { id?: string }) => {
             opening_time,
             closing_time,
             is_parking_available: Boolean(is_parking_available),
+            recurring_type: recurring ? recurring_type : '',
+            start_date: start_date || '',
         })
+        setRecurring(Boolean(recurring));
         setSearchCategory(category_name || '')
+
+        if (recurring_type === 'custom_days') {
+            setRecurringDays(recurring_days || []);
+        }
 
         setImageLinks(images)
 
@@ -109,6 +122,7 @@ const ListingForm = ({ id }: { id?: string }) => {
 
         const getDates = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=dates`)
         setDates(getDates)
+        setCarBoot(response);
     }, [])
 
     useEffect(() => {
@@ -147,6 +161,9 @@ const ListingForm = ({ id }: { id?: string }) => {
 
     const SubmitForm = async (data: any) => {
 
+        data['recurring'] = recurring;
+        data['recurring_days'] = recurring_days;
+        data['is_parking_available'] = is_parking_available;
         try {
             if (id) {
                 data['slug'] = id
@@ -260,6 +277,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                     <div onClick={() => setTab('dates')} className={`p-2 cursor-pointer ${tab === 'dates' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Dates</div>
                     <div onClick={() => setTab('facilities')} className={`p-2 cursor-pointer ${tab === 'facilities' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Facilities</div>
                     <div onClick={() => setTab('images')} className={`p-2 cursor-pointer ${tab === 'images' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Images</div>
+                    <div onClick={() => setTab('carboot_updates')} className={`p-2 cursor-pointer ${tab === 'carboot_updates' ? 'bg-[#f3f7fe] rounded-md' : ''}`}>Car Boot Updates</div>
                 </div>
             )}
             {tab === 'overview' && (
@@ -329,10 +347,21 @@ const ListingForm = ({ id }: { id?: string }) => {
                                     error={errors.recurring_type?.message}
                                     onChangeInput={(value) => [setValue('recurring_type', value), setError('recurring_type', { message: '' })]}
                                 />
+                                {getValues('recurring_type') === 'weekly' && (
+                                    <DatePickerField
+                                        label="Start Date"
+                                        value={getValues('start_date')}
+                                        error={errors.start_date?.message}
+                                        onChangeInput={(value) => {
+                                            const opening_timeValue = Array.isArray(value) ? value[0] : value;
+                                            return [setValue('start_date', opening_timeValue), setError('start_date', { message: '' })];
+                                        }}
+                                    />
+                                )}
                             </div>}
                             {recurring && getValues('recurring_type') === 'custom_days' && (
-                                <div className="mt-4">
-                                    {['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'].map((day) => (
+                                <div className="mt-4 flex gap-4 flex-wrap">
+                                    {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day) => (
                                         <TickerField
                                             key={day}
                                             label={day}
@@ -442,6 +471,11 @@ const ListingForm = ({ id }: { id?: string }) => {
                             </tbody>
                         </table>
                     </div>
+                </div>
+            )}
+            {tab === 'carboot_updates' && (
+                <div className="mt-10 grid gap-5">
+                    <CarBootUpdate carboot={carboot}/>
                 </div>
             )}
         </div>

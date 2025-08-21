@@ -12,6 +12,8 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css';
 import moment from 'moment';
 import Image from 'next/image';
+import MiniModal from '../modal/mini-modal';
+import RelatedListing from './RelatedListing';
 
 
 interface ByLocationIdProps {
@@ -21,6 +23,7 @@ interface ByLocationIdProps {
 }
 
 export default function SingleListing({ category, location, slug }: ByLocationIdProps) {
+    const [openModal, setOpenModal] = useState<boolean>(false);
     const { ReturnGet } = useApiRequest();
     const [listing, setListing] = useState<ListingType>({} as ListingType);
     const [loading, setLoading] = useState<boolean>(true);
@@ -36,23 +39,38 @@ export default function SingleListing({ category, location, slug }: ByLocationId
         GetListing();
     }, [GetListing]);
 
+    const [listingUpdate, setListingUpdate] = useState([]);
+
+    const [currentPage,] = useState<number>(1);
+    const [queryParams,] = useState<string>('');
+
+    const GetListingUpdate = useCallback(async () => {
+        const request = await ReturnGet(`admin/car-boot/updates?page=${currentPage}${queryParams}`);
+        if (!request) return;
+        setListingUpdate(request.items);
+    }, [ReturnGet, currentPage, queryParams]);
+
+    useEffect(() => {
+        GetListingUpdate();
+    }, [GetListingUpdate]);
+
     const googleKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY || "";
 
     const facilitiesIcon = [
-        { tag: 'free_parking', name: 'Free Parking', icon: <Car size={15} /> },
-        { tag: 'food_drink', name: 'Food & Drink', icon: <Utensils size={15} /> },
-        { tag: 'atm_cash', name: 'ATM/Cash', icon: <CreditCard size={15} /> },
-        { tag: 'disabled_access', name: 'Disabled Access', icon: <Accessibility size={15} /> },
-        { tag: 'baby_changing', name: 'Baby Changing', icon: <Baby size={15} /> },
-        { tag: 'security', name: 'Security', icon: <Shield size={15} /> },
-        { tag: 'information_point', name: 'Information Point', icon: <Phone size={15} /> },
-        { tag: 'water_disposal', name: 'Water Disposal', icon: <Trash2 size={15} /> },
-        { tag: 'cafe', name: 'Cafe', icon: <Coffee size={15} /> },
-        { tag: 'free_wifi', name: 'Free WiFi', icon: <Wifi size={15} /> },
-        { tag: 'photography', name: 'Photography', icon: <Camera size={15} /> },
-        { tag: 'pa_system', name: 'PA System', icon: <Volume2 size={15} /> },
-        { tag: 'dog_friendly', name: 'Dog Friendly', icon: <Heart size={15} /> },
-        { tag: 'family_friendly', name: 'Family Friendly', icon: <Users size={15} /> },
+        { tag: 'free_parking', name: 'Free Parking', icon: <Car size={15} />, color: '#4CAF50' },
+        { tag: 'food_drink', name: 'Food & Drink', icon: <Utensils size={15} />, color: '#FF9800' },
+        { tag: 'atm_cash', name: 'ATM/Cash', icon: <CreditCard size={15} /> , color: '#2196F3' },
+        { tag: 'disabled_access', name: 'Disabled Access', icon: <Accessibility size={15} />  , color: '#9C27B0' },
+        { tag: 'baby_changing', name: 'Baby Changing', icon: <Baby size={15} />  , color: '#E91E63' },
+        { tag: 'security', name: 'Security', icon: <Shield size={15} /> , color: '#F44336' },
+        { tag: 'information_point', name: 'Information Point', icon: <Phone size={15} /> , color: '#3F51B5' },
+        { tag: 'water_disposal', name: 'Water Disposal', icon: <Trash2 size={15} /> , color: '#FF5722' },
+        { tag: 'cafe', name: 'Cafe', icon: <Coffee size={15} /> , color: '#795548' },
+        { tag: 'free_wifi', name: 'Free WiFi', icon: <Wifi size={15} />  , color: '#009688' },
+        { tag: 'photography', name: 'Photography', icon: <Camera size={15} />  , color: '#c4b530' },
+        { tag: 'pa_system', name: 'PA System', icon: <Volume2 size={15} />  , color: '#8BC34A' },
+        { tag: 'dog_friendly', name: 'Dog Friendly', icon: <Heart size={15} /> , color: '#FF4081' },
+        { tag: 'family_friendly', name: 'Family Friendly', icon: <Users size={15} /> , color: '#3bc4ff' },
     ];
     return (
         loading ? (
@@ -161,7 +179,7 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                     {facilitiesIcon.map((facility, index) => (
                                         <div key={index} className={`flex flex-col justify-center items-center border border-gray-200 p-3 themeRounded relative ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? '' : 'opacity-50'}`}>
                                             {listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? <div className='bg-green-500 p-1 rounded-full absolute right-1 top-1'></div> : ''}
-                                            <span className={`inline-block p-2 rounded-full text-sm ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? 'bg-secondary text-white' : 'bg-gray-200 text-gray-600'}`}>
+                                            <span className={`inline-block p-2 rounded-full text-sm ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? `bg-[${facility.color}]  text-white` : 'bg-gray-200 text-gray-600'}`}>
                                                 {facility.icon}
                                             </span>
                                             <p className={`text-[14px] mt-2 font-[500] text-center ${listing.facilities?.[facility.tag as keyof typeof listing.facilities] ? 'text-gray-600' : 'text-gray-500'}`}>
@@ -171,19 +189,19 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                     ))}
                                 </div>
                             </div>
-                                    {(listing.latitude && listing) && <div className="mt-6">
-                                        <h2 className="text-xl font-bold font-['Inter'] mb-3">Location</h2>
-                                        <div className="bg-neutral-50 rounded-lg h-64 overflow-hidden">
-                                            <iframe
-                                                title={listing.name}
-                                                width="100%"
-                                                height="100%"
-                                                frameBorder="0"
-                                                src={`https://www.google.com/maps/embed/v1/place?key=${googleKey}&q=${listing.latitude},${listing.longitude}&zoom=15`}
-                                                allowFullScreen
-                                            ></iframe>
-                                        </div>
-                                    </div>}
+                            {(listing.latitude && listing) && <div className="mt-6">
+                                <h2 className="text-xl font-bold font-['Inter'] mb-3">Location</h2>
+                                <div className="bg-neutral-50 rounded-lg h-64 overflow-hidden">
+                                    <iframe
+                                        title={listing.name}
+                                        width="100%"
+                                        height="100%"
+                                        frameBorder="0"
+                                        src={`https://www.google.com/maps/embed/v1/place?key=${googleKey}&q=${listing.latitude},${listing.longitude}&zoom=15`}
+                                        allowFullScreen
+                                    ></iframe>
+                                </div>
+                            </div>}
                         </div>
                         <div className="md:w-1/4">
                             <div className='bg-[#fef8f6] border border-[#ed9c80] p-4 themeRounded'>
@@ -198,12 +216,42 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                                         <div>{moment(listing.date).format('dddd, MMM Do')}</div>
                                         <div>
                                             {(listing.opening_time && listing.closing_time) ? <span>{moment(listing.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(listing.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : ''}</div></>
+
                                         : <p>No upcoming car boot sales</p>}
+                                </div>
+                                {Array.isArray(listing.upcoming_dates) && listing.upcoming_dates.length > 0 &&
+                                    <div>
+                                        <Button className='w-full mt-3 font-bold' text="View All Dates & Time" onClick={() => setOpenModal(true)} />
+                                        <MiniModal open={openModal} setClose={() => setOpenModal(false)} title="Upcoming Dates">
+                                            <div>
+                                                {listing.upcoming_dates.map((date, index) => (
+                                                    <div key={index} className="flex justify-between items-center py-2 border-b last:border-0">
+                                                        <span>{moment(date).format('dddd, MMM Do')}</span>
+                                                        <span>{(listing.opening_time && listing.closing_time) ? `${moment(listing.opening_time, 'HH:mm:ss').format('hh:mm A')} - ${moment(listing.closing_time, 'HH:mm:ss').format('hh:mm A')}` : ''}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </MiniModal>
+                                    </div>
+                                }
+                            </div>
+                            <div className='mt-4 p-4 themeRounded bg-white grid gapt-4 border border-gray-200 shadow-xs'>
+                                <h2 className='font-bold text-md mb-3 text-gray-600'>Recent Updates</h2>
+                                <div className='grid gap-4'>
+                                    {listingUpdate.map((update: any, index: number) => (
+                                        <div key={index} className={`p-3 border-l-3 ${update.status === 'danger' ? 'bg-red-50 text-red-600' : update.status === 'info' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
+                                            <div className='flex justify-between items-center'>
+                                                <h3 className='font-bold text-sm'>{update.title}</h3>
+                                                <p className='text-xs'>{moment(update.created_at).fromNow()}</p>
+                                            </div>
+                                            <p className='text-sm mt-1'>{update.description}</p>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    {/* <RelatedListing /> */}
+                    <RelatedListing />
 
                     <script
                         type="application/ld+json"

@@ -41,4 +41,5 @@ export interface ListingType {
         dog_friendly: boolean;
         family_friendly: boolean;
     };
+    upcoming_dates?: string[]; // Optional, for future dates
 }

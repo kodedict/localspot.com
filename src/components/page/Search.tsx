@@ -11,12 +11,11 @@ import { ListingType } from "@/type/model/ListingType";
 import Image from "next/image";
 import Button from "../form/button";
 import Link from "next/link";
-import { useCoordinates } from "../GetCoordinate";
 import moment from "moment";
 
 export default function SearchPage({ query }: { query: string }) {
     const navigate = useRouter();
-    const { coordinates, error } = useCoordinates();
+    //const { coordinates, error } = useCoordinates();
     const [filterEventMode, setFilterEventMode] = useState<string>('');
     const EventModes: string[] = ['outdoor', 'indoor'];
 
@@ -41,7 +40,9 @@ export default function SearchPage({ query }: { query: string }) {
 
     useEffect(() => {
         setQueryParams('');
-        if (miles && coordinates && !error) {
+        const coordinatesStr = localStorage.getItem("userCoordinates");
+        if (miles && coordinatesStr) {
+            const coordinates = JSON.parse(coordinatesStr);
             setQueryParams(`&distance=${miles}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`);
         }
     }, [miles]);
