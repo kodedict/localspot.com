@@ -482,7 +482,7 @@ const ListingForm = ({ id }: { id?: string }) => {
                                 {imageLinks?.map((item: string, index) => (
                                     <tr key={index} className="border-b border-[#E6EAF0]">
                                         <td className=" py-3">
-                                            <Image src={item} alt="" width={100} />
+                                            <Image src={item} alt="" width={100} height={50} />
                                             <Link href={item} target="_blank">
                                                 {abbreviateString(item, 50)}
                                             </Link>

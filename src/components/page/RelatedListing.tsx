@@ -23,7 +23,7 @@ const RelatedListing = () => {
                 latitude = coordinates.latitude;
                 longitude = coordinates.longitude;
             }
-            const request = await ReturnGet(`car-boot?page=${currentPage}${queryParams}&latitude=${latitude}&longitude=${longitude}`);
+            const request = await ReturnGet(`car-boot?page=${currentPage}${queryParams}&per_page=3&latitude=${latitude}&longitude=${longitude}`);
             if (!request) return;
             setListings(request?.items);
         });

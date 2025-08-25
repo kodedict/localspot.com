@@ -12,7 +12,7 @@ import SelectField from "@/components/form/select-field";
 import { ListingType } from "@/type/model/ListingType";
 import moment from "moment";
 
-const CarBootUpdate = ({carboot} : {carboot: ListingType|null}) => {
+const CarBootUpdate = ({ carboot }: { carboot: ListingType | null }) => {
     const [openModal, setOpenModal] = useState<boolean>(false);
     const [currentPage,] = useState<number>(1);
     const [queryParams,] = useState<string>('');
@@ -35,10 +35,12 @@ const CarBootUpdate = ({carboot} : {carboot: ListingType|null}) => {
     const [listings, setListings] = useState([]);
 
     const GetListing = useCallback(async () => {
-        const request = await ReturnGet(`admin/car-boot/updates?page=${currentPage}${queryParams}`);
-        if (!request) return;
-        setListings(request.items);
-    }, [ReturnGet, currentPage, queryParams]);
+        if (carboot?.slug) {
+            const request = await ReturnGet(`admin/car-boot/updates/${carboot?.slug}?page=${currentPage}${queryParams}`);
+            if (!request) return;
+            setListings(request.items);
+        }
+    }, [ReturnGet, currentPage, queryParams, carboot]);
 
     useEffect(() => {
         GetListing();
@@ -65,7 +67,7 @@ const CarBootUpdate = ({carboot} : {carboot: ListingType|null}) => {
                         label="Title"
                         type="text"
                         placeholder="Enter title"
-                        onChangeInput={(e) => {setValue('title', e.target.value); setError('title', { message: '' })}}
+                        onChangeInput={(e) => { setValue('title', e.target.value); setError('title', { message: '' }) }}
                         value={getValues('title')}
                         error={errors.title?.message}
                     />
@@ -73,7 +75,7 @@ const CarBootUpdate = ({carboot} : {carboot: ListingType|null}) => {
                         <TextareaField
                             label="Description"
                             placeholder="Enter description"
-                            onChangeInput={(e) => {setValue('description', e.target.value); setError('description', { message: '' })}}
+                            onChangeInput={(e) => { setValue('description', e.target.value); setError('description', { message: '' }) }}
                             value={getValues('description')}
                             error={errors.description?.message}
                         />
@@ -85,7 +87,7 @@ const CarBootUpdate = ({carboot} : {carboot: ListingType|null}) => {
                             { value: 'info', name: 'Info' },
                             { value: 'success', name: 'Success' }
                         ]}
-                        onChangeInput={(value) => {setValue('status', value); setError('status', { message: '' })}}
+                        onChangeInput={(value) => { setValue('status', value); setError('status', { message: '' }) }}
                         value={getValues('status')}
                         error={errors.status?.message}
                     />

@@ -45,10 +45,12 @@ export default function SingleListing({ category, location, slug }: ByLocationId
     const [queryParams,] = useState<string>('');
 
     const GetListingUpdate = useCallback(async () => {
-        const request = await ReturnGet(`admin/car-boot/updates?page=${currentPage}${queryParams}`);
-        if (!request) return;
-        setListingUpdate(request.items);
-    }, [ReturnGet, currentPage, queryParams]);
+        if (listing.slug) {
+            const request = await ReturnGet(`car-boot/${listing.slug}/update-status?per_page=5&page=${currentPage}${queryParams}`);
+            if (!request) return;
+            setListingUpdate(request.items);
+        }
+    }, [ReturnGet, currentPage, queryParams, listing]);
 
     useEffect(() => {
         GetListingUpdate();
@@ -59,18 +61,18 @@ export default function SingleListing({ category, location, slug }: ByLocationId
     const facilitiesIcon = [
         { tag: 'free_parking', name: 'Free Parking', icon: <Car size={15} />, color: '#4CAF50' },
         { tag: 'food_drink', name: 'Food & Drink', icon: <Utensils size={15} />, color: '#FF9800' },
-        { tag: 'atm_cash', name: 'ATM/Cash', icon: <CreditCard size={15} /> , color: '#2196F3' },
-        { tag: 'disabled_access', name: 'Disabled Access', icon: <Accessibility size={15} />  , color: '#9C27B0' },
-        { tag: 'baby_changing', name: 'Baby Changing', icon: <Baby size={15} />  , color: '#E91E63' },
-        { tag: 'security', name: 'Security', icon: <Shield size={15} /> , color: '#F44336' },
-        { tag: 'information_point', name: 'Information Point', icon: <Phone size={15} /> , color: '#3F51B5' },
-        { tag: 'water_disposal', name: 'Water Disposal', icon: <Trash2 size={15} /> , color: '#FF5722' },
-        { tag: 'cafe', name: 'Cafe', icon: <Coffee size={15} /> , color: '#795548' },
-        { tag: 'free_wifi', name: 'Free WiFi', icon: <Wifi size={15} />  , color: '#009688' },
-        { tag: 'photography', name: 'Photography', icon: <Camera size={15} />  , color: '#c4b530' },
-        { tag: 'pa_system', name: 'PA System', icon: <Volume2 size={15} />  , color: '#8BC34A' },
-        { tag: 'dog_friendly', name: 'Dog Friendly', icon: <Heart size={15} /> , color: '#FF4081' },
-        { tag: 'family_friendly', name: 'Family Friendly', icon: <Users size={15} /> , color: '#3bc4ff' },
+        { tag: 'atm_cash', name: 'ATM/Cash', icon: <CreditCard size={15} />, color: '#2196F3' },
+        { tag: 'disabled_access', name: 'Disabled Access', icon: <Accessibility size={15} />, color: '#9C27B0' },
+        { tag: 'baby_changing', name: 'Baby Changing', icon: <Baby size={15} />, color: '#E91E63' },
+        { tag: 'security', name: 'Security', icon: <Shield size={15} />, color: '#F44336' },
+        { tag: 'information_point', name: 'Information Point', icon: <Phone size={15} />, color: '#3F51B5' },
+        { tag: 'water_disposal', name: 'Water Disposal', icon: <Trash2 size={15} />, color: '#FF5722' },
+        { tag: 'cafe', name: 'Cafe', icon: <Coffee size={15} />, color: '#795548' },
+        { tag: 'free_wifi', name: 'Free WiFi', icon: <Wifi size={15} />, color: '#009688' },
+        { tag: 'photography', name: 'Photography', icon: <Camera size={15} />, color: '#c4b530' },
+        { tag: 'pa_system', name: 'PA System', icon: <Volume2 size={15} />, color: '#8BC34A' },
+        { tag: 'dog_friendly', name: 'Dog Friendly', icon: <Heart size={15} />, color: '#FF4081' },
+        { tag: 'family_friendly', name: 'Family Friendly', icon: <Users size={15} />, color: '#3bc4ff' },
     ];
     return (
         loading ? (
@@ -244,11 +246,11 @@ export default function SingleListing({ category, location, slug }: ByLocationId
                             <div className='mt-4 p-4 themeRounded bg-white grid gapt-4 border border-gray-200 shadow-xs'>
                                 <h2 className='font-bold text-md mb-3 text-gray-600'>Recent Updates</h2>
                                 <div className='grid gap-4'>
-                                    {listingUpdate.map((update: any, index: number) => (
+                                    {listingUpdate?.map((update: any, index: number) => (
                                         <div key={index} className={`p-3 border-l-3 ${update.status === 'danger' ? 'bg-red-50 text-red-600' : update.status === 'info' ? 'bg-blue-50 text-blue-600' : 'bg-green-50 text-green-600'}`}>
                                             <div className='flex justify-between items-center flex-wrap'>
                                                 <h3 className='font-bold text-sm'>{update.title}</h3>
-                                                <p className='text-xs'>{moment(update.created_at).fromNow()}</p>
+                                                <p className='text-xs font-bold'>{moment(update.created_at).fromNow()}</p>
                                             </div>
                                             <p className='text-sm mt-1'>{update.description}</p>
                                         </div>
