@@ -117,6 +117,9 @@ export default function SearchPage({ query }: { query: string }) {
                                                 &nbsp;
                                                 <span className='uppercase'>{moment(item.date).format('dddd, MMM D')}</span>
                                             </div>}
+                                            {item.weather_outlook && <div className='absolute top-2 right-2 bg-white p-2 themeRounded text-xs z-10'>
+                                                <span className='uppercase font-bold'>{item.weather_outlook}</span>
+                                            </div>}
                                         </div>
                                         {item?.images?.[0] ? <Image
                                             src={item?.images[0]}

@@ -28,7 +28,7 @@ const ListingIndex = () => {
                 <h1 className="page-title">Listing</h1>
                 <div className="flex items-center gap-3">
                     <Link href={'/admin/listing/add-new'} className="w-fit"><Button text="Add listing" /></Link>
-                    {/* <Link href={'/admin/listing/upload'} className="w-fit"><Button design='primary-outline' text="Upload file" /></Link> */}
+                    <Link href={'/admin/listing/upload'} className="w-fit"><Button design='primary-outline' text="Upload file" /></Link>
                 </div>
             </div>
             <div className="relative overflow-x-auto whitespace-nowrap">

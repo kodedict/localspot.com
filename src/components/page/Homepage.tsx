@@ -97,6 +97,9 @@ const HomePage = () => {
                                                 <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                                 <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
                                             </div>}
+                                            {item.weather_outlook && <div className='absolute top-2 right-2 bg-white p-2 themeRounded text-xs z-10'>
+                                                <span className='uppercase font-bold'>{item.weather_outlook}</span>
+                                            </div>}
                                             {item?.images?.[0] ? <Image
                                                 src={item?.images[0]}
                                                 width={500}
@@ -154,6 +157,9 @@ const HomePage = () => {
                                             {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                                 <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                                 <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
+                                            </div>}
+                                            {item.weather_outlook && <div className='absolute top-2 right-2 bg-white p-2 themeRounded text-xs z-10'>
+                                                <span className='uppercase font-bold'>{item.weather_outlook}</span>
                                             </div>}
                                             {item?.images?.[0] ? <Image
                                                 src={item?.images[0]}
