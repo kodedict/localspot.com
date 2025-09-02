@@ -11,8 +11,10 @@ import SearchComponent from '../search-component';
 import { strReplace } from '@/utils/helper-support';
 import { useRouter } from 'next/navigation';
 import moment from 'moment';
-import { Splide, SplideSlide } from '@splidejs/react-splide';
-import '@splidejs/react-splide/css';
+import { Pagination, Autoplay, A11y } from 'swiper/modules';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
 // import { useCoordinates } from '../GetCoordinate';
 
 const HomePage = () => {
@@ -71,7 +73,7 @@ const HomePage = () => {
                 <div className='mx-auto md:w-1/2 w-5/6'><SearchComponent onSearch={onSearch} /></div>
 
                 <div className='outer-container mt-5'>
-                    <div className='flex gap-4 items-center'>
+                    <div className='md:flex gap-4 items-center'>
                         <div className='bg-[#e1eaf9] h-10 w-10 rounded-full flex justify-center items-center text-[#7b9ada]'>
                             <Calendar size={18} />
                         </div>
@@ -80,19 +82,32 @@ const HomePage = () => {
                             <p className='text-gray-600'>Find car boot sales happening soon near you with confirmed dates, times and weather outlook.</p>
                         </div>
                     </div>
-                    <div className='grid gap-4 mt-8'>
-                        <Splide aria-label={'popular sales'} options={{
-                            //type: 'loop',
-                            autoplay: true,
-                            fixedHeight: 400,
-                            perPage: 4,
-                            rewind: true,
-                            gap: '1rem',
-                        }}>
+                    <div className='mt-8'>
+                        <Swiper aria-label={'popular sales'}
+                            modules={[Pagination, Autoplay, A11y]}
+                            spaceBetween={10}
+                            slidesPerView={1}
+                            pagination={{ clickable: true }}
+                            loop={true}
+                            autoplay={{
+                                delay: 2500,
+                                disableOnInteraction: false,
+                            }}
+                            breakpoints={{
+                                640: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 10,
+                                },
+                                480: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 10
+                                }
+                            }}
+                        >
                             {upcomingSales.map((item: ListingType, index: number) => (
-                                <SplideSlide key={index}>
+                                <SwiperSlide key={index}>
                                     <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
-                                        <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                        <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">
                                             {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                                 <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                                 <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
@@ -101,6 +116,7 @@ const HomePage = () => {
                                                 <span className='uppercase font-bold'>{item.weather_outlook}</span>
                                             </div>}
                                             {item?.images?.[0] ? <Image
+                                                priority={false}
                                                 src={item?.images[0]}
                                                 width={500}
                                                 height={500}
@@ -110,7 +126,7 @@ const HomePage = () => {
                                                 <ImageIcon size={20} />
                                             </div>}
                                         </div>
-                                        <div className="md:p-4 bg-white">
+                                        <div className="p-4 bg-white">
                                             <div>
                                                 <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
                                             </div>
@@ -125,14 +141,14 @@ const HomePage = () => {
                                             </div>
                                         </div>
                                     </Link>
-                                </SplideSlide>
+                                </SwiperSlide>
                             ))}
-                        </Splide>
+                        </Swiper>
 
                     </div>
                 </div>
                 <div className='outer-container !pt-0'>
-                    <div className='flex gap-4 items-center'>
+                    <div className='md:flex gap-4 items-center'>
                         <div className='bg-[#f3ecec] h-10 w-10 rounded-full flex justify-center items-center text-[#e47850]'>
                             <TrendingUp size={18} />
                         </div>
@@ -141,19 +157,32 @@ const HomePage = () => {
                             <p className='text-gray-600'>Discover the most popular car boot sales with the highest ratings and best bargains.</p>
                         </div>
                     </div>
-                    <div className='grid gap-4 mt-8'>
-                        <Splide aria-label={'popular sales'} options={{
-                            //type: 'loop',
-                            autoplay: true,
-                            fixedHeight: 400,
-                            perPage: 4,
-                            rewind: true,
-                            gap: '1rem',
-                        }}>
+                    <div className='mt-8'>
+                        <Swiper aria-label={'popular sales'}
+                            modules={[Pagination, Autoplay, A11y]}
+                            spaceBetween={10}
+                            slidesPerView={1}
+                            pagination={{ clickable: true }}
+                            loop={true}
+                            autoplay={{
+                                delay: 2500,
+                                disableOnInteraction: false,
+                            }}
+                            breakpoints={{
+                                640: {
+                                    slidesPerView: 4,
+                                    spaceBetween: 10,
+                                },
+                                480: {
+                                    slidesPerView: 2,
+                                    spaceBetween: 10
+                                }
+                            }}
+                        >
                             {popularSales.map((item: ListingType, index: number) => (
-                                <SplideSlide key={index}>
+                                <SwiperSlide key={index}>
                                     <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
-                                        <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                        <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">
                                             {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                                 <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                                 <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>
@@ -162,6 +191,7 @@ const HomePage = () => {
                                                 <span className='uppercase font-bold'>{item.weather_outlook}</span>
                                             </div>}
                                             {item?.images?.[0] ? <Image
+                                                priority={false}
                                                 src={item?.images[0]}
                                                 width={500}
                                                 height={500}
@@ -171,7 +201,7 @@ const HomePage = () => {
                                                 <ImageIcon size={20} />
                                             </div>}
                                         </div>
-                                        <div className="md:p-4 bg-white">
+                                        <div className="p-4 bg-white">
                                             <div>
                                                 <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
                                             </div>
@@ -186,16 +216,17 @@ const HomePage = () => {
                                             </div>
                                         </div>
                                     </Link>
-                                </SplideSlide>
+                                </SwiperSlide>
                             ))}
-                        </Splide>
-
+                        </Swiper>
                     </div>
                 </div>
                 <div className='outer-container mt-2'>
-                    <h4 className='text-2xl font-bold gap-4 flex justify-center items-center'>
-                        <Search size={18} color='#7b9ada' />
-                        <Car size={18} color='#e47850' />
+                    <h4 className='text-2xl font-bold gap-4 md:flex justify-center items-center'>
+                        <div className='flex gap-2'>
+                            <Search size={18} color='#7b9ada' />
+                            <Car size={18} color='#e47850' />
+                        </div>
                         <span>Searching in a specific location?</span>
                     </h4>
                     <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
@@ -217,9 +248,11 @@ const HomePage = () => {
                     </div>
                 </div>
                 <div className='outer-container mt-2'>
-                    <h4 className='text-2xl font-bold gap-4 flex justify-center items-center'>
-                        <Search size={18} color='#7b9ada' />
-                        <Car size={18} color='#e47850' />
+                    <h4 className='text-2xl font-bold gap-4 md:flex justify-center items-center'>
+                        <div className='flex gap-2'>
+                            <Search size={18} color='#7b9ada' />
+                            <Car size={18} color='#e47850' />
+                        </div>
                         <span>Searching by top search?</span>
                     </h4>
                     <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
