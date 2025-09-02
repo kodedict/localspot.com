@@ -126,17 +126,25 @@ const HomePage = () => {
                                                 <ImageIcon size={20} />
                                             </div>}
                                         </div>
-                                        <div className="p-4 bg-white">
+                                        <div className="p-4 bg-white h-[10em] flex items-center">
                                             <div>
-                                                <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
-                                            </div>
-                                            <div className="grid gap-2 text-sm mb-4">
-                                                {item.address && <div className="flex items-center text-neutral-600 space-x-2">
-                                                    <MapPin size={18} />
-                                                    <span>{item.address}</span>
-                                                </div>}
-                                                <div className="flex items-center text-neutral-600 space-x-2">
+                                                <div>
+                                                    <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
+                                                </div>
+                                                <div className="grid gap-2 text-sm mb-4">
+                                                    {item.address && <div className="flex items-center text-neutral-600 space-x-2">
+                                                        <MapPin size={18} />
+                                                        <span>{item.address}</span>
+                                                    </div>}
+                                                    {item.date && <div>
+                                                        <p className='text-neutral-600 flex gap-2 items-center'>
+                                                            <Calendar size={18} />
+                                                            <span>{moment(item.date).format('Do MMM, YYYY')}</span>
+                                                        </p>
+                                                    </div>}
+                                                    {/* <div className="flex items-center text-neutral-600 space-x-2">
                                                     {(item.opening_time && item.closing_time) ? <span>{moment(item.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(item.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : 'Closed'}
+                                                </div> */}
                                                 </div>
                                             </div>
                                         </div>
@@ -201,17 +209,25 @@ const HomePage = () => {
                                                 <ImageIcon size={20} />
                                             </div>}
                                         </div>
-                                        <div className="p-4 bg-white">
+                                        <div className="p-4 bg-white h-[10em] flex items-center">
                                             <div>
-                                                <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
-                                            </div>
-                                            <div className="grid gap-2 text-sm mb-4">
-                                                {item.address && <div className="flex items-center text-neutral-600 space-x-2">
-                                                    <MapPin size={18} />
-                                                    <span>{item.address}</span>
-                                                </div>}
-                                                <div className="flex items-center text-neutral-600 space-x-2">
+                                                <div>
+                                                    <h3 className="text-md font-bold font-['Inter'] mb-2">{item.name}</h3>
+                                                </div>
+                                                <div className="grid gap-2 text-sm mb-4">
+                                                    {item.address && <div className="flex items-center text-neutral-600 space-x-2">
+                                                        <MapPin size={18} />
+                                                        <span>{item.address}</span>
+                                                    </div>}
+                                                    {item.date && <div>
+                                                        <p className='text-neutral-600 flex gap-2 items-center'>
+                                                            <Calendar size={18} />
+                                                            <span>{moment(item.date).format('Do MMM, YYYY')}</span>
+                                                        </p>
+                                                    </div>}
+                                                    {/* <div className="flex items-center text-neutral-600 space-x-2">
                                                     {(item.opening_time && item.closing_time) ? <span>{moment(item.opening_time, 'HH:mm:ss').format('hh:mm A')} - {moment(item.closing_time, 'HH:mm:ss').format('hh:mm A')}</span> : 'Closed'}
+                                                </div> */}
                                                 </div>
                                             </div>
                                         </div>
