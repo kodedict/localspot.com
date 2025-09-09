@@ -134,7 +134,7 @@ function getGreeting() {
 const strReplace = (str:string, search:string, replace:string) => {
   if (str === '' || str === undefined) return '';
   return str
-    .split(search)
+    ?.split(search || ' ')
     .map(word => word.charAt(0) + word.slice(1))
     .join(replace);
 };
