@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react";
 import SearchComponent from "../search-component";
 import { strReplace } from "@/utils/helper-support";
 import { ImageIcon, MapPin } from "lucide-react";
-import useApiRequest from "@/hooks/api-request/request";
 import ApiResponseType from "@/type/api-response-type";
 import { useRouter } from 'next/navigation';
 import { ListingType } from "@/type/model/ListingType";
@@ -12,6 +11,7 @@ import Image from "next/image";
 import Button from "../form/button";
 import Link from "next/link";
 import moment from "moment";
+import useApiRequest from "@/libs/useApiRequest";
 
 export default function SearchPage({ query }: { query: string }) {
     const navigate = useRouter();
@@ -110,14 +110,14 @@ export default function SearchPage({ query }: { query: string }) {
                         {listings.map((item: ListingType, index: number) => (
                             <div key={index} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
                                 <div className="md:w-1/3">
-                                    <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                    <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">
                                         <div className="absolute top-2 left-2 z-10">
                                             {item.date && <div className='bg-[#424242] p-1 px-6 rounded-full text-xs text-white font-bold'>
                                                 <span className='uppercase'>Next Sale:</span>
                                                 &nbsp;
                                                 <span className='uppercase'>{moment(item.date).format('dddd, MMM D')}</span>
                                             </div>}
-                                            {item.weather_outlook && <div className='absolute top-2 right-2 bg-white p-2 themeRounded text-xs z-10'>
+                                            {item.weather_outlook && <div className='mt-1 bg-white p-2 themeRounded text-xs z-10 w-fit'>
                                                 <span className='uppercase font-bold'>{item.weather_outlook}</span>
                                             </div>}
                                         </div>

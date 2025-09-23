@@ -13,11 +13,10 @@ export async function generateMetadata(
   const {
     region,
     category,
-    location
   } = await params;
   const formattedCategory = strReplace(category, '-', ' ');
   return {
-    title: `Best ${ucWords(formattedCategory)} in ${ucWords(location)}`,
+    title: `Best ${ucWords(formattedCategory)} in ${ucWords(region)}`,
     description: `Discover top-rated ${ucWords(formattedCategory)} in ${ucFirst(region)}. View listings, schedules, and visitor ratings.`,
   };
 }

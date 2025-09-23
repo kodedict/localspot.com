@@ -4,34 +4,30 @@ import Image from 'next/image';
 import { ImageIcon, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import BreadCrumbs from '../breadcrumbs';
-import useApiRequest from "@/hooks/api-request/request";
 import { ListingType } from "@/type/model/ListingType";
-import { useEffect, useState, } from "react";//useCallback
+import { useEffect, useState, } from "react";
 import moment from 'moment';
+import useApiRequest from '@/libs/useApiRequest';
 
 
 export default function ByThisWeekendNearMe() {
-    const { ReturnGet } = useApiRequest();
+    const { Get } = useApiRequest();
     const [currentPage,] = useState<number>(1);
     const [queryParams,] = useState<string>('');
-    const [listings, setListings] = useState([]);
 
+    const [latitude, setLatitude] = useState<number | null>(null);
+    const [longitude, setLongitude] = useState<number | null>(null);
+    
     useEffect(() => {
-        const GetListing = (async () => {
-            let latitude = '';
-            let longitude = '';
-            const coordinatesStr = localStorage.getItem("userCoordinates");
-            if (coordinatesStr) {
-                const coordinates = JSON.parse(coordinatesStr);
-                latitude = coordinates.latitude;
-                longitude = coordinates.longitude;
-            }
-            const request = await ReturnGet(`car-boot?page=${currentPage}&filter_by=${'this_weekend_near_me'}${queryParams}&latitude=${latitude}&longitude=${longitude}`);
-            if (!request) return;
-            setListings(request?.items);
-        });
-        GetListing();
-    }, [currentPage, queryParams, ReturnGet]);
+        const coordinatesStr = localStorage.getItem("userCoordinates");
+        if (coordinatesStr) {
+            const coordinates = JSON.parse(coordinatesStr);
+            setLatitude(coordinates.latitude);
+            setLongitude(coordinates.longitude);
+        }
+    }, [])
+
+    const { data: listings } = Get(`/car-boot?page=${currentPage}&filter_by=${'this_weekend_near_me'}${queryParams}&latitude=${latitude}&longitude=${longitude}`) as { data: { items: ListingType[] }, loading: boolean };
 
     return (
         <main className="bg-[#f3f7fe]">
@@ -41,7 +37,7 @@ export default function ByThisWeekendNearMe() {
                 <p className='text-gray-600'>Discover top-rated Car Boot Sales this weekend near me across the UK. View listings, schedules, and visitor ratings.</p>
                 <div className='mt-5'>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        {listings.map((item: ListingType, index: number) => (
+                        {listings?.items?.map((item: ListingType, index: number) => (
                             <Link key={index} href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'london'}/${item.code}/${item.slug}`}>
                                 <div className="themeRounded bg-white">
                                     <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">

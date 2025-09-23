@@ -1,5 +1,7 @@
 
 import HomePage from '@/components/page/Homepage';
+import Footer from '@/components/partials/footer';
+import Navbar from '@/components/partials/nav';
 
 export const metadata = {
   title: "Car Boot Sales in United Kingdom",
@@ -8,6 +10,10 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <HomePage/>
+    <>
+      <Navbar/>
+      <HomePage/>
+      <Footer/>
+    </>
   );
 }

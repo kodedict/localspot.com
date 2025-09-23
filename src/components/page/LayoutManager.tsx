@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import AuthLayout from "@/layouts/auth";
+import AuthLayout from "@/layouts/protected";
 import GuestLayout from "@/layouts/guest";
 import { AuthUser } from "@/store/_auth_";
 import PageLoader from "../loader/page-loader";

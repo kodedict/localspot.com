@@ -4,8 +4,6 @@ import Button from '@/components/form/button';
 import Image from 'next/image';
 import { ArrowRight, Calendar, Car, MapPin, Search, TrendingUp, Image as ImageIcon } from 'lucide-react';
 import Link from 'next/link';
-import { useCallback, useEffect, useState } from 'react';
-import useApiRequest from "@/hooks/api-request/request"
 import { ListingType } from '@/type/model/ListingType';
 import SearchComponent from '../search-component';
 import { strReplace } from '@/utils/helper-support';
@@ -15,42 +13,13 @@ import { Pagination, Autoplay, A11y } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-// import { useCoordinates } from '../GetCoordinate';
+import useApiRequest from '@/libs/useApiRequest';
 
 const HomePage = () => {
-    // const { coordinates, error } = useCoordinates();
-    const [upcomingSales, setUpcomingSales] = useState([]);
-    const [popularSales, setPopularSales] = useState([]);
+    const {Get} = useApiRequest();
+    const { data: upcomingSales} = Get("/car-boot?filter_by=upcoming")
+    const { data: popularSales} = Get("/car-boot?filter_by=popular")
     const navigate = useRouter();
-    const {
-        ReturnGet,
-    } = useApiRequest();
-
-    // useEffect(() => {
-    //     if (coordinates && !error) {
-    //         console.log("Coordinates:", coordinates);
-    //         // You can call any external handler here
-    //     }
-    // }, [coordinates]);
-
-
-    const getUpcomingSales = useCallback(async () => {
-        const request = await ReturnGet(`car-boot?filter_by=upcoming`);
-        if (!request) return;
-        setUpcomingSales(request.items);
-    }, [ReturnGet])
-
-    const getPopularSales = useCallback(async () => {
-        const request = await ReturnGet(`car-boot?filter_by=popular`);
-        if (!request) return;
-        setPopularSales(request.items);
-    }, [ReturnGet])
-
-    useEffect(() => {
-        getUpcomingSales();
-        getPopularSales();
-    }, [getUpcomingSales, getPopularSales]);
-
     const onSearch = (search: string) => {
         search = strReplace(search, ' ', '-');
         navigate.replace(`/search/${search || 'car-boot-sales'}`);
@@ -104,7 +73,7 @@ const HomePage = () => {
                                 }
                             }}
                         >
-                            {upcomingSales.map((item: ListingType, index: number) => (
+                            {upcomingSales?.items.map((item: ListingType, index: number) => (
                                 <SwiperSlide key={index}>
                                     <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
                                         <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">
@@ -187,7 +156,7 @@ const HomePage = () => {
                                 }
                             }}
                         >
-                            {popularSales.map((item: ListingType, index: number) => (
+                            {popularSales?.items.map((item: ListingType, index: number) => (
                                 <SwiperSlide key={index}>
                                     <Link href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'england'}/${item.code}/${item.slug}`} key={index} className="themeRounded bg-white">
                                         <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">

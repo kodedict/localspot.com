@@ -5,10 +5,10 @@ import { ImageIcon, MapPin } from 'lucide-react';
 import Link from 'next/link';
 import { strReplace, ucWords } from '@/utils/helper-support';
 import BreadCrumbs from '../breadcrumbs';
-import useApiRequest from "@/hooks/api-request/request";
 import { ListingType } from "@/type/model/ListingType";
-import { useEffect, useState, } from "react";//useCallback
+import { useState, } from "react";
 import moment from 'moment';
+import useApiRequest from '@/libs/useApiRequest';
 
 interface ByLocationIdProps {
     category: string
@@ -17,19 +17,20 @@ interface ByLocationIdProps {
 }
 
 export default function ByRegion({ category, location, region }: ByLocationIdProps) {
-    const { ReturnGet } = useApiRequest();
+    const { Get } = useApiRequest();
     const [currentPage,] = useState<number>(1);
     const [queryParams,] = useState<string>('');
-    const [listings, setListings] = useState([]);
 
-    useEffect(() => {
-        const GetListing = (async () => {
-            const request = await ReturnGet(`car-boot?page=${currentPage}&subregion=${strReplace(region, '-', ' ')}${queryParams}`);
-            if (!request) return;
-            setListings(request?.items);
-        });
-        GetListing();
-    }, [currentPage, category, queryParams, ReturnGet]);
+    const { data:listings } = Get(`/car-boot?page=${currentPage}&subregion=${strReplace(region, '-', ' ')}${queryParams}`) as { data: { items: ListingType[] }, loading: boolean };
+
+    // useEffect(() => {
+    //     const GetListing = (async () => {
+    //         const request = await ReturnGet(`car-boot?page=${currentPage}&subregion=${strReplace(region, '-', ' ')}${queryParams}`);
+    //         if (!request) return;
+    //         setListings(request?.items);
+    //     });
+    //     GetListing();
+    // }, [currentPage, category, queryParams, ReturnGet]);
 
     let name = decodeURIComponent(category);
     name = strReplace(name, '-', ' ');
@@ -48,10 +49,10 @@ export default function ByRegion({ category, location, region }: ByLocationIdPro
                 <p className='text-gray-600'>Discover top-rated {name} in <span className='capitalize'>{region}</span> across the UK. View listings, schedules, and visitor ratings.</p>
                 <div className='mt-5'>
                     <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                        {listings.map((item: ListingType, index: number) => (
+                        {listings?.items?.map((item: ListingType, index: number) => (
                             <Link key={index} href={`/${(item.category === 'nil' || !item.category) ? 'car-boot-sales' : item.category}/${item.region || 'london'}/${item.code}/${item.slug}`}>
                                 <div className="themeRounded bg-white">
-                                    <div className="relative h-[10em] bg-gray-100 flex justify-center items-center relative">
+                                    <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">
                                         {item.date && <div className='absolute top-2 left-2 bg-white p-2 themeRounded text-xs z-10'>
                                             <span className='uppercase text-[#7b9ada] font-bold'>{moment(item.date).format('ddd D')}</span>
                                             <p className='uppercase font-bold text-gray-500'>{moment(item.date).format('MMM')}</p>

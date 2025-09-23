@@ -15,7 +15,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useCallback, useEffect, useRef, useState } from "react"
 import { abbreviateString, EmptyFormInput, strReplace, ucFirst } from "@/utils/helper-support"
-import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
 import debounce from "lodash.debounce"
 import OptionType from "@/type/option-type"
@@ -29,6 +28,7 @@ import Image from "next/image"
 import { recurringOptions } from "@/utils/options"
 import CarBootUpdate from "./carboot-update"
 import { ListingType } from "@/type/model/ListingType"
+import useApiRequest from "@/libs/useApiRequest"
 
 const ListingForm = ({ id }: { id?: string }) => {
     const router = useRouter();
@@ -123,7 +123,7 @@ const ListingForm = ({ id }: { id?: string }) => {
         const getDates = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=dates`)
         setDates(getDates)
         setCarBoot(response);
-    }, [])
+    }, [ReturnGet, id])
 
     useEffect(() => {
         if (id) {
@@ -156,7 +156,7 @@ const ListingForm = ({ id }: { id?: string }) => {
         return () => {
             debouncedFetch.cancel(); // clean up on unmount or next run
         };
-    }, [searchCategory]);
+    }, [searchCategory, ReturnGet]);
 
 
     const SubmitForm = async (data: any) => {
@@ -171,6 +171,7 @@ const ListingForm = ({ id }: { id?: string }) => {
             const request = await Post({
                 endpoint: id ? `admin/car-boot/update` : 'admin/car-boot',
                 payload: data,
+                refreshEndpoint: '/admin/car-boot?page=1',
             });
 
             if (!request) return
@@ -277,7 +278,9 @@ const ListingForm = ({ id }: { id?: string }) => {
             }
         })
 
-        console.log('response', response)
+        if (!response) return
+
+        SuccessToast('Weather updated successfully')
     }
 
     return (

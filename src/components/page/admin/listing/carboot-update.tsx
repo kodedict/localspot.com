@@ -1,16 +1,17 @@
 import Button from "@/components/form/button";
 import MiniModal from "@/components/modal/mini-modal";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { EmptyFormInput } from "@/utils/helper-support";
-import useApiRequest from "@/hooks/api-request/request";
 import InputField from "@/components/form/input-field";
 import TextareaField from "@/components/form/textarea";
 import SelectField from "@/components/form/select-field";
 import { ListingType } from "@/type/model/ListingType";
 import moment from "moment";
+import useApiRequest from "@/libs/useApiRequest";
+import { SuccessToast } from "@/utils/toast-notification";
 
 const CarBootUpdate = ({ carboot }: { carboot: ListingType | null }) => {
     const [openModal, setOpenModal] = useState<boolean>(false);
@@ -30,32 +31,21 @@ const CarBootUpdate = ({ carboot }: { carboot: ListingType | null }) => {
         reset
     } = useForm({ resolver: yupResolver(formSchema) });
 
-    const { ReturnGet, Post } = useApiRequest(errors);
+    const { Post, Get } = useApiRequest(errors);
 
-    const [listings, setListings] = useState([]);
-
-    const GetListing = useCallback(async () => {
-        if (carboot?.slug) {
-            const request = await ReturnGet(`admin/car-boot/updates/${carboot?.slug}?page=${currentPage}${queryParams}`);
-            if (!request) return;
-            setListings(request.items);
-        }
-    }, [ReturnGet, currentPage, queryParams, carboot]);
-
-    useEffect(() => {
-        GetListing();
-    }, [GetListing]);
+    const { data:listings } = Get(`/admin/car-boot/updates/${carboot?.slug}?page=${currentPage}${queryParams}`) as { data: { items: any[] }, loading: boolean };
 
     const onSubmit = async (data: any) => {
         data['carboot_slug'] = carboot?.slug;
         const request = await Post({
             endpoint: 'admin/car-boot/updates',
-            payload: data
+            payload: data,
+            refreshEndpoint: `/admin/car-boot/updates/${carboot?.slug}?page=${currentPage}${queryParams}`
         });
         if (!request) return;
         reset(EmptyFormInput(formSchema));
-        GetListing();
         setOpenModal(false);
+        SuccessToast('Update added successfully');
     }
 
     return (
@@ -104,7 +94,7 @@ const CarBootUpdate = ({ carboot }: { carboot: ListingType | null }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {listings.map((listing: any, index: number) => (
+                        {listings?.items?.map((listing: any, index: number) => (
                             <tr key={index} className="border-b border-[#E6EAF0]">
                                 <td className="px-4 py-3">{listing.title}</td>
                                 <td className="px-6 py-3">{listing.description}</td>

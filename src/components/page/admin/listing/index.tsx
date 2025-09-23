@@ -1,32 +1,32 @@
 "use client"
 
 import Button from "@/components/form/button"
-import useApiRequest from "@/hooks/api-request/request";
+import InputField from "@/components/form/input-field";
+import TablePagination from "@/components/table/table-pagination";
+import useApiRequest from "@/libs/useApiRequest";
 import { ListingType } from "@/type/model/ListingType";
 import { strReplace } from "@/utils/helper-support";
 import moment from "moment";
 import Link from "next/link"
-import { useEffect, useState, useCallback } from "react";
+import { useState } from "react";
 
 const ListingIndex = () => {
-    const { ReturnGet} = useApiRequest();
-    const [currentPage,] = useState<number>(1);
-    const [queryParams,] = useState<string>('');
-    const [listings, setListings] = useState([]);
-    const GetListing = useCallback(async () => {
-        const request = await ReturnGet(`admin/car-boot?page=${currentPage}${queryParams}`);
-        if ( ! request ) return;
-        setListings(request.items);
-    }, [ReturnGet, currentPage, queryParams]);
-
-    useEffect(() => {
-        GetListing();
-    },[GetListing]);
+    const { Get} = useApiRequest();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [queryParams, setQueryParams] = useState<string>('');
+    const {data:listings} = Get(`/admin/car-boot?page=${currentPage}${queryParams}`) as {data: {items: ListingType[]}, loading: boolean};
     return (
         <div>
-            <div className="flex items-center justify-between mb-4">
+            <div className="md:flex items-center justify-between mb-4">
                 <h1 className="page-title">Listing</h1>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-wrap">
+                    <InputField
+                        type="search"
+                        placeholder="Search listing"
+                        onChangeInput={(e) => {
+                            setQueryParams(`&search=${e.target.value}`);
+                        }}
+                    />
                     <Link href={'/admin/listing/add-new'} className="w-fit"><Button text="Add listing" /></Link>
                     <Link href={'/admin/listing/upload'} className="w-fit"><Button design='primary-outline' text="Upload file" /></Link>
                 </div>
@@ -42,7 +42,7 @@ const ListingIndex = () => {
                         </tr>
                     </thead>
                     <tbody className="relative">
-                        {listings.map((item:ListingType, index: number) => (
+                        {listings?.items?.map((item:ListingType, index: number) => (
                             <tr key={index} className="border-b border-[#E6EAF0] themeTextMuted">
                                 <td className="flex px-4 py-3 space-x-2 capitalize cursor-pointer text-primary hover:underline">
                                     <Link href={`/admin/listing/${item.slug}`}>{item.name}</Link>
@@ -54,6 +54,15 @@ const ListingIndex = () => {
                         ))}
                     </tbody>
                 </table>
+                <div className="mt-5">
+                    <TablePagination
+                    currentPage={currentPage}
+                    totalPages={listings?.items ? Math.ceil(listings?.items?.length / 10) : 0}
+                    onPageChange={(page: number) => {
+                         setCurrentPage(page)
+                    }}
+                />
+                </div>
             </div>
         </div>
     )

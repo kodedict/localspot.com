@@ -4,15 +4,19 @@ import Button from "@/components/form/button";
 import FileUploader from "@/components/form/file-uploader";
 import DotsLoader from "@/components/loader/dot-loader";
 import BackButton from "@/components/page/admin/back-button";
-import useApiRequest from "@/hooks/api-request/request";
+import useApiRequest from "@/libs/useApiRequest";
 import { SuccessToast } from "@/utils/toast-notification";
+import { X } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 // import LocationForm from "@/components/page/admin/location/location-form";
 
 const UploadListing = () => {
-    const [fileLink, setFileLink] = useState<string|null>(null);
+    const [fileLink, setFileLink] = useState<string | null>(null);
 
     const [loadingFileUpload, setLoadingFileUpload] = useState<boolean>(false);
+
+    const [file, setFile] = useState<string | null>(null);
 
     const {
         Post,
@@ -32,8 +36,9 @@ const UploadListing = () => {
             }
         });
         setLoadingFileUpload(false);
-        if (! upload) return
-        setFileLink(upload?.file_url); 
+        if (!upload) return
+        setFileLink(upload.data?.file_url);
+        setFile(`${file.fileName}`);
         return 'done';
     }
 
@@ -44,7 +49,7 @@ const UploadListing = () => {
                 file: fileLink,
             }
         });
-        if (! upload) return;
+        if (!upload) return;
         setFileLink(null);
         SuccessToast('File uploaded successfully');
     }
@@ -61,10 +66,16 @@ const UploadListing = () => {
                     <span className="animate-pulse">Uploading</span>
                     <DotsLoader />
                 </div>}
-                {fileLink && <div style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }} className="mt-3 overflow-y-auto h-[10em] p-4 themeRounded">
-                    <img src={fileLink} alt="proof of payment" className="w-full" />
+                {fileLink && <div style={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }} className="my-3 flex p-2 items-center justify-between">
+                    <Link href={fileLink} target="_blank" className="">{file}</Link>
+                    <span
+                        onClick={() => { setFileLink(null); setFile(null); }}
+                        className="p-2 text-white bg-red-500 rounded-full cursor-pointer"
+                    >
+                        <X size={18} />
+                    </span>
                 </div>}
-                {fileLink && <Button text="Upload" design="primary" onClick={uploadFile} disabled={requestLoading} isLoading={requestLoading}/>}
+                {fileLink && <Button className="mt-5" text="Upload" design="primary" onClick={uploadFile} disabled={requestLoading} isLoading={requestLoading} />}
             </div>
         </div>
     );

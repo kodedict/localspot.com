@@ -5,9 +5,9 @@ import InputField from "@/components/form/input-field"
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import useApiRequest from "@/hooks/api-request/request"
 import { SuccessToast } from "@/utils/toast-notification"
 import { EmptyFormInput } from "@/utils/helper-support";
+import useApiRequest from "@/libs/useApiRequest";
 
 const CategoryForm = () => {
     const formSchema = yup.object({
@@ -25,7 +25,7 @@ const CategoryForm = () => {
 
     const {
         Post,
-        // errorMessage, // Removed
+        requestLoading,
     } = useApiRequest(setError);
 
     const SubmitForm = async (data: any) => {
@@ -33,6 +33,7 @@ const CategoryForm = () => {
             const request = await Post({
                 endpoint: 'admin/car-boot/category',
                 payload: data,
+                refreshEndpoint: '/admin/car-boot/category?page=1'
             });
 
             if (!request) return
@@ -45,7 +46,6 @@ const CategoryForm = () => {
         }
     }
 
-
     return (
         <form onSubmit={handleSubmit(SubmitForm)} className="grid gap-4 mt-10">
             <div className="grid gap-2 md:grid-cols-2">
@@ -56,7 +56,7 @@ const CategoryForm = () => {
                     onChangeInput={(e) => [setValue('name', e.target.value), setError('name', { message: '' })]}
                 />
             </div>
-            <Button type="submit" text="Submit" />
+            <Button isLoading={requestLoading} type="submit" text="Submit" />
         </form>
     )
 }

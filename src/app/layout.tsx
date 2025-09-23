@@ -1,18 +1,11 @@
-import type { Metadata } from "next";
+
 import { Raleway } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/components/providers/QueryProvider";
-import LayoutManager from "@/components/page/LayoutManager";
-import SessionProvider from "@/providers/session-provider";
+import { Providers } from "./providers";
 
 const geistSans = Raleway({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "LocalSpots",
-  description: "Discover top-rated car boot sales in the UK.",
-};
-
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -21,11 +14,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={geistSans.className}>
-        <SessionProvider>
-          <QueryProvider>
-            <LayoutManager>{children}</LayoutManager>
-          </QueryProvider>
-        </SessionProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

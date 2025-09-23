@@ -3,7 +3,6 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
-    domains: ['images.unsplash.com', 'api.localspot.com.test'],
     remotePatterns: [
       {
         protocol: 'https',
@@ -11,6 +10,14 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: "/api/v1/:path*",
+  //       destination: process.env.REAL_API_URL + "/:path*"
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;
