@@ -123,7 +123,7 @@ const ListingForm = ({ id }: { id?: string }) => {
         const getDates = await ReturnGet(`/admin/car-boot/in/${id}?fetch_by=dates`)
         setDates(getDates)
         setCarBoot(response);
-    }, [ReturnGet, id])
+    }, [ id])
 
     useEffect(() => {
         if (id) {
@@ -156,7 +156,7 @@ const ListingForm = ({ id }: { id?: string }) => {
         return () => {
             debouncedFetch.cancel(); // clean up on unmount or next run
         };
-    }, [searchCategory, ReturnGet]);
+    }, [searchCategory]);
 
 
     const SubmitForm = async (data: any) => {

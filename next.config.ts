@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
   //   return [
   //     {
   //       source: "/api/v1/:path*",
-  //       destination: process.env.REAL_API_URL + "/:path*"
+  //       destination: "http://api.localspot.com.test/api/v1"
   //     },
   //   ];
   // },

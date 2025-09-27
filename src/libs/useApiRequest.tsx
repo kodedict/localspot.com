@@ -6,7 +6,7 @@ import { useState, useCallback } from "react"
 import { useSession, signOut } from "next-auth/react"
 import type { Session } from "next-auth"
 
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_URL
+axios.defaults.baseURL = '/api'//process.env.NEXT_PUBLIC_API_URL
 type ExtendedSession = Session & { accessToken?: string }
 
 export default function useApiRequest(setError?: any) {
