@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useMemo, useRef } from "react";
 import SearchComponent from "../search-component";
 import { strReplace } from "@/utils/helper-support";
 import { ImageIcon, MapPin } from "lucide-react";
@@ -13,44 +13,58 @@ import Link from "next/link";
 import moment from "moment";
 import useApiRequest from "@/libs/useApiRequest";
 
+// Constants defined outside component to prevent recreations
+const EVENT_MODES = ['outdoor', 'indoor'];
+const DISTANCE_FILTER = ['miles'];
+const MILE_TYPES = ['5', '10', '15', '25'];
+
 export default function SearchPage({ query }: { query: string }) {
     const navigate = useRouter();
     //const { coordinates, error } = useCoordinates();
     const [filterEventMode, setFilterEventMode] = useState<string>('');
-    const EventModes: string[] = ['outdoor', 'indoor'];
-
     const [filterByDistance, setFilterByDistance] = useState<string>('miles');
-    const DistanceFilter: string[] = ['miles',];//'drive time'
     const [miles, setMiles] = useState<string>('');
-    const MileTypes: string[] = ['5', '10', '15', '25'];
+    const [currentCoordinates, setCurrentCoordinates] = useState<{ latitude: number; longitude: number } | null>(null);
 
     const { ReturnGet } = useApiRequest();
-    const [currentPage,] = useState<number>(1);
-    const [queryParams, setQueryParams] = useState<string>('');
+    const [currentPage] = useState<number>(1);
     const [listings, setListings] = useState([]);
     const [search, setSearch] = useState<string>('');
     const [paginationData, setPaginationData] = useState<ApiResponseType>({} as ApiResponseType);
+    const returnGetRef = useRef(ReturnGet);
 
-    const GetListing = useCallback(async () => {
-        const request = await ReturnGet(`car-boot?page=${currentPage}&search=${search}&event_mode=${filterEventMode}${queryParams}`);
-        if (!request) return;
-        setListings(request.items);
-        setPaginationData(request);
-    }, [ReturnGet, currentPage, queryParams, search, filterEventMode]);
-
+    // Parse coordinates once on mount
     useEffect(() => {
-        setQueryParams('');
         const coordinatesStr = localStorage.getItem("userCoordinates");
-        if (miles && coordinatesStr) {
-            const coordinates = JSON.parse(coordinatesStr);
-            setQueryParams(`&distance=${miles}&latitude=${coordinates.latitude}&longitude=${coordinates.longitude}`);
+        if (coordinatesStr) {
+            try {
+                setCurrentCoordinates(JSON.parse(coordinatesStr));
+            } catch {
+                console.error("Failed to parse coordinates");
+            }
         }
-    }, [miles]);
+    }, []);
 
+    // Memoize query params to prevent unnecessary recalculations
+    const queryParams = useMemo(() => {
+        if (!miles || !currentCoordinates) return '';
+        return `&distance=${miles}&latitude=${currentCoordinates.latitude}&longitude=${currentCoordinates.longitude}`;
+    }, [miles, currentCoordinates]);
 
+    // Fetch listings when search, filters, or query params change
     useEffect(() => {
-        GetListing();
-    }, [search, GetListing]);
+        const fetchListings = async () => {
+            const request = await returnGetRef.current(`car-boot?page=${currentPage}&search=${search}&event_mode=${filterEventMode}${queryParams}`);
+            if (!request) return;
+            setListings(request.items);
+            setPaginationData(request);
+        };
+        
+        // Only fetch if we have valid search or initial load
+        if (search || filterEventMode || miles) {
+            fetchListings();
+        }
+    }, [currentPage, search, filterEventMode, queryParams]);
 
     useEffect(() => {
         if (query && !search) {
@@ -82,8 +96,8 @@ export default function SearchPage({ query }: { query: string }) {
                             <h3 className="text-md font-bold">Search Filters</h3>
                             <h3 className="text-sm font-bold">Car boot type</h3>
                             <div className="grid md:grid-cols-2 gap-2 text-sm">
-                                {EventModes.map((mode: string, index: number) => (
-                                    <div key={index} onClick={() => mode === filterEventMode ? setFilterEventMode('') : setFilterEventMode(mode)} className={`border ${mode === filterEventMode ? 'bg-secondary text-white' : ''} p-2 themeRounded border-gray-200 capitalize cursor-pointer`}>{mode}</div>
+                                {EVENT_MODES.map((mode: string) => (
+                                    <div key={mode} onClick={() => mode === filterEventMode ? setFilterEventMode('') : setFilterEventMode(mode)} className={`border ${mode === filterEventMode ? 'bg-secondary text-white' : ''} p-2 themeRounded border-gray-200 capitalize cursor-pointer`}>{mode}</div>
                                 ))}
                             </div>
                         </div>
@@ -92,12 +106,12 @@ export default function SearchPage({ query }: { query: string }) {
                         <div className="mb-2 grid gap-2">
                             <h3 className="text-md font-bold">Distance</h3>
                             <div className="grid md:grid-cols-2 gap-2 text-sm">
-                                {DistanceFilter.map((mode: string, index: number) => (
-                                    <div key={index} onClick={() => setFilterByDistance(mode)} className={`border ${mode === filterByDistance ? 'bg-secondary text-white' : ''} p-2 themeRounded border-gray-200 capitalize cursor-pointer`}>{mode}</div>
+                                {DISTANCE_FILTER.map((mode: string) => (
+                                    <div key={mode} onClick={() => setFilterByDistance(mode)} className={`border ${mode === filterByDistance ? 'bg-secondary text-white' : ''} p-2 themeRounded border-gray-200 capitalize cursor-pointer`}>{mode}</div>
                                 ))}
                             </div>
-                            {MileTypes.map((mode: string, index: number) => (
-                                <div key={index} onClick={() => mode === miles ? setMiles('') : setMiles(mode)} className={`${mode === miles ? 'bg-secondary text-white border' : ''} p-2 themeRounded border-gray-200 capitalize cursor-pointer`}>Within {mode} miles</div>
+                            {MILE_TYPES.map((mode: string) => (
+                                <div key={mode} onClick={() => mode === miles ? setMiles('') : setMiles(mode)} className={`${mode === miles ? 'bg-secondary text-white border' : ''} p-2 themeRounded border-gray-200 capitalize cursor-pointer`}>Within {mode} miles</div>
                             ))}
                         </div>
                     </div>
@@ -107,8 +121,8 @@ export default function SearchPage({ query }: { query: string }) {
                         <h3>Showing <strong>{paginationData?.items?.length}</strong> of <strong>{paginationData?.total}</strong></h3>
                     </div>
                     <div className="grid gap-4">
-                        {listings.map((item: ListingType, index: number) => (
-                            <div key={index} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
+                        {listings.map((item: ListingType) => (
+                            <div key={item.code} className="themeRounded shadow-sm border border-[#E6EAF0] flex flex-col md:flex-row">
                                 <div className="md:w-1/3">
                                     <div className="relative h-[10em] bg-gray-100 flex justify-center items-center">
                                         <div className="absolute top-2 left-2 z-10">

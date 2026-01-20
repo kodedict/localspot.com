@@ -18,9 +18,9 @@ const Footer = () => {
           <div>
             <h2 className="mb-4 text-sm font-semibold text-white capitalize">Quick Links</h2>
             <ul className="font-medium grid gap-2">
-              <li><a href="#" className="hover:underline hover:text-white">Find Bootsales</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Upcoming Car Boot Sales</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Popular Location</a></li>
+              <li><a href="/search/car-boot" className="hover:underline hover:text-white">Find Bootsales</a></li>
+              <li><a href="/upcoming-car-boot-sales" className="hover:underline hover:text-white">Upcoming Car Boot Sales</a></li>
+              <li><a href="/popular-car-boot-sales" className="hover:underline hover:text-white">Popular Car Boot Sales</a></li>
               <li><a href="#" className="hover:underline hover:text-white">List Your Sale</a></li>
               <li><a href="#" className="hover:underline hover:text-white">Blog</a></li>
             </ul>
