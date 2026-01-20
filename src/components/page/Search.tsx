@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import SearchComponent from "../search-component";
 import { strReplace } from "@/utils/helper-support";
 import { ImageIcon, MapPin } from "lucide-react";
@@ -64,7 +64,7 @@ export default function SearchPage({ query }: { query: string }) {
         if (search || filterEventMode || miles) {
             fetchListings();
         }
-    }, [currentPage, search, filterEventMode, queryParams]);
+    }, [currentPage, search, filterEventMode, queryParams, miles]);
 
     useEffect(() => {
         if (query && !search) {

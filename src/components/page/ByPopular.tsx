@@ -1,12 +1,8 @@
 "use client";
 
-import Image from 'next/image';
-import { ImageIcon, MapPin } from 'lucide-react';
-import Link from 'next/link';
 import BreadCrumbs from '../breadcrumbs';
 import { ListingType } from "@/type/model/ListingType";
 import { useState, } from "react";
-import moment from 'moment';
 import useApiRequest from '@/libs/useApiRequest';
 import ListingTemplate from '../ui/ListingTemplate';
 

@@ -18,31 +18,31 @@ const Footer = () => {
           <div>
             <h2 className="mb-4 text-sm font-semibold text-white capitalize">Quick Links</h2>
             <ul className="font-medium grid gap-2">
-              <li><a href="/search/car-boot" className="hover:underline hover:text-white">Find Bootsales</a></li>
-              <li><a href="/upcoming-car-boot-sales" className="hover:underline hover:text-white">Upcoming Car Boot Sales</a></li>
-              <li><a href="/popular-car-boot-sales" className="hover:underline hover:text-white">Popular Car Boot Sales</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">List Your Sale</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Blog</a></li>
+              <li><Link href="/search/car-boot" className="hover:underline hover:text-white">Find Bootsales</Link></li>
+              <li><Link href="/upcoming-car-boot-sales" className="hover:underline hover:text-white">Upcoming Car Boot Sales</Link></li>
+              <li><Link href="/popular-car-boot-sales" className="hover:underline hover:text-white">Popular Car Boot Sales</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">List Your Sale</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Blog</Link></li>
             </ul>
           </div>
           <div>
             <h2 className="mb-4 text-sm font-semibold text-white capitalize">Support</h2>
             <ul className="font-medium grid gap-2">
-              <li><a href="#" className="hover:underline hover:text-white">Help center</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Contact Us</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">About LocalBoot</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">How It Works</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">FAQ</a></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Help center</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Contact Us</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">About LocalBoot</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">How It Works</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">FAQ</Link></li>
             </ul>
           </div>
           <div>
             <h2 className="mb-4 text-sm font-semibold text-white capitalize">Legal</h2>
             <ul className="font-medium grid gap-2">
-              <li><a href="#" className="hover:underline hover:text-white">Terms and conditions</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Privacy Policy</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Cookie Policy</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Disclaimer</a></li>
-              <li><a href="#" className="hover:underline hover:text-white">Accessibility</a></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Terms and conditions</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Privacy Policy</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Cookie Policy</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Disclaimer</Link></li>
+              <li><Link href="#" className="hover:underline hover:text-white">Accessibility</Link></li>
             </ul>
           </div>
         </div>
@@ -52,15 +52,15 @@ const Footer = () => {
             © 2025 <Link href="/" className="hover:underline">LocalSpot</Link>. All Rights Reserved.
           </span>
           <div className="mt-4 flex space-x-5 md:mt-0 rtl:space-x-reverse">
-            <a href="#" className="hover:text-gray-900">
+            <Link href="#" className="hover:text-gray-900">
               Sitemap
-            </a>
-            <a href="#" className="hover:text-gray-900">
+            </Link>
+            <Link href="#" className="hover:text-gray-900">
               Security
-            </a>
-            <a href="#" className="hover:text-gray-900">
+            </Link>
+            <Link href="#" className="hover:text-gray-900">
               Data Protection
-            </a>
+            </Link>
           </div>
         </div>
       </div>
