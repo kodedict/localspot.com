@@ -1,37 +1,19 @@
 "use client"
 
-import Button from "@/components/form/button"
-import InputField from "@/components/form/input-field";
-import TablePagination from "@/components/table/table-pagination";
 import useApiRequest from "@/libs/useApiRequest";
 import { ListingType } from "@/type/model/ListingType";
 import { strReplace } from "@/utils/helper-support";
 import moment from "moment";
-import Link from "next/link"
-import { useState } from "react";
+import Link from "next/link";
 
-const ListingIndex = () => {
+const Dashboard = () => {
     const { Get } = useApiRequest();
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [queryParams, setQueryParams] = useState<string>('');
-    const { data: listings } = Get(`/admin/car-boot?page=${currentPage}${queryParams}`) as { data: { items: ListingType[], totalPages: number, total: number }, loading: boolean };
+    const { data: listings } = Get(`/admin/car-boot`) as { data: { items: ListingType[], totalPages: number, total: number }, loading: boolean };
     return (
         <div>
-            <div className="md:flex items-center justify-between mb-4">
-                <h1 className="page-title">Listing</h1>
-                <div className="flex items-center gap-3 flex-wrap">
-                    <InputField
-                        type="search"
-                        placeholder="Search listing"
-                        onChangeInput={(e) => {
-                            setQueryParams(`&search=${e.target.value}`);
-                        }}
-                    />
-                    <Link href={'/admin/listing/add-new'} className="w-fit"><Button text="Add listing" /></Link>
-                    <Link href={'/admin/listing/upload'} className="w-fit"><Button design='primary-outline' text="Upload file" /></Link>
-                </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-fade-in my-5">
+            <h1 className="text-2xl font-semibold mb-4">Admin Dashboard</h1>
+            <p>Welcome to the admin dashboard. Here you can manage listings, popular car boot sales.</p>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 animate-fade-in mt-5">
                 <div className="bg-white p-4 rounded-lg shadow stat-card">
                     <div>
                         <p className="stat-card-label capitalize">
@@ -43,6 +25,7 @@ const ListingIndex = () => {
                     </div>
                 </div>
             </div>
+            <h4 className="mt-5 mb-1 font-bold text-sm">Latest Updated Listing</h4>
             <div className="relative overflow-x-auto whitespace-nowrap">
                 <table className="text-primary font-[500] text-[14px] w-full relative z-10">
                     <thead>
@@ -66,18 +49,9 @@ const ListingIndex = () => {
                         ))}
                     </tbody>
                 </table>
-                <div className="mt-5">
-                    <TablePagination
-                        currentPage={currentPage}
-                        totalPages={listings?.totalPages || 0}
-                        onPageChange={(page: number) => {
-                            setCurrentPage(page)
-                        }}
-                    />
-                </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default ListingIndex
+export default Dashboard;
