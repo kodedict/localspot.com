@@ -11,10 +11,10 @@ import Link from "next/link"
 import { useState } from "react";
 
 const ListingIndex = () => {
-    const { Get} = useApiRequest();
+    const { Get } = useApiRequest();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [queryParams, setQueryParams] = useState<string>('');
-    const {data:listings} = Get(`/admin/car-boot?page=${currentPage}${queryParams}`) as {data: {items: ListingType[]}, loading: boolean};
+    const { data: listings } = Get(`/admin/car-boot?page=${currentPage}${queryParams}`) as { data: { items: ListingType[], totalPages: number }, loading: boolean };
     return (
         <div>
             <div className="md:flex items-center justify-between mb-4">
@@ -42,7 +42,7 @@ const ListingIndex = () => {
                         </tr>
                     </thead>
                     <tbody className="relative">
-                        {listings?.items?.map((item:ListingType, index: number) => (
+                        {listings?.items?.map((item: ListingType, index: number) => (
                             <tr key={index} className="border-b border-[#E6EAF0] themeTextMuted">
                                 <td className="flex px-4 py-3 space-x-2 capitalize cursor-pointer text-primary hover:underline">
                                     <Link href={`/admin/listing/${item.slug}`}>{item.name}</Link>
@@ -56,12 +56,13 @@ const ListingIndex = () => {
                 </table>
                 <div className="mt-5">
                     <TablePagination
-                    currentPage={currentPage}
-                    totalPages={listings?.items ? Math.ceil(listings?.items?.length / 10) : 0}
-                    onPageChange={(page: number) => {
-                         setCurrentPage(page)
-                    }}
-                />
+                        currentPage={currentPage}
+                        totalPages={listings?.totalPages || 0}
+                        onPageChange={(page: number) => {
+                            setCurrentPage(page)
+                        }}
+                        
+                    />
                 </div>
             </div>
         </div>
