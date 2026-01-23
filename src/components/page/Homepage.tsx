@@ -216,8 +216,8 @@ const HomePage = () => {
                     </h4>
                     <div className='px-5 pt-1 pb-8 themeRounded bg-white mt-5'>
                         <div className='grid gap-4 mt-8 md:grid-cols-4'>
-                            {['England', 'Scotland', 'Wales', 'London', 'Leicester', 'Wolverhampton', 'Nottingham', 'Sheffield'].map((item, index) => (
-                                <Link href={`/car-boot-sales/location/${item}`} className='text-[#6a90da] font-[450] hover:underline w-fit' key={index}>Car Boot Sales in {item}</Link>
+                            {['Worcestershire', 'West Northamptonshire', 'West Sussex', 'Torbay', 'Leicester', 'Warrington', 'Surrey', 'Suffolk'].map((item, index) => (
+                                <Link href={`/car-boot-sales/location/England/${item}`} className='text-[#6a90da] font-[450] hover:underline w-fit' key={index}>Car Boot Sales in {item}</Link>
                             ))}
                         </div>
                         <div className='mt-5 text-center flex justify-center'>
