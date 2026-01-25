@@ -18,9 +18,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const json: { data: { items: ListingType[] } } = await res.json()
 
   return json.data.items.map((listing) => ({
-    url: `https://localboot.com/car-boot/${(listing.category === 'nil' || !listing.category) ? 'car-boot-sales' : listing.category}/${listing.region || 'london'}/${listing.code}/${listing.slug}`,
+    url: `https://localboot.com/${(listing.category === 'nil' || !listing.category) ? 'car-boot-sales' : listing.category}/${listing.region || 'london'}/${listing.code}/${listing.slug}`,
     lastModified: new Date(listing.updated_at),
-    changeFrequency: 'weekly',
+    changeFrequency: 'daily',
     priority: 0.8,
   }))
 }
