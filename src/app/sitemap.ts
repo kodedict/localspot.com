@@ -1,26 +1,46 @@
+// app/sitemap.ts
 import { MetadataRoute } from 'next'
 import { ListingType } from '@/type/model/ListingType'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL!
+const BASE_URL = 'https://localboot.com'
+
+interface ApiResponse {
+  data: {
+    items: ListingType[]
+    page: number
+    hasMorePages: boolean
+    nextPage: number
+  }
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const res = await fetch(`${API_URL}/car-boot`, {
-    next: { revalidate: 3600 }, // 1 hour
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
+  let page = 1
+  let hasMorePages = true
+  const urls: MetadataRoute.Sitemap = []
 
-  if (!res.ok) {
-    return []
+  while (hasMorePages) {
+    const res = await fetch(
+      `${API_URL}/car-boot?page=${page}`,
+      { next: { revalidate: 3600 } }
+    )
+
+    if (!res.ok) break
+
+    const json: ApiResponse = await res.json()
+
+    json.data.items.forEach((listing) => {
+      urls.push({
+        url: `${BASE_URL}/${listing.slug}`,
+        lastModified: new Date(listing.updated_at),
+        changeFrequency: 'weekly',
+        priority: 0.8,
+      })
+    })
+
+    hasMorePages = json.data.hasMorePages
+    page = json.data.nextPage
   }
 
-  const json: { data: { items: ListingType[] } } = await res.json()
-
-  return json.data.items.map((listing) => ({
-    url: `https://localboot.com/${(listing.category === 'nil' || !listing.category) ? 'car-boot-sales' : listing.category}/${listing.region || 'london'}/${listing.code}/${listing.slug}`,
-    lastModified: new Date(listing.updated_at),
-    changeFrequency: 'daily',
-    priority: 0.8,
-  }))
+  return urls
 }
