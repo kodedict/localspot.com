@@ -31,7 +31,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     json.data.items.forEach((listing) => {
       urls.push({
-        url: `${BASE_URL}/${listing.slug}`,
+        url: `${BASE_URL}/${(listing.category === 'nil' || !listing.category) ? 'car-boot-sales' : listing.category}/${listing.region || 'london'}/${listing.code}/${listing.slug}`,
         lastModified: new Date(listing.updated_at),
         changeFrequency: 'weekly',
         priority: 0.8,
